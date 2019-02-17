@@ -10,6 +10,7 @@ require_once 'header.php';
 session_start();
 
 if(isset($_COOKIE['userid'])){
+    $_SESSION['userid'] = $_COOKIE['userid'];
     $_SESSION['username'] = $_COOKIE['username'];
     $_SESSION['userrole'] = $_COOKIE['userrole'];
 }
@@ -32,11 +33,11 @@ $smarty->assign("user", "$username");
 //Retrieve product detail
 $date = date('Y m d');
 
-if (isset($_REQUEST['product'])){
-    $nome = $_REQUEST['product'];
+if (isset($_POST['product'])){
+    $nome = $_POST['product']; //QUI viene preso valore da jquery
 }
 else {
-    $smarty->display('noproduct.html'); //dobbiamo definirlo
+    redirect("shop.php");
 }
 
 //Populate menu
