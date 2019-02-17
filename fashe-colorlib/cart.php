@@ -66,6 +66,7 @@ if ($result->num_rows > 0) {
     for ($j = 0; $j < $result->num_rows; ++$j) {
         $result->data_seek($j);
         $product[] = $result->fetch_row();
+        $product[$j][5] = $j;
     }
 
     $smarty->assign("products", $product);
