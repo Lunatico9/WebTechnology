@@ -1,4 +1,30 @@
-{include file="header.html" title="Header"}
+<?php
+/* Smarty version 3.1.33, created on 2019-02-17 14:20:38
+  from 'C:\wamp64\www\cart.html' */
+
+/* @var Smarty_Internal_Template $_smarty_tpl */
+if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
+  'version' => '3.1.33',
+  'unifunc' => 'content_5c696db64bf171_22986079',
+  'has_nocache_code' => false,
+  'file_dependency' => 
+  array (
+    '26714cbf2ed2496866ff064127dea5d70d57fe78' => 
+    array (
+      0 => 'C:\\wamp64\\www\\cart.html',
+      1 => 1550413234,
+      2 => 'file',
+    ),
+  ),
+  'includes' => 
+  array (
+    'file:header.html' => 1,
+    'file:footer.html' => 1,
+  ),
+),false)) {
+function content_5c696db64bf171_22986079 (Smarty_Internal_Template $_smarty_tpl) {
+$_smarty_tpl->_subTemplateRender("file:header.html", $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array('title'=>"Header"), 0, false);
+?>
 
 <!-- Title Page -->
 	<section class="bg-title-page p-t-40 p-b-50 flex-col-c-m" style="background-image: url(images/heading-pages-01.jpg);">
@@ -22,32 +48,43 @@
 							<th class="column-5">Total</th>
 						</tr>
 
-						{foreach item=product from=$products}
+						<?php
+$_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['products']->value, 'product');
+if ($_from !== null) {
+foreach ($_from as $_smarty_tpl->tpl_vars['product']->value) {
+?>
 						<tr class="table-row">
 							<td class="column-1">
 								<div class="cart-img-product b-rad-4 o-f-hidden">
-									<img src="{$product[2]}" alt="IMG-PRODUCT">
+									<img src="<?php echo $_smarty_tpl->tpl_vars['product']->value[2];?>
+" alt="IMG-PRODUCT">
 								</div>
 							</td>
 							<td class="column-2">
-								<a href="product-detail.php?product={$product[0]}">{$product[0]}<br>
+								<a href="product-detail.php?product=<?php echo $_smarty_tpl->tpl_vars['product']->value[0];?>
+"><?php echo $_smarty_tpl->tpl_vars['product']->value[0];?>
+<br>
 								</a>
-								<a href="cart.php?delete={$product[0]}">
+								<a href="cart.php?delete=<?php echo $_smarty_tpl->tpl_vars['product']->value[0];?>
+">
 								<span class="s-text8">delete</span>
 								</a>
 							</td>
-							{if isset($product[4])}
-							<td class="column-3">€ {$product[4]}</td>
-							{else}
-							<td class="column-3">€ {$product[1]}</td>
-							{/if}
+							<?php if (isset($_smarty_tpl->tpl_vars['product']->value[4])) {?>
+							<td class="column-3">€ <?php echo $_smarty_tpl->tpl_vars['product']->value[4];?>
+</td>
+							<?php } else { ?>
+							<td class="column-3">€ <?php echo $_smarty_tpl->tpl_vars['product']->value[1];?>
+</td>
+							<?php }?>
 							<td class="column-4">
 								<div class="flex-w bo5 of-hidden w-size17">
 									<button class="btn-num-product-down color1 flex-c-m size7 bg8 eff2">
 										<i class="fs-12 fa fa-minus" aria-hidden="true"></i>
 									</button>
 
-									<input class="size8 m-text18 t-center num-product" type="number" name="num-product1" min="0" value="{$product[3]}">
+									<input class="size8 m-text18 t-center num-product" type="number" name="num-product1" min="0" value="<?php echo $_smarty_tpl->tpl_vars['product']->value[3];?>
+">
 
 									<button class="btn-num-product-up color1 flex-c-m size7 bg8 eff2">
 										<i class="fs-12 fa fa-plus" aria-hidden="true"></i>
@@ -56,7 +93,10 @@
 							</td>
 							<td class="column-5"></td>
 						</tr>
-						{/foreach}
+						<?php
+}
+}
+$_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
 					</table>
 				</div>
 			</div>
@@ -98,7 +138,8 @@
 		</div>
 	</section>
 
-{include file="footer.html" title="Footer"}
+<?php $_smarty_tpl->_subTemplateRender("file:footer.html", $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array('title'=>"Footer"), 0, false);
+?>
 
 	<!-- Back to top -->
 	<div class="btn-back-to-top bg0-hov" id="myBtn">
@@ -114,15 +155,26 @@
 
 
 <!--===============================================================================================-->
-	<script type="text/javascript" src="vendor/jquery/jquery-3.2.1.min.js"></script>
+	<?php echo '<script'; ?>
+ type="text/javascript" src="vendor/jquery/jquery-3.2.1.min.js"><?php echo '</script'; ?>
+>
 <!--===============================================================================================-->
-	<script type="text/javascript" src="vendor/animsition/js/animsition.min.js"></script>
+	<?php echo '<script'; ?>
+ type="text/javascript" src="vendor/animsition/js/animsition.min.js"><?php echo '</script'; ?>
+>
 <!--===============================================================================================-->
-	<script type="text/javascript" src="vendor/bootstrap/js/popper.js"></script>
-	<script type="text/javascript" src="vendor/bootstrap/js/bootstrap.min.js"></script>
+	<?php echo '<script'; ?>
+ type="text/javascript" src="vendor/bootstrap/js/popper.js"><?php echo '</script'; ?>
+>
+	<?php echo '<script'; ?>
+ type="text/javascript" src="vendor/bootstrap/js/bootstrap.min.js"><?php echo '</script'; ?>
+>
 <!--===============================================================================================-->
-	<script type="text/javascript" src="vendor/select2/select2.min.js"></script>
-	<script type="text/javascript">
+	<?php echo '<script'; ?>
+ type="text/javascript" src="vendor/select2/select2.min.js"><?php echo '</script'; ?>
+>
+	<?php echo '<script'; ?>
+ type="text/javascript">
 		$(".selection-1").select2({
 			minimumResultsForSearch: 20,
 			dropdownParent: $('#dropDownSelect1')
@@ -132,9 +184,14 @@
 			minimumResultsForSearch: 20,
 			dropdownParent: $('#dropDownSelect2')
 		});
-	</script>
+	<?php echo '</script'; ?>
+>
 <!--===============================================================================================-->
-	<script src="js/main.js"></script>
+	<?php echo '<script'; ?>
+ src="js/main.js"><?php echo '</script'; ?>
+>
 
 </body>
 </html>
+<?php }
+}

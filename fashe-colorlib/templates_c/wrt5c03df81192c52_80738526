@@ -1,24 +1,55 @@
-{include file="header.html" title="Header"}
+<?php
+/* Smarty version 3.1.33, created on 2018-12-02 13:34:57
+  from 'C:\wamp64\www\product-detail.html' */
+
+/* @var Smarty_Internal_Template $_smarty_tpl */
+if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
+  'version' => '3.1.33',
+  'unifunc' => 'content_5c03df811914a8_15421212',
+  'has_nocache_code' => false,
+  'file_dependency' => 
+  array (
+    '1aa592addee103598f15693b10fecc07212df2e5' => 
+    array (
+      0 => 'C:\\wamp64\\www\\product-detail.html',
+      1 => 1543757693,
+      2 => 'file',
+    ),
+  ),
+  'includes' => 
+  array (
+    'file:header.html' => 1,
+    'file:footer.html' => 1,
+  ),
+),false)) {
+function content_5c03df811914a8_15421212 (Smarty_Internal_Template $_smarty_tpl) {
+$_smarty_tpl->_subTemplateRender("file:header.html", $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array('title'=>"Header"), 0, false);
+?>
 
 	<!-- breadcrumb -->
 	<div class="bread-crumb bgwhite flex-w p-l-52 p-r-15 p-t-30 p-l-15-sm">
-		<a href="index.php" class="s-text16">
+		<a href="index.html" class="s-text16">
 			Home
 			<i class="fa fa-angle-right m-l-8 m-r-9" aria-hidden="true"></i>
 		</a>
 
-		<a href="shop.php?catalogue={$catalogo}" class="s-text16">
-			{$catalogo}
+		<a href="shop.php?catalogue=<?php echo $_smarty_tpl->tpl_vars['catalogo']->value;?>
+" class="s-text16">
+			<?php echo $_smarty_tpl->tpl_vars['catalogo']->value;?>
+
 			<i class="fa fa-angle-right m-l-8 m-r-9" aria-hidden="true"></i>
 		</a>
 
-		<a href="shop.php?category={$categoria}" class="s-text16">
-			{$categoria}
+		<a href="shop.php?category=<?php echo $_smarty_tpl->tpl_vars['categoria']->value;?>
+" class="s-text16">
+			<?php echo $_smarty_tpl->tpl_vars['categoria']->value;?>
+
 			<i class="fa fa-angle-right m-l-8 m-r-9" aria-hidden="true"></i>
 		</a>
 
 		<span class="s-text17">
-			{$nome} Detail
+			<?php echo $_smarty_tpl->tpl_vars['nome']->value;?>
+ Detail
 		</span>
 	</div>
 
@@ -53,22 +84,21 @@
 
 			<div class="w-size14 p-t-30 respon5">
 				<h4 class="product-detail-name m-text16 p-b-13">
-					{$prodotto}
+					<?php echo $_smarty_tpl->tpl_vars['prodotto']->value;?>
+
 				</h4>
 				
-				{if isset($prezzos)}
-				<span class="block2-oldprice m-text7 p-r-5">
-					€ {$prezzo}
-				</span>
+                <?php if (isset($_smarty_tpl->tpl_vars['prezzos']->value)) {?>
+				<span class="m-text17">
+					<?php echo $_smarty_tpl->tpl_vars['prezzos']->value;?>
 
-				<span class="block2-newprice m-text8 p-r-5">
-					€ {$prezzos}
 				</span>
-				{else}
-				<span class="block2-price m-text6 p-r-5">
-					€ {$prezzo}
+				<?php } else { ?>
+				<span class="m-text17">
+					<?php echo $_smarty_tpl->tpl_vars['prezzo']->value;?>
+
 				</span>
-				{/if}
+				<?php }?>
 				
 				<!-- Size -->
 				<div class="p-t-33 p-b-60">
@@ -79,9 +109,11 @@
 
 						<div class="rs2-select2 rs3-select2 bo4 of-hidden w-size16">
 							<select class="selection-2" name="size">
-								{foreach item=size from=$sizes}
-								<option>{$size[0]}</option>
-								{/foreach}
+								<option>Choose an option</option>
+								<option>Size S</option>
+								<option>Size M</option>
+								<option>Size L</option>
+								<option>Size XL</option>
 							</select>
 						</div>
 					</div>
@@ -94,9 +126,11 @@
 
 						<div class="rs2-select2 rs3-select2 bo4 of-hidden w-size16">
 							<select class="selection-2" name="color">
-								{foreach item=color from=$colors}
-								<option>{$color[0]}</option>
-								{/foreach}
+								<option>Choose an option</option>
+								<option>Gray</option>
+								<option>Red</option>
+								<option>Black</option>
+								<option>Blue</option>
 							</select>
 						</div>
 					</div>
@@ -116,8 +150,7 @@
 							</div>
 
 							<div class="btn-addcart-product-detail size9 trans-0-4 m-t-10 m-b-10">
-								<!-- Button --> 
-								<!-- AJAX here --> 
+								<!-- Button -->
 								<button class="flex-c-m sizefull bg1 bo-rad-23 hov1 s-text1 trans-0-4">
 									Add to Cart
 								</button>
@@ -128,10 +161,10 @@
 
                 <!-- Categories -->
 				<div class="p-b-45">
-					<span class="s-text8">Categories: {$categoria}, {$catalogo}.</span>
+					<span class="s-text8">Categories: Mug, Design</span>
 				</div>
 
-				<!-- Descriptions -->
+				<!-- Description -->
 				<div class="wrap-dropdown-content bo6 p-t-15 p-b-14 active-dropdown-content">
 					<h5 class="js-toggle-dropdown-content flex-sb-m cs-pointer m-text19 color0-hov trans-0-4">
 						Description
@@ -141,7 +174,7 @@
 
 					<div class="dropdown-content dis-none p-t-15 p-b-23">
 						<p class="s-text8">
-							{$desc1}
+							Fusce ornare mi vel risus porttitor dignissim. Nunc eget risus at ipsum blandit ornare vel sed velit. Proin gravida arcu nisl, a dignissim mauris placerat
 						</p>
 					</div>
 				</div>
@@ -155,7 +188,7 @@
 
 					<div class="dropdown-content dis-none p-t-15 p-b-23">
 						<p class="s-text8">
-							{$desc2}
+							Fusce ornare mi vel risus porttitor dignissim. Nunc eget risus at ipsum blandit ornare vel sed velit. Proin gravida arcu nisl, a dignissim mauris placerat
 						</p>
 					</div>
 				</div>
@@ -165,7 +198,7 @@
 	</div>
 
 
-	<!-- Related Product -->
+	<!-- Relate Product -->
 	<section class="relateproduct bgwhite p-t-45 p-b-138">
 		<div class="container">
 			<div class="sec-title p-b-60">
@@ -177,15 +210,19 @@
 			<!-- Slide2 -->
 			<div class="wrap-slick2">
 				<div class="slick2">
-					
-					{foreach item=product from=$relprod}
+
 					<div class="item-slick2 p-l-15 p-r-15">
 						<!-- Block2 -->
 						<div class="block2">
-							<div class="block2-img wrap-pic-w of-hidden pos-relative">
-								<img src="{$product[2]}" alt="IMG-PRODUCT">
+							<div class="block2-img wrap-pic-w of-hidden pos-relative block2-labelnew">
+								<img src="images/item-02.jpg" alt="IMG-PRODUCT">
 
 								<div class="block2-overlay trans-0-4">
+									<a href="#" class="block2-btn-addwishlist hov-pointer trans-0-4">
+										<i class="icon-wishlist icon_heart_alt" aria-hidden="true"></i>
+										<i class="icon-wishlist icon_heart dis-none" aria-hidden="true"></i>
+									</a>
+
 									<div class="block2-btn-addcart w-size1 trans-0-4">
 										<!-- Button -->
 										<button class="flex-c-m size1 bg4 bo-rad-23 hov1 s-text1 trans-0-4">
@@ -196,26 +233,16 @@
 							</div>
 
 							<div class="block2-txt p-t-20">
-								<a href="product-detail.php?product={$product[0]}" class="block2-name dis-block s-text3 p-b-5">
-									{$product[0]}
+								<a href="product-detail.html" class="block2-name dis-block s-text3 p-b-5">
+									Herschel supply co 25l
 								</a>
 
-								{if isset($product[3])}
-								<span class="block2-oldprice m-text7 p-r-5">
-									€ {$product[1]}
-								</span>
-								<span class="block2-newprice m-text8 p-r-5">
-									€ {$product[3]}
-								</span>
-								{else}
 								<span class="block2-price m-text6 p-r-5">
-									€ {$product[1]}
+									$75.00
 								</span>
-								{/if}
 							</div>
 						</div>
 					</div>
-					{/foreach}
 				</div>
 			</div>
 
@@ -223,7 +250,8 @@
 	</section>
 
 
-{include file="footer.html" title="Footer"}
+<?php $_smarty_tpl->_subTemplateRender("file:footer.html", $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array('title'=>"Footer"), 0, false);
+?>
 
 	<!-- Back to top -->
 	<div class="btn-back-to-top bg0-hov" id="myBtn">
@@ -239,15 +267,26 @@
 
 
 <!--===============================================================================================-->
-	<script type="text/javascript" src="vendor/jquery/jquery-3.2.1.min.js"></script>
+	<?php echo '<script'; ?>
+ type="text/javascript" src="vendor/jquery/jquery-3.2.1.min.js"><?php echo '</script'; ?>
+>
 <!--===============================================================================================-->
-	<script type="text/javascript" src="vendor/animsition/js/animsition.min.js"></script>
+	<?php echo '<script'; ?>
+ type="text/javascript" src="vendor/animsition/js/animsition.min.js"><?php echo '</script'; ?>
+>
 <!--===============================================================================================-->
-	<script type="text/javascript" src="vendor/bootstrap/js/popper.js"></script>
-	<script type="text/javascript" src="vendor/bootstrap/js/bootstrap.min.js"></script>
+	<?php echo '<script'; ?>
+ type="text/javascript" src="vendor/bootstrap/js/popper.js"><?php echo '</script'; ?>
+>
+	<?php echo '<script'; ?>
+ type="text/javascript" src="vendor/bootstrap/js/bootstrap.min.js"><?php echo '</script'; ?>
+>
 <!--===============================================================================================-->
-	<script type="text/javascript" src="vendor/select2/select2.min.js"></script>
-	<script type="text/javascript">
+	<?php echo '<script'; ?>
+ type="text/javascript" src="vendor/select2/select2.min.js"><?php echo '</script'; ?>
+>
+	<?php echo '<script'; ?>
+ type="text/javascript">
 		$(".selection-1").select2({
 			minimumResultsForSearch: 20,
 			dropdownParent: $('#dropDownSelect1')
@@ -257,23 +296,50 @@
 			minimumResultsForSearch: 20,
 			dropdownParent: $('#dropDownSelect2')
 		});
-	</script>
+	<?php echo '</script'; ?>
+>
 <!--===============================================================================================-->
-	<script type="text/javascript" src="vendor/slick/slick.min.js"></script>
-	<script type="text/javascript" src="js/slick-custom.js"></script>
+	<?php echo '<script'; ?>
+ type="text/javascript" src="vendor/slick/slick.min.js"><?php echo '</script'; ?>
+>
+	<?php echo '<script'; ?>
+ type="text/javascript" src="js/slick-custom.js"><?php echo '</script'; ?>
+>
 <!--===============================================================================================-->
-	<script type="text/javascript" src="vendor/sweetalert/sweetalert.min.js"></script>
-	<script type="text/javascript">
+	<?php echo '<script'; ?>
+ type="text/javascript" src="vendor/sweetalert/sweetalert.min.js"><?php echo '</script'; ?>
+>
+	<?php echo '<script'; ?>
+ type="text/javascript">
 		$('.block2-btn-addcart').each(function(){
 			var nameProduct = $(this).parent().parent().parent().find('.block2-name').html();
 			$(this).on('click', function(){
 				swal(nameProduct, "is added to cart !", "success");
 			});
 		});
-	</script>
+
+		$('.block2-btn-addwishlist').each(function(){
+			var nameProduct = $(this).parent().parent().parent().find('.block2-name').html();
+			$(this).on('click', function(){
+				swal(nameProduct, "is added to wishlist !", "success");
+			});
+		});
+
+		$('.btn-addcart-product-detail').each(function(){
+			var nameProduct = $('.product-detail-name').html();
+			$(this).on('click', function(){
+				swal(nameProduct, "is added to wishlist !", "success");
+			});
+		});
+	<?php echo '</script'; ?>
+>
 
 <!--===============================================================================================-->
-	<script src="js/main.js"></script>
+	<?php echo '<script'; ?>
+ src="js/main.js"><?php echo '</script'; ?>
+>
 
 </body>
 </html>
+<?php }
+}

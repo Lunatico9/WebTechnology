@@ -3,17 +3,26 @@
 require_once 'libs/Smarty.class.php';
 require_once 'function.php';
 
-//fantoccio
-$product = array('product' => 3, 'quantity' => 1, 'color' => "OneColor", 'size' => "OneColor")
+//Session management procedure
+session_start();
 
-if(($_SESSION['userrole'] == 'g')) {
-    $_SESSION['cart'][]  = $product;
+if(isset($_COOKIE['userid'])){
+    $_SESSION['username'] = $_COOKIE['username'];
+    $_SESSION['userrole'] = $_COOKIE['userrole'];
 }
-else {
-    $user = $_SESSION['username'];
-    $product = $product['product'];
-    $quantity = $product['quantity'];
-    $color = $product['color'];
-    $size = $product['size'];
-    queryMysql("INSERT INTO carrello (cliente, prodotto, quantita, colore, taglia) VALUES ('$user', '$product', '$quantity', '$color', '$size');");
+
+if(!isset($_SESSION['username'])){
+    $_SESSION['username'] = 'Guest';
+    $_SESSION['userrole'] = 'g';
 }
+
+$product = $_POST['productarray'];
+
+
+$user = "1";
+$product = $product[0];
+$quantity = $product[1];
+$color = $product[2];
+$size = $product[3];
+queryMysql("INSERT INTO carrello (cliente, prodotto, quantita, colore, taglia) VALUES ('$user', '$product', '$quantity', '$color', '$size');");
+

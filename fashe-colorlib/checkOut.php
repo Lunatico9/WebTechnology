@@ -7,7 +7,13 @@ require_once 'header.php';
 //Session management procedure
 session_start();
 
+if(isset($_COOKIE['userid'])){
+    $_SESSION['username'] = $_COOKIE['username'];
+    $_SESSION['userrole'] = $_COOKIE['userrole'];
+}
+
 if(!isset($_SESSION['username'])){
+    //rimandiamo al login con un'avviso.
     $_SESSION['username'] = 'Guest';
     $_SESSION['userrole'] = 'g';
 }
@@ -22,4 +28,96 @@ $username = $values[1];
 $smarty->assign("items", "$items");
 $smarty->assign("user", "$username");
 
-$smarty->display('checkOut.html');
+$userid = $_SESSION['userid'];
+
+//Popola address options
+$query = "SELECT alias, nome, cognome, indirizzo, civico, citta, cap, provincia FROM indirizzi WHERE cliente = '$userid';";
+$result = queryMysql($query);
+$address = array();
+
+for ($j = 0; $j < $result->num_rows; ++$j) {
+    $result->data_seek($j);
+    $address[] = $result->fetch_row();
+}
+
+$smarty->assign("addresses", $address);
+
+//Populate color options
+$query = "SELECT id, nome, cognome, tipo_carta, num_carta FROM metodipagamento WHERE cliente = '$userid';";
+$result = queryMysql($query);
+$payment = array();
+
+for ($j = 0; $j < $result->num_rows; ++$j) {
+    $result->data_seek($j);
+    $payment[] = $result->fetch_row();
+}
+
+$smarty->assign("payments", $payment);
+
+//Populate courier options
+$query = "SELECT id, nome, costo FROM corriere";
+$result = queryMysql($query);
+$courier = array();
+
+for ($j = 0; $j < $result->num_rows; ++$j) {
+    $result->data_seek($j);
+    $courier[] = $result->fetch_row();
+}
+
+$smarty->assign("deloptions", $courier);
+
+//Intercettiamo la conferma dell'ordine
+//mi servirà che js mi passi il totale
+if(isset($_POST['confirm'])) {
+    $address = $_POST['address'];
+    $payment = $_POST['payment'];
+    $courier = $_POST['courier'];
+
+    $status = "Received";
+    $date = date('Y m d');
+
+    //inseriamo l'ordine nel db
+    queryMysql("INSERT INTO ordine (cliente, stato, indirizzo, totale) VALUES ('$userid', '$status', '$address', '0');");
+
+    //recuperiamo l'id appena creato
+    $query = "SELECT LAST_INSERT_ID();";
+    $result = queryMysql($query);
+    $order = $result->fetch_row();
+    $orderid = $order[0];
+
+    //inseriamo il pagamento e la spedizione nel db
+    queryMysql("INSERT INTO pagamento (ordine, metodo, stato) VALUES ('$orderid', '$payment', '$status');");
+    queryMysql("INSERT INTO spedizione (corriere, ordine, stato) VALUES ('$courier', '$orderid', '$status');");
+
+    //recuperiamo i prodotti dal carrello
+    $query = "SELECT prodotto, quantita, colore, taglia FROM carrello WHERE cliente = '$userid';";
+    $result = queryMysql($query);
+    $product = array();
+    for ($j = 0; $j < $result->num_rows; ++$j) {
+        $result->data_seek($j);
+        $product[] = $result->fetch_row();
+
+        $id = $product[$j][0];
+        $quantity = $product[$j][1];
+        $color = $product[$j][2];
+        $size = $product[$j][3];
+
+        //recuperiamo il prezzo del prodotto
+        $query = "SELECT prodotto.prezzo, prodottoscontato.prezzo FROM prodotto LEFT OUTER JOIN prodottoscontato ON prodotto.id = prodottoscontato.prodotto WHERE prodotto.id = '$id' AND prodottoscontato.data_inizio > '$date' AND prodottoscontato.data_fine < '$date';";
+        $result = queryMysql($query);
+        $prices = $result->fetch_row();
+
+        if(isset($prices[0][1])) {
+            $price = $prices[0][1];
+            queryMysql("INSERT INTO acquisto (ordine, prodotto, quantita, colore, taglia, prezzo) VALUES ('$orderid', '$id', '$quantity', '$color', '$size', '$price');");
+        }
+        else {
+            $price = $prices[0][0];
+            queryMysql("INSERT INTO acquisto (ordine, prodotto, quantita, colore, taglia, prezzo) VALUES ('$orderid', '$id', '$quantity', '$color', '$size', '$price');");
+        }
+    }
+    //eliminiamo tutti i prodotti dal carrello
+    queryMysql("DELETE FROM carrello WHERE carrello.cliente = '$userid';");
+}
+
+$smarty->display('checkout.html');

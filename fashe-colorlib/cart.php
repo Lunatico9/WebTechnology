@@ -7,6 +7,11 @@ require_once 'header.php';
 //Session management procedure
 session_start();
 
+if(isset($_COOKIE['userid'])){
+    $_SESSION['username'] = $_COOKIE['username'];
+    $_SESSION['userrole'] = $_COOKIE['userrole'];
+}
+
 if(!isset($_SESSION['username'])){
     $_SESSION['username'] = 'Guest';
     $_SESSION['userrole'] = 'g';
@@ -41,17 +46,19 @@ function update($updates) {
     $smarty->display('cart.html');
 }
 
+$userid = $_SESSION['userid'];
+
 //Intercept delete
 if (isset($_REQUEST['delete'])) {
     $del = $_REQUEST['delete'];
-    $query =  "DELETE FROM carrello WHERE carrello.cliente = 1 AND carrello.prodotto = (SELECT id FROM prodotto WHERE prodotto.nome = '$del');";
+    $query =  "DELETE FROM carrello WHERE carrello.cliente = '$userid' AND carrello.prodotto = (SELECT id FROM prodotto WHERE prodotto.nome = '$del');";
     queryMysql($query);
 }
 
 //Retrieve cart
 $date = date('Y m d');
 
-$query = "SELECT prodotto.nome, prodotto.prezzo, immagine.path, carrello.quantita, prodottoscontato.prezzo FROM carrello, immagine, prodotto LEFT OUTER JOIN prodottoscontato ON prodotto.id = prodottoscontato.prodotto AND prodottoscontato.data_inizio > '$date' WHERE carrello.cliente = 1 AND prodotto.id = carrello.prodotto AND immagine.prodotto = carrello.prodotto AND immagine.principale = 1;";
+$query = "SELECT prodotto.nome, prodotto.prezzo, immagine.path, carrello.quantita, prodottoscontato.prezzo FROM carrello, immagine, prodotto LEFT OUTER JOIN prodottoscontato ON prodotto.id = prodottoscontato.prodotto AND prodottoscontato.data_inizio > '$date' WHERE carrello.cliente = '$userid' AND prodotto.id = carrello.prodotto AND immagine.prodotto = carrello.prodotto AND immagine.principale = 1;";
 $result = queryMysql($query);
 $product = array();
 

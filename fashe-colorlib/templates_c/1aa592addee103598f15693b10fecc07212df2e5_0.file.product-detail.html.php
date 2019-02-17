@@ -1,4 +1,30 @@
-{include file="header.html" title="Header"}
+<?php
+/* Smarty version 3.1.33, created on 2019-02-15 20:08:11
+  from 'C:\wamp64\www\product-detail.html' */
+
+/* @var Smarty_Internal_Template $_smarty_tpl */
+if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
+  'version' => '3.1.33',
+  'unifunc' => 'content_5c671c2b261f29_19565303',
+  'has_nocache_code' => false,
+  'file_dependency' => 
+  array (
+    '1aa592addee103598f15693b10fecc07212df2e5' => 
+    array (
+      0 => 'C:\\wamp64\\www\\product-detail.html',
+      1 => 1550260901,
+      2 => 'file',
+    ),
+  ),
+  'includes' => 
+  array (
+    'file:header.html' => 1,
+    'file:footer.html' => 1,
+  ),
+),false)) {
+function content_5c671c2b261f29_19565303 (Smarty_Internal_Template $_smarty_tpl) {
+$_smarty_tpl->_subTemplateRender("file:header.html", $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array('title'=>"Header"), 0, false);
+?>
 
 	<!-- breadcrumb -->
 	<div class="bread-crumb bgwhite flex-w p-l-52 p-r-15 p-t-30 p-l-15-sm">
@@ -7,18 +33,23 @@
 			<i class="fa fa-angle-right m-l-8 m-r-9" aria-hidden="true"></i>
 		</a>
 
-		<a href="shop.php?catalogue={$catalogo}" class="s-text16">
-			{$catalogo}
+		<a href="shop.php?catalogue=<?php echo $_smarty_tpl->tpl_vars['catalogo']->value;?>
+" class="s-text16">
+			<?php echo $_smarty_tpl->tpl_vars['catalogo']->value;?>
+
 			<i class="fa fa-angle-right m-l-8 m-r-9" aria-hidden="true"></i>
 		</a>
 
-		<a href="shop.php?category={$categoria}" class="s-text16">
-			{$categoria}
+		<a href="shop.php?category=<?php echo $_smarty_tpl->tpl_vars['categoria']->value;?>
+" class="s-text16">
+			<?php echo $_smarty_tpl->tpl_vars['categoria']->value;?>
+
 			<i class="fa fa-angle-right m-l-8 m-r-9" aria-hidden="true"></i>
 		</a>
 
 		<span class="s-text17">
-			{$nome} Detail
+			<?php echo $_smarty_tpl->tpl_vars['nome']->value;?>
+ Detail
 		</span>
 	</div>
 
@@ -53,22 +84,26 @@
 
 			<div class="w-size14 p-t-30 respon5">
 				<h4 class="product-detail-name m-text16 p-b-13">
-					{$prodotto}
+					<?php echo $_smarty_tpl->tpl_vars['prodotto']->value;?>
+
 				</h4>
 				
-				{if isset($prezzos)}
+				<?php if (isset($_smarty_tpl->tpl_vars['prezzos']->value)) {?>
 				<span class="block2-oldprice m-text7 p-r-5">
-					€ {$prezzo}
+					€ <?php echo $_smarty_tpl->tpl_vars['prezzo']->value;?>
+
 				</span>
 
 				<span class="block2-newprice m-text8 p-r-5">
-					€ {$prezzos}
+					€ <?php echo $_smarty_tpl->tpl_vars['prezzos']->value;?>
+
 				</span>
-				{else}
+				<?php } else { ?>
 				<span class="block2-price m-text6 p-r-5">
-					€ {$prezzo}
+					€ <?php echo $_smarty_tpl->tpl_vars['prezzo']->value;?>
+
 				</span>
-				{/if}
+				<?php }?>
 				
 				<!-- Size -->
 				<div class="p-t-33 p-b-60">
@@ -79,9 +114,17 @@
 
 						<div class="rs2-select2 rs3-select2 bo4 of-hidden w-size16">
 							<select class="selection-2" name="size">
-								{foreach item=size from=$sizes}
-								<option>{$size[0]}</option>
-								{/foreach}
+								<?php
+$_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['sizes']->value, 'size');
+if ($_from !== null) {
+foreach ($_from as $_smarty_tpl->tpl_vars['size']->value) {
+?>
+								<option><?php echo $_smarty_tpl->tpl_vars['size']->value[0];?>
+</option>
+								<?php
+}
+}
+$_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
 							</select>
 						</div>
 					</div>
@@ -94,9 +137,17 @@
 
 						<div class="rs2-select2 rs3-select2 bo4 of-hidden w-size16">
 							<select class="selection-2" name="color">
-								{foreach item=color from=$colors}
-								<option>{$color[0]}</option>
-								{/foreach}
+								<?php
+$_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['colors']->value, 'color');
+if ($_from !== null) {
+foreach ($_from as $_smarty_tpl->tpl_vars['color']->value) {
+?>
+								<option><?php echo $_smarty_tpl->tpl_vars['color']->value[0];?>
+</option>
+								<?php
+}
+}
+$_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
 							</select>
 						</div>
 					</div>
@@ -128,7 +179,9 @@
 
                 <!-- Categories -->
 				<div class="p-b-45">
-					<span class="s-text8">Categories: {$categoria}, {$catalogo}.</span>
+					<span class="s-text8">Categories: <?php echo $_smarty_tpl->tpl_vars['categoria']->value;?>
+, <?php echo $_smarty_tpl->tpl_vars['catalogo']->value;?>
+.</span>
 				</div>
 
 				<!-- Descriptions -->
@@ -141,7 +194,8 @@
 
 					<div class="dropdown-content dis-none p-t-15 p-b-23">
 						<p class="s-text8">
-							{$desc1}
+							<?php echo $_smarty_tpl->tpl_vars['desc1']->value;?>
+
 						</p>
 					</div>
 				</div>
@@ -155,7 +209,8 @@
 
 					<div class="dropdown-content dis-none p-t-15 p-b-23">
 						<p class="s-text8">
-							{$desc2}
+							<?php echo $_smarty_tpl->tpl_vars['desc2']->value;?>
+
 						</p>
 					</div>
 				</div>
@@ -178,12 +233,17 @@
 			<div class="wrap-slick2">
 				<div class="slick2">
 					
-					{foreach item=product from=$relprod}
+					<?php
+$_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['relprod']->value, 'product');
+if ($_from !== null) {
+foreach ($_from as $_smarty_tpl->tpl_vars['product']->value) {
+?>
 					<div class="item-slick2 p-l-15 p-r-15">
 						<!-- Block2 -->
 						<div class="block2">
 							<div class="block2-img wrap-pic-w of-hidden pos-relative">
-								<img src="{$product[2]}" alt="IMG-PRODUCT">
+								<img src="<?php echo $_smarty_tpl->tpl_vars['product']->value[2];?>
+" alt="IMG-PRODUCT">
 
 								<div class="block2-overlay trans-0-4">
 									<div class="block2-btn-addcart w-size1 trans-0-4">
@@ -196,26 +256,34 @@
 							</div>
 
 							<div class="block2-txt p-t-20">
-								<a href="product-detail.php?product={$product[0]}" class="block2-name dis-block s-text3 p-b-5">
-									{$product[0]}
+								<a href="product-detail.php?product=<?php echo $_smarty_tpl->tpl_vars['product']->value[0];?>
+" class="block2-name dis-block s-text3 p-b-5">
+									<?php echo $_smarty_tpl->tpl_vars['product']->value[0];?>
+
 								</a>
 
-								{if isset($product[3])}
+								<?php if (isset($_smarty_tpl->tpl_vars['product']->value[3])) {?>
 								<span class="block2-oldprice m-text7 p-r-5">
-									€ {$product[1]}
+									€ <?php echo $_smarty_tpl->tpl_vars['product']->value[1];?>
+
 								</span>
 								<span class="block2-newprice m-text8 p-r-5">
-									€ {$product[3]}
+									€ <?php echo $_smarty_tpl->tpl_vars['product']->value[3];?>
+
 								</span>
-								{else}
+								<?php } else { ?>
 								<span class="block2-price m-text6 p-r-5">
-									€ {$product[1]}
+									€ <?php echo $_smarty_tpl->tpl_vars['product']->value[1];?>
+
 								</span>
-								{/if}
+								<?php }?>
 							</div>
 						</div>
 					</div>
-					{/foreach}
+					<?php
+}
+}
+$_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
 				</div>
 			</div>
 
@@ -223,7 +291,8 @@
 	</section>
 
 
-{include file="footer.html" title="Footer"}
+<?php $_smarty_tpl->_subTemplateRender("file:footer.html", $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array('title'=>"Footer"), 0, false);
+?>
 
 	<!-- Back to top -->
 	<div class="btn-back-to-top bg0-hov" id="myBtn">
@@ -239,15 +308,26 @@
 
 
 <!--===============================================================================================-->
-	<script type="text/javascript" src="vendor/jquery/jquery-3.2.1.min.js"></script>
+	<?php echo '<script'; ?>
+ type="text/javascript" src="vendor/jquery/jquery-3.2.1.min.js"><?php echo '</script'; ?>
+>
 <!--===============================================================================================-->
-	<script type="text/javascript" src="vendor/animsition/js/animsition.min.js"></script>
+	<?php echo '<script'; ?>
+ type="text/javascript" src="vendor/animsition/js/animsition.min.js"><?php echo '</script'; ?>
+>
 <!--===============================================================================================-->
-	<script type="text/javascript" src="vendor/bootstrap/js/popper.js"></script>
-	<script type="text/javascript" src="vendor/bootstrap/js/bootstrap.min.js"></script>
+	<?php echo '<script'; ?>
+ type="text/javascript" src="vendor/bootstrap/js/popper.js"><?php echo '</script'; ?>
+>
+	<?php echo '<script'; ?>
+ type="text/javascript" src="vendor/bootstrap/js/bootstrap.min.js"><?php echo '</script'; ?>
+>
 <!--===============================================================================================-->
-	<script type="text/javascript" src="vendor/select2/select2.min.js"></script>
-	<script type="text/javascript">
+	<?php echo '<script'; ?>
+ type="text/javascript" src="vendor/select2/select2.min.js"><?php echo '</script'; ?>
+>
+	<?php echo '<script'; ?>
+ type="text/javascript">
 		$(".selection-1").select2({
 			minimumResultsForSearch: 20,
 			dropdownParent: $('#dropDownSelect1')
@@ -257,23 +337,36 @@
 			minimumResultsForSearch: 20,
 			dropdownParent: $('#dropDownSelect2')
 		});
-	</script>
+	<?php echo '</script'; ?>
+>
 <!--===============================================================================================-->
-	<script type="text/javascript" src="vendor/slick/slick.min.js"></script>
-	<script type="text/javascript" src="js/slick-custom.js"></script>
+	<?php echo '<script'; ?>
+ type="text/javascript" src="vendor/slick/slick.min.js"><?php echo '</script'; ?>
+>
+	<?php echo '<script'; ?>
+ type="text/javascript" src="js/slick-custom.js"><?php echo '</script'; ?>
+>
 <!--===============================================================================================-->
-	<script type="text/javascript" src="vendor/sweetalert/sweetalert.min.js"></script>
-	<script type="text/javascript">
+	<?php echo '<script'; ?>
+ type="text/javascript" src="vendor/sweetalert/sweetalert.min.js"><?php echo '</script'; ?>
+>
+	<?php echo '<script'; ?>
+ type="text/javascript">
 		$('.block2-btn-addcart').each(function(){
 			var nameProduct = $(this).parent().parent().parent().find('.block2-name').html();
 			$(this).on('click', function(){
 				swal(nameProduct, "is added to cart !", "success");
 			});
 		});
-	</script>
+	<?php echo '</script'; ?>
+>
 
 <!--===============================================================================================-->
-	<script src="js/main.js"></script>
+	<?php echo '<script'; ?>
+ src="js/main.js"><?php echo '</script'; ?>
+>
 
 </body>
 </html>
+<?php }
+}

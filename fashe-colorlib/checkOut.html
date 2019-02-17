@@ -1,50 +1,115 @@
 {include file="header.html" title="Header"}
-<div class="flex-w flex-sb-m p-b-12">
-					<span class="s-text18 w-size19 w-full-sm">
-						Subtotal:
-					</span>
 
-    <span class="m-text21 w-size20 w-full-sm">
-						$39.00
-					</span>
-</div>
-<div class="flex-w flex-sb bo10 p-t-15 p-b-20">
-					<span class="s-text18 w-size19 w-full-sm">
-						Shipping:
-					</span>
+<!-- Title Page -->
+	<section class="bg-title-page p-t-40 p-b-50 flex-col-c-m" style="background-image: url(images/heading-pages-01.jpg);">
+		<h2 class="l-text2 t-center">
+			Cart
+		</h2>
+	</section>
 
-    <div class="w-size20 w-full-sm">
-        <p class="s-text8 p-b-23">
-            There are no shipping methods available. Please double check your address, or contact us if you need any help.
-        </p>
+	<!-- Cart -->
+	<section class="cart bgwhite p-t-70 p-b-100">
+		<div class="container">
+			<div class="row">
+				<div class="col-8">
+					<form method="POST" action="checkout.php">
+						<div class="card w-100">
+							<div class="card-header">
+								Select a delivery address
+							</div>
+							<div class="card-body">
+								<div class="rs2-select2 rs3-select2 bo4 of-hidden w-size16">
+									<select class="selection-2" name="address">
+										{foreach item=address from=$addresses}
+										<option value="{$address[0]}"> {$address[1]} {$address[2]} | {$address[3]} {$address[4]}, {$address[5]}</option>
+										{/foreach}
+									</select>
+								</div>
+							</div>
+						</div>
 
-        <span class="s-text19">
-							Calculate Shipping
-						</span>
+						<div class="card w-100">
+							<div class="card-header">
+								Select payment method
+							</div>
+							<div class="card-body">
+								<div class="rs2-select2 rs3-select2 bo4 of-hidden w-size16">
+									<select class="selection-2" name="payment">
+										{foreach item=payment from=$payments}
+										<option value="{$payment[0]}">{$payment[1]} {$payment[2]} | {$payment[3]} {$payment[4]}</option>
+										{/foreach}
+									</select>
+								</div>
+							</div>
+						</div>
 
-        <div class="rs2-select2 rs3-select2 rs4-select2 bo4 of-hidden w-size21 m-t-8 m-b-12">
-            <select class="selection-2" name="country">
-                <option>Select a country...</option>
-                <option>US</option>
-                <option>UK</option>
-                <option>Japan</option>
-            </select>
-        </div>
+						<div class="card w-100">
+							<div class="card-header">
+								Choose a delivery option
+							</div>
+							<div class="card-body">
+								<div class="rs2-select2 rs3-select2 bo4 of-hidden w-size16">
+									<select class="selection-2" name="courier">
+										{foreach item=option from=$deloptions}
+										<option value="{$option[0]}">{$option[1]} €{$option[2]}</option>
+										{/foreach}
+									</select>
+								</div>
+							</div>
+						</div>
 
-        <div class="size13 bo4 m-b-12">
-            <input class="sizefull s-text7 p-l-15 p-r-15" type="text" name="state" placeholder="State /  country">
-        </div>
+						<div class="card w-30 text-center">
+							<div class="card-body">
+								<input type="submit" class="btn" name="confirm" value="Confirm order"></input>
+							</div>
+						</div>
+					</form>
+				</div>
+				
+				<div class="col-4">
+				</div>
 
-        <div class="size13 bo4 m-b-22">
-            <input class="sizefull s-text7 p-l-15 p-r-15" type="text" name="postcode" placeholder="Postcode / Zip">
-        </div>
+			</div>
+		</div>
+	</section>
 
-        <div class="size14 trans-0-4 m-b-10">
-            <!-- Button -->
-            <button class="flex-c-m sizefull bg1 bo-rad-23 hov1 s-text1 trans-0-4">
-                Update Totals
-            </button>
-        </div>
-    </div>
-</div>
 {include file="footer.html" title="Footer"}
+
+	<!-- Back to top -->
+	<div class="btn-back-to-top bg0-hov" id="myBtn">
+		<span class="symbol-btn-back-to-top">
+			<i class="fa fa-angle-double-up" aria-hidden="true"></i>
+		</span>
+	</div>
+
+	<!-- Container Selection -->
+	<div id="dropDownSelect1"></div>
+	<div id="dropDownSelect2"></div>
+
+
+
+<!--===============================================================================================-->
+	<script type="text/javascript" src="vendor/jquery/jquery-3.2.1.min.js"></script>
+<!--===============================================================================================-->
+	<script type="text/javascript" src="vendor/animsition/js/animsition.min.js"></script>
+<!--===============================================================================================-->
+	<script type="text/javascript" src="vendor/bootstrap/js/popper.js"></script>
+	<script type="text/javascript" src="vendor/bootstrap/js/bootstrap.min.js"></script>
+<!--===============================================================================================-->
+	<script type="text/javascript" src="vendor/select2/select2.min.js"></script>
+	<script type="text/javascript">
+		$(".selection-1").select2({
+			minimumResultsForSearch: 20,
+			dropdownParent: $('#dropDownSelect1')
+		});
+
+		$(".selection-2").select2({
+			minimumResultsForSearch: 20,
+			dropdownParent: $('#dropDownSelect2')
+		});
+	</script>
+<!--===============================================================================================-->
+	<script src="js/main.js"></script>
+
+</body>
+</html>
