@@ -23,18 +23,18 @@
 						</tr>
 
 						{foreach item=product from=$products}
-						<tr class="table-row" id = "{$product[5]}">
+						<tr class="table-row" id = "{$product[7]}">
 							<td class="column-1">
 								<div class="cart-img-product b-rad-4 o-f-hidden">
-									<img src="{$product[2]}" alt="IMG-PRODUCT">
+									<a href="cart.php" id="{$product[0]}"><img src="{$product[2]}" alt="IMG-PRODUCT"></a>
 								</div>
 							</td>
 							<td class="column-2">
-								<a id="{$product[0]}">{$product[0]}<br>
+								<a href="product-detail.php" id="{$product[0]}">{$product[0]}<br>
 								</a>
-								<a id="{$product[0]}">
-								<span class="s-text8">delete</span>
-								</a>
+								<p><span class="s-text8">{$product[5]}</span></p>
+								<p><span class="s-text8">{$product[6]}</span></p>
+								
 							</td>
 							{if isset($product[4])}
 							<td class="column-3">€ {$product[4]}</td>

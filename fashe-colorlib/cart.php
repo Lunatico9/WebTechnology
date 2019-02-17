@@ -58,7 +58,7 @@ if (isset($_REQUEST['delete'])) {
 //Retrieve cart
 $date = date('Y m d');
 
-$query = "SELECT prodotto.nome, prodotto.prezzo, immagine.path, carrello.quantita, prodottoscontato.prezzo FROM carrello, immagine, prodotto LEFT OUTER JOIN prodottoscontato ON prodotto.id = prodottoscontato.prodotto AND prodottoscontato.data_inizio > '$date' WHERE carrello.cliente = '$userid' AND prodotto.id = carrello.prodotto AND immagine.prodotto = carrello.prodotto AND immagine.principale = 1;";
+$query = "SELECT prodotto.nome, prodotto.prezzo, immagine.path, carrello.quantita, prodottoscontato.prezzo, carrello.colore, carrello.taglia FROM carrello, immagine, prodotto LEFT OUTER JOIN prodottoscontato ON prodotto.id = prodottoscontato.prodotto AND prodottoscontato.data_inizio > '$date' WHERE carrello.cliente = '$userid' AND prodotto.id = carrello.prodotto AND immagine.prodotto = carrello.prodotto AND immagine.principale = 1;";
 $result = queryMysql($query);
 $product = array();
 
@@ -66,7 +66,7 @@ if ($result->num_rows > 0) {
     for ($j = 0; $j < $result->num_rows; ++$j) {
         $result->data_seek($j);
         $product[] = $result->fetch_row();
-        $product[$j][5] = $j;
+        $product[$j][7] = $j;
     }
 
     $smarty->assign("products", $product);
