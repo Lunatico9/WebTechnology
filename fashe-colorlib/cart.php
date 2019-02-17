@@ -8,6 +8,7 @@ require_once 'header.php';
 session_start();
 
 if(isset($_COOKIE['userid'])){
+    $_SESSION['userid'] = $_COOKIE['userid'];
     $_SESSION['username'] = $_COOKIE['username'];
     $_SESSION['userrole'] = $_COOKIE['userrole'];
 }

@@ -33,8 +33,8 @@ $smarty->assign("user", "$username");
 //Retrieve product detail
 $date = date('Y m d');
 
-if (isset($_POST['product'])){
-    $nome = $_POST['product']; //QUI viene preso valore da jquery
+if (isset($_REQUEST['product'])){
+    $nome = $_REQUEST['product'];
 }
 else {
     redirect("shop.php");
