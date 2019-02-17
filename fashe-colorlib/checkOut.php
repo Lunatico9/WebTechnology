@@ -90,7 +90,7 @@ if(isset($_POST['confirm'])) {
     queryMysql("INSERT INTO spedizione (corriere, ordine, stato) VALUES ('$courier', '$orderid', '$status');");
 
     //recuperiamo i prodotti dal carrello
-    $query = "SELECT prodotto, quantita, colore, taglia FROM carrello WHERE cliente = '$userid';";
+    $query = "SELECT carrello.prodotto, carrello.quantita, carrello.colore, carrello.taglia, prodotto.prezzo, prodottoscontato.prezzo FROM carrello, prodotto LEFT OUTER JOIN prodottoscontato ON prodotto.id = prodottoscontato.prodotto  AND prodottoscontato.data_inizio > '$date' AND prodottoscontato.data_fine < '$date' WHERE cliente = '$userid' AND carrello.prodotto = prodotto.id;";
     $result = queryMysql($query);
     $product = array();
     for ($j = 0; $j < $result->num_rows; ++$j) {
@@ -102,17 +102,12 @@ if(isset($_POST['confirm'])) {
         $color = $product[$j][2];
         $size = $product[$j][3];
 
-        //recuperiamo il prezzo del prodotto
-        $query = "SELECT prodotto.prezzo, prodottoscontato.prezzo FROM prodotto LEFT OUTER JOIN prodottoscontato ON prodotto.id = prodottoscontato.prodotto WHERE prodotto.id = '$id' AND prodottoscontato.data_inizio > '$date' AND prodottoscontato.data_fine < '$date';";
-        $result = queryMysql($query);
-        $prices = $result->fetch_row();
-
-        if(isset($prices[0][1])) {
-            $price = $prices[0][1];
+        if(isset($product[$j][5])) {
+            $price = $product[$J][5];
             queryMysql("INSERT INTO acquisto (ordine, prodotto, quantita, colore, taglia, prezzo) VALUES ('$orderid', '$id', '$quantity', '$color', '$size', '$price');");
         }
         else {
-            $price = $prices[0][0];
+            $price = $product[$j][4];
             queryMysql("INSERT INTO acquisto (ordine, prodotto, quantita, colore, taglia, prezzo) VALUES ('$orderid', '$id', '$quantity', '$color', '$size', '$price');");
         }
     }
