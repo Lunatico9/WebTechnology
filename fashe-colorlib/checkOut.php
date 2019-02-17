@@ -8,14 +8,13 @@ require_once 'header.php';
 session_start();
 
 if(isset($_COOKIE['userid'])){
+    $_SESSION['userid'] = $_COOKIE['userid'];
     $_SESSION['username'] = $_COOKIE['username'];
     $_SESSION['userrole'] = $_COOKIE['userrole'];
 }
 
 if(!isset($_SESSION['username'])){
-    //rimandiamo al login con un'avviso.
-    $_SESSION['username'] = 'Guest';
-    $_SESSION['userrole'] = 'g';
+    redirect("login.php");
 }
 
 $smarty = new Smarty;
