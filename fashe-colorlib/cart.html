@@ -215,7 +215,7 @@ function initialize(){
     for (i = 0; i < count; i++){
         sum += pricearr[i];
     }
-    sum = sum.toString();
+    sum = floatSlice(sum,2).toString();
     //write total price to appropriate field
     $("#total-price").text("€ "+sum);
 }
