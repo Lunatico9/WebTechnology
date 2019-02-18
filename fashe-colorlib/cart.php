@@ -97,24 +97,33 @@ else {
 if (isset($_POST['update'])) {
     $quantities = $_POST['quantities'];
 
-    //recuperiamo gli oggetti dal carrello dell'utente
-    $userid = $_SESSION['userid'];
-    $query = "SELECT prodotto, quantita, colore, taglia FROM carrello WHERE cliente = '$userid';";
-    $result = queryMysql($query);
-    if ($result->num_rows > 0) {
-        for ($j = 0; $j < $result->num_rows; $j++) {
-            $result->data_seek($j);
-            $product = $result->fetch_row();
+    if(!isset($_SESSION['userid'])) {
+        $i = 0;
+        foreach ($_SESSION['cart'] AS &$item) {
+            $item[1] = $quantities[$i++];
+        }
+    }
+    else {
+        
+        //recuperiamo gli oggetti dal carrello dell'utente
+        $userid = $_SESSION['userid'];
+        $query = "SELECT prodotto, quantita, colore, taglia FROM carrello WHERE cliente = '$userid';";
+        $result = queryMysql($query);
+        if ($result->num_rows > 0) {
+            for ($j = 0; $j < $result->num_rows; $j++) {
+                $result->data_seek($j);
+                $product = $result->fetch_row();
 
-            //controlliamo se la quantità è cambiata
-            if($product[1] == $quantities[$j]) {
-                continue;
-            }
-            elseif($quantities[$j] == 0) {
-                deleteProduct($userid, $product[0]);
-            }
-            else {
-                updateProduct($userid, $product[0], $quantities[$j], $product[2], $product[3]);
+                //controlliamo se la quantità è cambiata
+                if($product[1] == $quantities[$j]) {
+                    continue;
+                }
+                elseif($quantities[$j] == 0) {
+                    deleteProduct($userid, $product[0]);
+                }
+                else {
+                    updateProduct($userid, $product[0], $quantities[$j], $product[2], $product[3]);
+                }
             }
         }
     }
