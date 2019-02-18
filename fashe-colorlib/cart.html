@@ -81,7 +81,7 @@
 						Total:
 					</span>
 
-					<span class="m-text21 w-size20 w-full-sm">
+					<span class="m-text21 w-size20 w-full-sm" id="total-price">
 
 					</span>
 				</div>
@@ -112,7 +112,6 @@
 	<div id="dropDownSelect2"></div>
 
 
-
 <!--===============================================================================================-->
 	<script type="text/javascript" src="vendor/jquery/jquery-3.2.1.min.js"></script>
 <!--===============================================================================================-->
@@ -135,6 +134,54 @@
 	</script>
 <!--===============================================================================================-->
 	<script src="js/main.js"></script>
+
+<!--===============================================================================================-->
+<!-- Reduce floating point precision to i numbers after floating point, if present -->
+<script type="text/javascript">
+    function floatSlice(number, i){
+        number = number.toString();
+        //slice if number is floating point
+        if (number.includes(".")){
+            number = number.slice(0, number.indexOf(".")+i+1);
+        }
+        number = parseFloat(number);
+        return number;
+    }
+
+
+</script>
+<!--===============================================================================================-->
+<!-- Cart Initialization Script -->
+<script type="text/javascript">
+function initialize(){
+    var count = $(".table-row").length;
+    var pricearr = new Array(count);
+    //for loop writes prices to pricearr and populates total column, iterating on table-row ID's
+    for (i = 0; i < count; i++){
+        //get price and remove the € sign
+        var price = parseFloat($(".table-row#"+i).find(".column-3").text().slice(2));
+        //get quantity from selector
+        var quantity = parseInt($(".table-row#"+i).find(".num-product").val());
+        //reduce precision to 2 numbers after point, if not integer
+        pricearr[i] = floatSlice((price * quantity), 2);
+        var total = pricearr[i].toString();
+        //write total value to column
+        $(".table-row#"+i).find(".column-5").text("€ "+total);
+    }
+    //calculate total price
+    var sum = 0;
+    for (i = 0; i < count; i++){
+        sum += pricearr[i];
+    }
+    sum = sum.toString();
+    //write total price to appropriate field
+    $("#total-price").text("€ "+sum);
+}
+</script>
+<!--===============================================================================================-->
+<!-- Execute initialize() on page load -->
+<script type="text/javascript">initialize()</script>
+
 
 </body>
 </html>
