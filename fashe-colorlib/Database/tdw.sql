@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Creato il: Feb 18, 2019 alle 10:39
+-- Creato il: Feb 18, 2019 alle 11:05
 -- Versione del server: 5.7.23
 -- Versione PHP: 7.2.10
 
@@ -324,17 +324,18 @@ CREATE TABLE IF NOT EXISTS `metodipagamento` (
   `nome` varchar(50) NOT NULL,
   `cognome` varchar(50) NOT NULL,
   `tipo_carta` varchar(50) NOT NULL,
-  `num_carta` int(30) NOT NULL,
+  `num_carta` bigint(20) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `cliente` (`cliente`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 --
 -- Dump dei dati per la tabella `metodipagamento`
 --
 
 INSERT INTO `metodipagamento` (`id`, `cliente`, `nome`, `cognome`, `tipo_carta`, `num_carta`) VALUES
-(2, 1, 'test', 'user', 'visa', 674688980);
+(3, 1, 'ciao', 'user', 'visa', 1234123412341234),
+(4, 1, 'Cuai', 'user', 'visa', 9999999999999999);
 
 -- --------------------------------------------------------
 
