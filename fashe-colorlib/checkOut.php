@@ -41,7 +41,7 @@ for ($j = 0; $j < $result->num_rows; ++$j) {
 
 $smarty->assign("addresses", $address);
 
-//Populate color options
+//Populate payment options
 $query = "SELECT id, nome, cognome, tipo_carta, num_carta FROM metodipagamento WHERE cliente = '$userid';";
 $result = queryMysql($query);
 $payment = array();
@@ -49,6 +49,7 @@ $payment = array();
 for ($j = 0; $j < $result->num_rows; ++$j) {
     $result->data_seek($j);
     $payment[] = $result->fetch_row();
+    $payment[$j][4] = "********* ". substr($payment[$j][4],12,strlen($payment[$j][4]));
 }
 
 $smarty->assign("payments", $payment);
@@ -67,7 +68,7 @@ $smarty->assign("deloptions", $courier);
 
 //Intercettiamo la conferma dell'ordine
 //mi servirà che js mi passi il totale
-if(isset($_POST['confirm'])) {
+if(isset($_POST['address']) && isset($_POST['payment']) && isset($_POST['courier'])) {
     $address = $_POST['address'];
     $payment = $_POST['payment'];
     $courier = $_POST['courier'];
@@ -112,6 +113,10 @@ if(isset($_POST['confirm'])) {
     }
     //eliminiamo tutti i prodotti dal carrello
     queryMysql("DELETE FROM carrello WHERE carrello.cliente = '$userid';");
+
+    //messaggio di conferma 
+
+    redirect("index.php");
 }
 
 $smarty->display('checkout.html');
