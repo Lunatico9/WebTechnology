@@ -30,7 +30,7 @@ $smarty->assign("user", "$username");
 
 $userid = $_SESSION['userid'];
 //Retrieve orders
-$query = "SELECT ordine.id, ordine.eseguito, ordine.stato, ordine.indirizzo, ordine.totale FROM ordine WHERE ordine.cliente = '$userid';";
+$query = "SELECT ordine.id, ordine.eseguito, ordine.stato, ordine.indirizzo, ordine.totale FROM ordine WHERE ordine.cliente = '$userid' ORDER BY ordine.eseguito DESC;";
 $result = queryMysql($query);
 $order = array();
 
