@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Creato il: Feb 18, 2019 alle 11:05
+-- Creato il: Feb 18, 2019 alle 11:50
 -- Versione del server: 5.7.23
 -- Versione PHP: 7.2.10
 
@@ -41,6 +41,15 @@ CREATE TABLE IF NOT EXISTS `acquisto` (
   KEY `ordine` (`ordine`,`prodotto`,`colore`,`taglia`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dump dei dati per la tabella `acquisto`
+--
+
+INSERT INTO `acquisto` (`ordine`, `prodotto`, `quantita`, `colore`, `taglia`, `prezzo`) VALUES
+(42, 3, 2, 'One Color', 'One Size', 279.99),
+(42, 4, 2, 'One Color', 'OneSize', 78.95),
+(43, 1, 2, 'One Color', 'One Size', 39.99);
+
 -- --------------------------------------------------------
 
 --
@@ -57,14 +66,6 @@ CREATE TABLE IF NOT EXISTS `carrello` (
   PRIMARY KEY (`cliente`,`prodotto`,`colore`,`taglia`),
   KEY `prodotto` (`prodotto`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dump dei dati per la tabella `carrello`
---
-
-INSERT INTO `carrello` (`cliente`, `prodotto`, `quantita`, `colore`, `taglia`) VALUES
-(1, 3, 2, 'One Color', 'One Size'),
-(1, 4, 2, 'One Color', 'OneSize');
 
 -- --------------------------------------------------------
 
@@ -177,21 +178,20 @@ INSERT INTO `colore` (`colore`, `prodotto`) VALUES
 
 DROP TABLE IF EXISTS `corriere`;
 CREATE TABLE IF NOT EXISTS `corriere` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
   `nome` varchar(50) NOT NULL,
   `costo` float NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+  PRIMARY KEY (`nome`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dump dei dati per la tabella `corriere`
 --
 
-INSERT INTO `corriere` (`id`, `nome`, `costo`) VALUES
-(1, 'Bartolini', 5.99),
-(2, 'SDA', 4.99),
-(3, 'TNT', 5.49),
-(4, 'Poste Italiane', 3.99);
+INSERT INTO `corriere` (`nome`, `costo`) VALUES
+('Bartolini', 5.99),
+('Poste Italiane', 3.99),
+('SDA', 4.99),
+('TNT', 5.49);
 
 -- --------------------------------------------------------
 
@@ -353,7 +353,15 @@ CREATE TABLE IF NOT EXISTS `ordine` (
   `totale` float NOT NULL,
   PRIMARY KEY (`id`),
   KEY `cliente` (`cliente`)
-) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=latin1;
+
+--
+-- Dump dei dati per la tabella `ordine`
+--
+
+INSERT INTO `ordine` (`id`, `cliente`, `eseguito`, `stato`, `indirizzo`, `totale`) VALUES
+(42, 1, '2019-02-18 11:21:31', 'Received', 'home', 0),
+(43, 1, '2019-02-18 11:40:13', 'Received', 'home', 0);
 
 -- --------------------------------------------------------
 
@@ -369,6 +377,14 @@ CREATE TABLE IF NOT EXISTS `pagamento` (
   PRIMARY KEY (`ordine`,`metodo`),
   KEY `metodo` (`metodo`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dump dei dati per la tabella `pagamento`
+--
+
+INSERT INTO `pagamento` (`ordine`, `metodo`, `stato`) VALUES
+(42, 3, 'Received'),
+(43, 3, 'Received');
 
 -- --------------------------------------------------------
 
@@ -441,12 +457,20 @@ INSERT INTO `prodottoscontato` (`prodotto`, `data_inizio`, `data_fine`, `prezzo`
 
 DROP TABLE IF EXISTS `spedizione`;
 CREATE TABLE IF NOT EXISTS `spedizione` (
-  `corriere` int(11) NOT NULL,
+  `corriere` varchar(50) NOT NULL,
   `ordine` int(11) NOT NULL,
   `stato` varchar(20) NOT NULL,
   PRIMARY KEY (`corriere`,`ordine`),
   KEY `spedizione_ibfk_2` (`ordine`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dump dei dati per la tabella `spedizione`
+--
+
+INSERT INTO `spedizione` (`corriere`, `ordine`, `stato`) VALUES
+('Bartolini', 42, 'Received'),
+('TNT', 43, 'Received');
 
 -- --------------------------------------------------------
 
@@ -601,7 +625,6 @@ ALTER TABLE `prodottoscontato`
 -- Limiti per la tabella `spedizione`
 --
 ALTER TABLE `spedizione`
-  ADD CONSTRAINT `spedizione_ibfk_1` FOREIGN KEY (`corriere`) REFERENCES `corriere` (`id`),
   ADD CONSTRAINT `spedizione_ibfk_2` FOREIGN KEY (`ordine`) REFERENCES `ordine` (`id`) ON DELETE CASCADE;
 
 --
