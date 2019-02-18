@@ -70,7 +70,7 @@
 						<p class="card-text">{$address[5]}, {$address[6]} {$address[7]}</p>
 						<p class="card-text">{$address[8]}</p>
 						<div class="text-center">
-							<a href="addresses.php?delete={$address[0]}" class="btn btn-outline-dark">Delete</a>
+							<a href="" onclick="delet()" class="btn btn-outline-dark">Delete</a>
 						</div>
 					</div>
 				</div>
@@ -161,6 +161,15 @@
 </script>
 <!--===============================================================================================-->
 <script src="js/main.js"></script>
+<!--===============================================================================================-->
+<!-- Address Delete function -->
+<script type="text/javascript">
+    function delet(){
+        $.get("addresses.php?delete={$address[0]}", function() {
+            location.reload();
+        });
+    }
+</script>
 
 </body>
 </html>
