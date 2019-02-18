@@ -18,6 +18,7 @@
 								Select a delivery address
 							</div>
 							<div class="card-body">
+								<p>Select your address</p>
 								<div class="rs2-select2 rs3-select2 bo4 of-hidden w-size16">
 									<select class="selection-2" name="address">
 										{foreach item=address from=$addresses}
@@ -25,6 +26,8 @@
 										{/foreach}
 									</select>
 								</div>
+								<br>
+								<p><a class="btn btn-link" href="add-address.php">Add new address</a></p>
 							</div>
 						</div>
 
@@ -33,6 +36,7 @@
 								Select payment method
 							</div>
 							<div class="card-body">
+								<p>Select your payment method</p>
 								<div class="rs2-select2 rs3-select2 bo4 of-hidden w-size16">
 									<select class="selection-2" name="payment">
 										{foreach item=payment from=$payments}
@@ -40,6 +44,8 @@
 										{/foreach}
 									</select>
 								</div>
+								<br>
+								<p><a class="btn btn-link" href="add-payment.php">Add new payment method</a></p>
 							</div>
 						</div>
 
