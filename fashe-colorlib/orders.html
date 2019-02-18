@@ -65,7 +65,7 @@
 						<h6 class="card-text">Dispatched to: {$order[3]}</h6>
 						<h6 class="card-text">Status: {$order[2]}</h6>
 						<div class="text-center">
-							<a href="order-detail.php?detail={$order[0]}" class="btn btn-outline-dark">Details</a>
+							<a href="" onclick="openDetails({$order[0]})" class="btn btn-outline-dark">Details</a>
 						</div>
 					</div>
 				</div>
@@ -157,6 +157,41 @@
 </script>
 <!--===============================================================================================-->
 <script src="js/main.js"></script>
+<!--===============================================================================================-->
+<!-- Order selection procedure -->
+<script type="text/javascript">
+    function openDetails(order){
+        //create and submit form with new element
+        var form = $('<form></form>');
+        form.attr("method", "post");
+        form.attr("action", "order-detail.php");
+        var field = $('<input></input>');
+        field.attr("type", "hidden");
+        field.attr("name", "detail");
+        field.attr("value", order);
+        form.append(field);
+        $(document.body).append(form);
+        form.submit();
+    };
+</script>
+<!-- Order selection procedure
+<script type="text/javascript">
+    function openDetails1(order){
+        //create and submit form with new element
+        var form = document.createElement("form");
+        var element = document.createElement("input");
+        element.name="detail";
+        element.value= "F";
+        form.appendChild(element);
+        alert(form.childNodes );
+        form.setAttribute("method", "post");
+        form.setAttribute("action", "order-detail.php");
+        form.style.display = "hidden";
+        document.body.appendChild(form);
+        form.submit();
+    }
+</script>
+ -->
 
 </body>
 </html>
