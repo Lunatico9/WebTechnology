@@ -58,7 +58,7 @@ unset($_SESSION['error']);
 
 function checkNumber($num) {
     $digits = strlen($num);
-    if ($digits > 10 && $digits <20) {
+    if ($digits == 16) {
         return true;
     }
     $_SESSION['error'] = 1;
