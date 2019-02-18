@@ -73,7 +73,7 @@ if(!isset($_SESSION['userid'])) {
 //nel caso in cui il cliente è loggato estraiamo dal database i dati sui prodotti presenti nel carrello
 else {
     $userid = $_SESSION['userid'];
-    $query = "SELECT prodotto.nome, prodotto.prezzo, immagine.path, carrello.quantita, prodottoscontato.prezzo, carrello.colore, carrello.taglia FROM carrello, immagine, prodotto LEFT OUTER JOIN prodottoscontato ON prodotto.id = prodottoscontato.prodotto AND prodottoscontato.data_inizio > '$date' WHERE carrello.cliente = '$userid' AND prodotto.id = carrello.prodotto AND immagine.prodotto = carrello.prodotto AND immagine.principale = 1;";
+    $query = "SELECT prodotto.nome, prodotto.prezzo, immagine.path, carrello.quantita, prodottoscontato.prezzo, carrello.colore, carrello.taglia FROM carrello, immagine, prodotto LEFT OUTER JOIN prodottoscontato ON prodotto.id = prodottoscontato.prodotto AND prodottoscontato.data_inizio > '$date' WHERE carrello.cliente = '$userid' AND prodotto.id = carrello.prodotto AND immagine.prodotto = carrello.prodotto AND immagine.principale = 1 ORDER BY prodotto.id;";
     $result = queryMysql($query);
     $product = array();
 
@@ -94,15 +94,15 @@ else {
 }
 
 //intercept update
-if (isset($_POST['delete'])) {
+if (isset($_POST['update'])) {
     $quantities = $_POST['quantities'];
 
     //recuperiamo gli oggetti dal carrello dell'utente
     $userid = $_SESSION['userid'];
-    $query = "SELECT prodotto, quantita, taglia, colore FROM carrello WHERE cliente = '$userid';";
+    $query = "SELECT prodotto, quantita, colore, taglia FROM carrello WHERE cliente = '$userid';";
     $result = queryMysql($query);
     if ($result->num_rows > 0) {
-        for ($j = 0; $j < $result->num_rows; ++$j) {
+        for ($j = 0; $j < $result->num_rows; $j++) {
             $result->data_seek($j);
             $product = $result->fetch_row();
 
@@ -110,11 +110,11 @@ if (isset($_POST['delete'])) {
             if($product[1] == $quantities[$j]) {
                 continue;
             }
-            elseif($product[1] == 0) {
-                deleteProduct($userid, $product[1]);
+            elseif($quantities[$j] == 0) {
+                deleteProduct($userid, $product[0]);
             }
             else {
-                updateProduct($userid, $product[1], $product[2], $product[3]);
+                updateProduct($userid, $product[0], $quantities[$j], $product[2], $product[3]);
             }
         }
     }
@@ -127,6 +127,3 @@ function deleteProduct($userid, $pid) {
 function updateProduct($userid, $pid, $quantity, $color, $size) {
     queryMysql("UPDATE carrello SET quantita = '$quantity' WHERE cliente = '$userid' AND prodotto = '$pid' AND colore = '$color' AND taglia = '$size';");
 }
-
-
-
