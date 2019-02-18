@@ -33,10 +33,12 @@ $newquantity = checkProduct($userid, $pid, $color, $size);
 
 if(!$newquantity) {
     queryMysql("INSERT INTO carrello (cliente, prodotto, quantita, colore, taglia) VALUES ('$userid', '$pid', '$quantity', '$color', '$size');");
+    echo 0;
 }
 else {
-    $quantity += $newquantity
-    queryMysql("UPDATE UPDATE carrello SET quantita = '$quantity' WHERE cliente = '$userid' AND prodotto = '$pid' AND colore = '$color' AND taglia = '$size';");
+    $quantity += $newquantity;
+    queryMysql("UPDATE carrello SET quantita = '$quantity' WHERE cliente = '$userid' AND prodotto = '$pid' AND colore = '$color' AND taglia = '$size';");
+    echo 1;
 
 }
 
