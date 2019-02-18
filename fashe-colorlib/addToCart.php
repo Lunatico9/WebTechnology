@@ -29,11 +29,16 @@ $pid = $row[0];
 
 $userid = $_SESSION['userid'];
 
-$quantity += checkProduct($userid, $pid, $color, $size);
+$newquantity = checkProduct($userid, $pid, $color, $size);
 
-queryMysql("INSERT INTO carrello (cliente, prodotto, quantita, colore, taglia) VALUES ('$userid', '$pid', '$quantity', '$color', '$size');");
+if(!$newquantity) {
+    queryMysql("INSERT INTO carrello (cliente, prodotto, quantita, colore, taglia) VALUES ('$userid', '$pid', '$quantity', '$color', '$size');");
+}
+else {
+    $quantity += $newquantity
+    queryMysql("UPDATE UPDATE carrello SET quantita = '$quantity' WHERE cliente = '$userid' AND prodotto = '$pid' AND colore = '$color' AND taglia = '$size';");
 
-
+}
 
 function checkProduct($userid, $pid, $color, $size) {
 
