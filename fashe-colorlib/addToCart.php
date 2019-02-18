@@ -27,15 +27,16 @@ $result = queryMysql($query);
 $row = $result->fetch_row();
 $pid = $row[0];
 
-$quantity += checkProduct($color, $size);
-
 $userid = $_SESSION['userid'];
+
+$quantity += checkProduct($color, $size);
 
 queryMysql("INSERT INTO carrello (cliente, prodotto, quantita, colore, taglia) VALUES ('$userid', '$pid', '$quantity', '$color', '$size');");
 
 
 
 function checkProduct($color, $size) {
+
     $query = "SELECT quantita, colore taglia FROM carrello WHERE cliente = '$userid' AND prodotto = $pid;";
     $result = queryMysql($query);
 
