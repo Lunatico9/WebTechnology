@@ -7,14 +7,17 @@ require_once 'header.php';
 //Session management procedure
 session_start();
 
-if(isset($_COOKIE['userid'])){
-    $_SESSION['username'] = $_COOKIE['username'];
-    $_SESSION['userrole'] = $_COOKIE['userrole'];
-}
-
 if(!isset($_SESSION['username'])) {
-    $_SESSION['username'] = 'Guest';
-    $_SESSION['userrole'] = 'g';
+    if(isset($_COOKIE['userid'])){
+        $_SESSION['userid'] = $_COOKIE['userid'];
+        $_SESSION['username'] = $_COOKIE['username'];
+        $_SESSION['userrole'] = $_COOKIE['userrole'];
+        redirect("user-panel.php");
+    }
+    else{
+        $_SESSION['username'] = 'Guest';
+        $_SESSION['userrole'] = 'g';
+    }
 }
 
 $smarty = new Smarty;
@@ -76,10 +79,10 @@ function checkLogin($user, $pass) {
         //riversa nel database i dati presenti nella variabile di sessione
         if(isset($_SESSION['cart'])) {
             foreach ($_SESSION['cart'] AS $item) {
-                $product = $item['product'];
-                $quantity = $item['quantity'];
-                $color = $item['color'];
-                $size = $item['size'];
+                $product = $item[0];
+                $quantity = $item[1];
+                $color = $item[2];
+                $size = $item[3];
                 queryMysql("INSERT INTO carrello (cliente, prodotto, quantita, colore, taglia) VALUES ('$user', '$product', '$quantity', '$color', '$size');");
             }
         }
