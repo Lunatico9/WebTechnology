@@ -157,9 +157,11 @@
 										<div class="block2-overlay trans-0-4">
 											<div class="block2-btn-addcart w-size1 trans-0-4">
 												<!-- Button -->
-												<button class="flex-c-m size1 bg4 bo-rad-23 hov1 s-text1 trans-0-4">
-													Add to Cart
-												</button>
+												<a href="product-detail.php?product={$product0}">
+                                                    <button class="flex-c-m size1 bg4 bo-rad-23 hov1 s-text1 trans-0-4">
+													   Add to Cart
+												    </button>
+                                                </a>
 											</div>
 										</div>
 									</div>
@@ -183,12 +185,13 @@
 										<img src="{$img1}" alt="IMG-PRODUCT">
 
 										<div class="block2-overlay trans-0-4 ">
-
 											<div class="block2-btn-addcart w-size1 trans-0-4">
-												<!-- Button -->
-												<button class="flex-c-m size1 bg4 bo-rad-23 hov1 s-text1 trans-0-4">
-													Add to Cart
-												</button>
+                                                <!-- Button -->
+                                                <a href="product-detail.php?product={$product1}">
+												    <button href="product-detail.php?product={$product1}" class="flex-c-m size1 bg4 bo-rad-23 hov1 s-text1 trans-0-4">
+													   Add to Cart
+												    </button>
+                                                </a>
 											</div>
 										</div>
 									</div>
@@ -213,10 +216,12 @@
 
 										<div class="block2-overlay trans-0-4">
 											<div class="block2-btn-addcart w-size1 trans-0-4">
-												<!-- Button -->
-												<button class="flex-c-m size1 bg4 bo-rad-23 hov1 s-text1 trans-0-4">
-													Add to Cart
-												</button>
+                                                <!-- Button -->
+                                                <a href="product-detail.php?product={$product2}">
+												    <button href="product-detail.php?product={$product2}" class="flex-c-m size1 bg4 bo-rad-23 hov1 s-text1 trans-0-4">
+													   Add to Cart
+												    </button>
+                                                </a>
 											</div>
 										</div>
 									</div>
@@ -243,9 +248,11 @@
 
 											<div class="block2-btn-addcart w-size1 trans-0-4">
 												<!-- Button -->
-												<button class="flex-c-m size1 bg4 bo-rad-23 hov1 s-text1 trans-0-4">
-													Add to Cart
-												</button>
+                                                <a href="product-detail.php?product={$product3}">
+												    <button href="product-detail.php?product={$product3}" class="flex-c-m size1 bg4 bo-rad-23 hov1 s-text1 trans-0-4">
+													   Add to Cart
+												    </button>
+                                                </a>
 											</div>
 										</div>
 									</div>
@@ -507,7 +514,7 @@
 <!--===============================================================================================-->
 	<script type="text/javascript" src="vendor/lightbox2/js/lightbox.min.js"></script>
 <!--===============================================================================================-->
-	<script type="text/javascript" src="vendor/sweetalert/sweetalert.min.js"></script>
+<!--	<script type="text/javascript" src="vendor/sweetalert/sweetalert.min.js"></script>
 	<script type="text/javascript">
 		$('.block2-btn-addcart').each(function(){
 			var nameProduct = $(this).parent().parent().parent().find('.block2-name').html();
@@ -523,7 +530,7 @@
 			});
 		});
 	</script>
-
+-->
 <!--===============================================================================================-->
 	<script type="text/javascript" src="vendor/parallax100/parallax100.js"></script>
 	<script type="text/javascript">
