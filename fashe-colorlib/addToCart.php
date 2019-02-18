@@ -29,14 +29,14 @@ $pid = $row[0];
 
 $quantity += checkProduct($color, $size);
 
-$user = $_SESSION['userid'];
+$userid = $_SESSION['userid'];
 
-queryMysql("INSERT INTO carrello (cliente, prodotto, quantita, colore, taglia) VALUES ('$user', '$pid', '$quantity', '$color', '$size');");
+queryMysql("INSERT INTO carrello (cliente, prodotto, quantita, colore, taglia) VALUES ('$userid', '$pid', '$quantity', '$color', '$size');");
 
 
 
 function checkProduct($color, $size) {
-    $query = "SELECT quantita, colore taglia FROM carrello WHERE cliente = '$userid' AND prodotto = $pid;"
+    $query = "SELECT quantita, colore taglia FROM carrello WHERE cliente = '$userid' AND prodotto = $pid;";
     $result = queryMysql($query);
 
     if($result->num_rows > 0) {
