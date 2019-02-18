@@ -1,8 +1,8 @@
 <?php
 
-function headerValues(){
-
+function headerValues() {
     $values = array(0, "Guest");
+    
     //number of item in the cart value
     if (isset($_SESSION['userid'])){
         $items = cartItems($_SESSION['userid']);
@@ -17,15 +17,13 @@ function headerValues(){
             $values[0] = $i;
         }
     }
-    
     //username value
     $username = $_SESSION['username'];
     $values[1] = $username;
     return $values;
 }
 
-function cartItems($id)
-{
+function cartItems($id) {
     $query2 = "SELECT carrello.prodotto FROM carrello WHERE carrello.cliente = '$id'";
     $result = queryMysql($query2);
     return $result->num_rows;

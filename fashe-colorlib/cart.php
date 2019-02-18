@@ -22,12 +22,7 @@ if(!isset($_SESSION['userid'])){
 $smarty = new Smarty;
 
 //Header values
-$values = headerValues();
-$items = $values[0];
-$username = $values[1];
-
-$smarty->assign("items", "$items");
-$smarty->assign("user", "$username");
+sessionManager();
 
 //Retrieve cart
 $date = date('Y m d');
