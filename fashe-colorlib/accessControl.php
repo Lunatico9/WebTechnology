@@ -16,7 +16,7 @@ if(!isset($_SESSION['username'])){
     } 
 }
 
-if ($_SESSION['userrole'] == 'g') {
+if (!isset($_SESSION['userid']) {
     redirect("login.php");
 }
 else {

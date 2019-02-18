@@ -6,7 +6,7 @@ require_once 'function.php';
 //Session management procedure
 session_start();
 
-if(!isset($_SESSION['username'])){
+if(!isset($_SESSION['userid'])){
     if(isset($_COOKIE['userid'])){
         $_SESSION['userid'] = $_COOKIE['userid'];
         $_SESSION['username'] = $_COOKIE['username'];
