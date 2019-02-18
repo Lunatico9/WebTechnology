@@ -12,7 +12,6 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-8">
-					<form method="POST" onsubmit="order()" action="checkOut.php" id="data-form">
 						<div class="card w-100">
 							<div class="card-header">
 								Select a delivery address
@@ -22,7 +21,7 @@
 								<div class="rs2-select2 rs3-select2 bo4 of-hidden w-size16">
 									<select class="selection-2" name="address">
 										{foreach item=address from=$addresses}
-										<option value="{$address[0]}"> {$address[1]} {$address[2]} | {$address[3]} {$address[4]}, {$address[5]}</option>
+										<option value="{$address[0]}" id="addr"> {$address[1]} {$address[2]} | {$address[3]} {$address[4]}, {$address[5]}</option>
 										{/foreach}
 									</select>
 								</div>
@@ -40,7 +39,7 @@
 								<div class="rs2-select2 rs3-select2 bo4 of-hidden w-size16">
 									<select class="selection-2" name="payment">
 										{foreach item=payment from=$payments}
-										<option value="{$payment[0]}">{$payment[1]} {$payment[2]} | {$payment[3]} {$payment[4]}</option>
+										<option value="{$payment[0]}" id="card">{$payment[1]} {$payment[2]} | {$payment[3]} {$payment[4]}</option>
 										{/foreach}
 									</select>
 								</div>
@@ -57,18 +56,15 @@
 								<div class="rs2-select2 rs3-select2 bo4 of-hidden w-size16">
 									<select class="selection-2" name="courier">
 										{foreach item=option from=$deloptions}
-										<option value="{$option[0]}">{$option[0]} €{$option[1]}</option>
+										<option value="{$option[0]}" id="mail">{$option[0]} €{$option[1]}</option>
 										{/foreach}
 									</select>
 								</div>
 							</div>
 						</div>
 						<div class="card-body text-center">
-							<input type="submit" class="btn" value="Confirm Order">
 						</div>
-					</form>
 				</div>
-				
 				<div class="col-4">
 					<div class="bo9 w-size18 p-l-40 p-r-40 p-t-30 p-b-38 m-t-30 m-r-0 m-l-auto p-lr-15-sm">
 						<h5 class="m-text20 p-b-24">Order Total</h5>
@@ -77,6 +73,9 @@
 							<span class="m-text21 w-size20 w-full-sm" id="total-price">€ {$total}</span>
 						</div>
 					</div>
+                    <button onclick="order()" class="bo9 w-size18 p-l-40 p-r-40 p-t-30 p-b-38 m-t-30 hov1 m-r-0 m-l-auto p-lr-15-sm">
+                        Confirm Order
+                    </button>
 				</div>
 			</div>
 		</div>
@@ -95,18 +94,30 @@
 	<div id="dropDownSelect1"></div>
 	<div id="dropDownSelect2"></div>
 
+
+<!--===============================================================================================-->
+<!-- Order placement procedure -->
 <script type="text/javascript">
-    function order(){
+    function order() {
         var total = $("#total-price").text().slice(2);
-        var form = $("#data-form").get();
-        $('<input />').attr('type', 'hidden')
-          .attr("name", "total")
-          .attr('value', total)
-          .appendTo('#data-form');
-        form.submit();
+        var address = $("#addr").val();
+        var card = $("#card").val();
+        var mail = $("#mail").val();
+        $.post("checkOut.php",{
+            total: total,
+            courier: mail,
+            payment: card,
+            address: address
+        }, function(){
+           swal("Order Complete!","", "success").then(function(){
+                window.location.href = "index.php";
+           });
+        })
     }
 </script>
 
+<!--===============================================================================================-->
+    <script type="text/javascript" src="vendor/sweetalert/sweetalert.min.js"></script>
 <!--===============================================================================================-->
 	<script type="text/javascript" src="vendor/jquery/jquery-3.2.1.min.js"></script>
 <!--===============================================================================================-->

@@ -122,7 +122,7 @@ if(isset($_POST['address']) && isset($_POST['payment']) && isset($_POST['courier
 
     //messaggio di conferma 
 
-    redirect("index.php");
+    //redirect("index.php");
 }
 
 $smarty->display('checkout.html');
