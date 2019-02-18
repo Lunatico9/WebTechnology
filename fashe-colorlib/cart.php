@@ -91,6 +91,7 @@ if(!isset($_SESSION['userid'])) {
 }
 //nel caso in cui il cliente è loggato estraiamo dal database i dati sui prodotti presenti nel carrello
 else {
+    $userid = $_SESSION['userid'];
     $query = "SELECT prodotto.nome, prodotto.prezzo, immagine.path, carrello.quantita, prodottoscontato.prezzo, carrello.colore, carrello.taglia FROM carrello, immagine, prodotto LEFT OUTER JOIN prodottoscontato ON prodotto.id = prodottoscontato.prodotto AND prodottoscontato.data_inizio > '$date' WHERE carrello.cliente = '$userid' AND prodotto.id = carrello.prodotto AND immagine.prodotto = carrello.prodotto AND immagine.principale = 1;";
     $result = queryMysql($query);
     $product = array();
