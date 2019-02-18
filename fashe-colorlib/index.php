@@ -58,6 +58,4 @@ for ($j = 0 ; $j < $result->num_rows; ++$j)
     $smarty->assign("saleimg"."$j", "$product[3]");
 }
 
-
-
 $smarty->display('index.html');

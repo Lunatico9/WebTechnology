@@ -77,13 +77,21 @@ function checkLogin($user, $pass) {
         setcookie("userrole", $u[2], strtotime("+1 year"));
 
         //riversa nel database i dati presenti nella variabile di sessione
+        $userid = $u[0];
         if(isset($_SESSION['cart'])) {
             foreach ($_SESSION['cart'] AS $item) {
                 $product = $item[0];
                 $quantity = $item[1];
                 $color = $item[2];
                 $size = $item[3];
-                queryMysql("INSERT INTO carrello (cliente, prodotto, quantita, colore, taglia) VALUES ('$user', '$product', '$quantity', '$color', '$size');");
+
+                //controlliamo che il prodotto non sia già presente nel carrello
+                $query = "SELECT prodotto FROM carrello WHERE cliente = '$userid' AND prodotto = '$product' AND colore = '$color' AND taglia = '$size';";
+                $result = queryMysql($query);
+                if($result->num_rows > 0) {
+                    continue;
+                }
+                queryMysql("INSERT INTO carrello (cliente, prodotto, quantita, colore, taglia) VALUES ('$userid', '$product', '$quantity', '$color', '$size');");
             }
         }
 

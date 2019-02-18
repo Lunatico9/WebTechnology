@@ -28,23 +28,32 @@ $result = queryMysql($query);
 $row = $result->fetch_row();
 $pid = $row[0];
 
-$userid = $_SESSION['userid'];
-
-$newquantity = checkProduct($userid, $pid, $color, $size);
-
-if(!$newquantity) {
-    queryMysql("INSERT INTO carrello (cliente, prodotto, quantita, colore, taglia) VALUES ('$userid', '$pid', '$quantity', '$color', '$size');");
-    echo 0;
+if(!isset($_SESSION['userid'])) {
+    if(!checkProductNotLogged($pid, $quantity, $color, $size)) {
+        $product = array($pid, $quantity, $color, $size);
+        $_SESSION['cart'][] = $product;
+        echo 0;
+    }
+    else {
+        echo 1;
+    }
 }
 else {
-    $quantity += $newquantity;
-    queryMysql("UPDATE carrello SET quantita = '$quantity' WHERE cliente = '$userid' AND prodotto = '$pid' AND colore = '$color' AND taglia = '$size';");
-    echo 1;
+    $userid = $_SESSION['userid'];
+    $newquantity = checkProduct($userid, $pid, $color, $size);
 
+    if(!$newquantity) {
+        queryMysql("INSERT INTO carrello (cliente, prodotto, quantita, colore, taglia) VALUES ('$userid', '$pid', '$quantity', '$color', '$size');");
+        echo 0;
+    }
+    else {
+        $quantity += $newquantity;
+        queryMysql("UPDATE carrello SET quantita = '$quantity' WHERE cliente = '$userid' AND prodotto = '$pid' AND colore = '$color' AND taglia = '$size';");
+        echo 1;
+    }
 }
 
 function checkProduct($userid, $pid, $color, $size) {
-
     $query = "SELECT quantita, colore, taglia FROM carrello WHERE cliente = '$userid' AND prodotto = $pid;";
     $result = queryMysql($query);
 
@@ -59,4 +68,19 @@ function checkProduct($userid, $pid, $color, $size) {
     }
 
     return 0;
+}
+
+function checkProductNotLogged($pid, $quantity, $color, $size) {
+    if(isset($_SESSION['cart'])) {
+        foreach($_SESSION['cart'] as $prd) {
+            if($prd[0] == $pid && $prd[2] == $color && $prd[3] == $size) {
+                $prd[1] += $quantity;
+                return true;
+            }
+        }
+        return false;
+    }
+    else {
+        return false;
+    }
 }
