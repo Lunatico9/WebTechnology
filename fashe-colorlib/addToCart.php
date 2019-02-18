@@ -28,25 +28,31 @@ $result = queryMysql($query);
 $row = $result->fetch_row();
 $pid = $row[0];
 
+//Controlla se l'utente ha effettuato il login se non lo ha effettuato
+//aggiungiamo i prodotti ad un campo della variabile di sessione
 if(!isset($_SESSION['userid'])) {
+    //controlliamo se il prodoto non sia già presente nella variabile
     if(!checkProductNotLogged($pid, $quantity, $color, $size)) {
         $product = array($pid, $quantity, $color, $size);
         $_SESSION['cart'][] = $product;
-        echo 0;
+        echo 0; //ajax aggiorna l'indice nell'headerr
     }
     else {
-        echo 1;
+        echo 1; //ajax non aggiorna l'indice nell'header
     }
 }
 else {
     $userid = $_SESSION['userid'];
+    //controlliamo che il prodotto non sia già presente nel carrello
     $newquantity = checkProduct($userid, $pid, $color, $size);
 
     if(!$newquantity) {
+        //inseriamo nel carrello il prodotto
         queryMysql("INSERT INTO carrello (cliente, prodotto, quantita, colore, taglia) VALUES ('$userid', '$pid', '$quantity', '$color', '$size');");
         echo 0;
     }
     else {
+        //aumentiamo solamente la quantoità del prodotto nel carrello
         $quantity += $newquantity;
         queryMysql("UPDATE carrello SET quantita = '$quantity' WHERE cliente = '$userid' AND prodotto = '$pid' AND colore = '$color' AND taglia = '$size';");
         echo 1;

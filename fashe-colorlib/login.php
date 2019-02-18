@@ -93,6 +93,7 @@ function checkLogin($user, $pass) {
                 }
                 queryMysql("INSERT INTO carrello (cliente, prodotto, quantita, colore, taglia) VALUES ('$userid', '$product', '$quantity', '$color', '$size');");
             }
+            unset($_SESSION['cart']);
         }
 
         return true;
