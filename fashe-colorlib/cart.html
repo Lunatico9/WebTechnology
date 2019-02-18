@@ -86,13 +86,11 @@
 					</span>
 				</div>
 					<!-- Button -->
-					<form action="checkout.php" method="post">
 						<div class="size15 trans-0-4">
-							<button class="flex-c-m sizefull bg1 bo-rad-23 hov1 s-text1 trans-0-4">
+							<button onClick="checkout()" class="flex-c-m sizefull bg1 bo-rad-23 hov1 s-text1 trans-0-4">
 								Proceed to Checkout
 							</button>
 						</div>
-					</form>
 				</div>
 			</div>
 		</div>
@@ -134,6 +132,23 @@
 	</script>
 <!--===============================================================================================-->
 	<script src="js/main.js"></script>
+<!--===============================================================================================-->
+<!-- Checkout Request -->
+<script type="text/javascript">
+    function checkout(){
+        var total = $("#total-price").text().slice(2);
+        var form = document.createElement("form");
+        var element = document.createElement("input");
+        element.value= total;
+        element.name="total";
+        form.appendChild(element);
+        form.setAttribute("method", "post");
+        form.setAttribute("action", "checkOut.php");
+        form.style.display = "hidden";
+        document.body.appendChild(form);
+        form.submit();
+    }
+</script>
 
 <!--===============================================================================================-->
 <!-- Reduce floating point precision to i numbers after floating point, if present -->
