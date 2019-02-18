@@ -29,31 +29,12 @@ $username = $values[1];
 $smarty->assign("items", "$items");
 $smarty->assign("user", "$username");
 
-//AJAX have to call this function to update
-function update($updates) {
-    $j = count($updates);
-    $i = 0;
-    while ($i<$j){
-        $up = $updates[$i]['nome'];
-        $query =  "SELECT id FROM prodotto WHERE prodotto.nome = '$up';";
-        $result = queryMysql($query);
-        $p = $result->fetch_row();
-        $prd = $p[0];
-        $u = $_SESSION['userid'];
-        $q = $updates[$i]['quantita'];
-        $query = "UPDATE carrello SET quantita = '$q' WHERE cliente = '$u' AND prodotto = '$prd';";
-        queryMysql($query);
-    }
-    $smarty = new Smarty;
-    $smarty->display('cart.html');
-}
-
-//Intercept delete
+/*Intercept delete
 if (isset($_REQUEST['delete'])) {
     $del = $_REQUEST['delete'];
     $query =  "DELETE FROM carrello WHERE carrello.cliente = '$userid' AND carrello.prodotto = (SELECT id FROM prodotto WHERE prodotto.nome = '$del');";
     queryMysql($query);
-}
+}*/
 
 //Retrieve cart
 $date = date('Y m d');
@@ -110,6 +91,41 @@ else {
     else  {
         $smarty->display('cart-empty.html');
     }
+}
+
+//intercept update
+if (isset($_POST['delete'])) {
+    $quantities = $_POST['quantities'];
+
+    //recuperiamo gli oggetti dal carrello dell'utente
+    $userid = $_SESSION['userid'];
+    $query = "SELECT prodotto, quantita, taglia, colore FROM carrello WHERE cliente = '$userid';";
+    $result = queryMysql($query);
+    if ($result->num_rows > 0) {
+        for ($j = 0; $j < $result->num_rows; ++$j) {
+            $result->data_seek($j);
+            $product = $result->fetch_row();
+
+            //controlliamo se la quantità è cambiata
+            if($product[1] == $quantities[$j]) {
+                continue;
+            }
+            elseif($product[1] == 0) {
+                deleteProduct($userid, $product[1]);
+            }
+            else {
+                updateProduct($userid, $product[1], $product[2], $product[3]);
+            }
+        }
+    }
+}
+
+function deleteProduct($userid, $pid) {
+    queryMysql("DELETE FROM carrello WHERE cliente = '$userid' AND prodotto = '$pid';");
+}
+
+function updateProduct($userid, $pid, $quantity, $color, $size) {
+    queryMysql("UPDATE carrello SET quantita = '$quantity' WHERE cliente = '$userid' AND prodotto = '$pid' AND colore = '$color' AND taglia = '$size';");
 }
 
 
