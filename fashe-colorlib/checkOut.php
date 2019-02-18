@@ -29,7 +29,7 @@ $smarty->assign("user", "$username");
 
 $userid = $_SESSION['userid'];
 
-//recuper total tramite jquery
+//recupero total tramite jquery
 $total = $_POST['total'];
 $smarty->assign("total", $total);
 
@@ -59,7 +59,7 @@ for ($j = 0; $j < $result->num_rows; ++$j) {
 $smarty->assign("payments", $payment);
 
 //Populate courier options
-$query = "SELECT id, nome, costo FROM corriere";
+$query = "SELECT nome, costo FROM corriere";
 $result = queryMysql($query);
 $courier = array();
 
@@ -72,7 +72,7 @@ $smarty->assign("deloptions", $courier);
 
 //Intercettiamo la conferma dell'ordine
 if(isset($_POST['address']) && isset($_POST['payment']) && isset($_POST['courier'])) {
-    $total = $_POST['total']
+    $total = $_POST['total'];
     $address = $_POST['address'];
     $payment = $_POST['payment'];
     $courier = $_POST['courier'];
