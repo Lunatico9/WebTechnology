@@ -39,7 +39,7 @@ if ($result->num_rows > 0) {
     for ($j = 0; $j < $result->num_rows; ++$j) {
         $result->data_seek($j);
         $payment[] = $result->fetch_row();
-        $payment[$j][4] = "*********". substr($payment[$j][4],8,strlen($payment[$j][4]));
+        $payment[$j][4] = "********* ". substr($payment[$j][4],12,strlen($payment[$j][4]));
     }
 
     $smarty->assign("payments", $payment);
