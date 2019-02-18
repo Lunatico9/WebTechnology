@@ -37,7 +37,7 @@ queryMysql("INSERT INTO carrello (cliente, prodotto, quantita, colore, taglia) V
 
 function checkProduct($userid, $pid, $color, $size) {
 
-    $query = "SELECT quantita, colore taglia FROM carrello WHERE cliente = '$userid' AND prodotto = $pid;";
+    $query = "SELECT quantita, colore, taglia FROM carrello WHERE cliente = '$userid' AND prodotto = $pid;";
     $result = queryMysql($query);
 
     if($result->num_rows > 0) {
