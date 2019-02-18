@@ -50,9 +50,9 @@ else {
 }
 
 //anche questa va fatta con js
-if (isset($_REQUEST['delete'])) {
+if (isset($_POST['delete'])) {
     $userid = $_SESSION['userid'];
-    $del = $_REQUEST['delete'];
+    $del = $_POST['delete'];
     $query =  "DELETE FROM metodipagamento WHERE cliente = '$userid' AND id = '$del';";
     queryMysql($query);
     redirect("user-panel.php");

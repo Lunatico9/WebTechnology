@@ -44,10 +44,10 @@ else {
 }
 
 //Retrieve form data
-if (isset($_REQUEST['oldpass']) && isset($_REQUEST['newpass']) && isset($_REQUEST['confirmpass'])) {
-    $oldpass = sanitizeString($_REQUEST['oldpass']);
-    $newpass = sanitizeString($_REQUEST['newpass']);
-    $confirmpass = sanitizeString($_REQUEST['confirmpass']);
+if (isset($_POST['oldpass']) && isset($_POST['newpass']) && isset($_POST['confirmpass'])) {
+    $oldpass = sanitizeString($_POST['oldpass']);
+    $newpass = sanitizeString($_POST['newpass']);
+    $confirmpass = sanitizeString($_POST['confirmpass']);
 
     if (checkOldPassword($oldpass) && checkNewPasswords($newpass, $confirmpass)) {
         $userid = $_SESSION['userid'];

@@ -34,11 +34,11 @@ $smarty->assign("user", "$username");
 //if (!$phone.is_int())
 
 //Retrieve form data
-if (isset($_REQUEST['name']) && isset($_REQUEST['phone-number']) && isset($_REQUEST['email']) && isset($_REQUEST['message'])) {
-    $name = sanitizeString($_REQUEST['name']);
-    $phone = sanitizeString($_REQUEST['phone-number']);
-    $email = sanitizeString($_REQUEST['email']);
-    $text = sanitizeString($_REQUEST['message']);
+if (isset($_POST['name']) && isset($_POST['phone-number']) && isset($_POST['email']) && isset($_POST['message'])) {
+    $name = sanitizeString($_POST['name']);
+    $phone = sanitizeString($_POST['phone-number']);
+    $email = sanitizeString($_POST['email']);
+    $text = sanitizeString($_POST['message']);
     queryMysql("INSERT INTO messaggi (nome, numero, email, messaggio) VALUES ('$name', '$phone', '$email', '$text');");
 }
 

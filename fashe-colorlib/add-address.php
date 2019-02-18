@@ -41,20 +41,20 @@ else {
 
 
 //Retrieve form data
-if(isset($_REQUEST['address-name']) && isset($_REQUEST['name']) && isset($_REQUEST['surname']) && isset($_REQUEST['address']) && isset($_REQUEST['civ']) && isset($_REQUEST['city']) && isset($_REQUEST['region']) && isset($_REQUEST['cap']) && isset($_REQUEST['country'])) {
+if(isset($_POST['address-name']) && isset($_POST['name']) && isset($_POST['surname']) && isset($_POST['address']) && isset($_POST['civ']) && isset($_POST['city']) && isset($_POST['region']) && isset($_POST['cap']) && isset($_POST['country'])) {
     $userid = $_SESSION['userid'];
     
-    $alias = sanitizeString($_REQUEST['address-name']);
+    $alias = sanitizeString($_POST['address-name']);
     //controlliamo che il cliente non abbia già un indirizzo salvato sotto il nuovo alias
     if(checkAlias($alias)) {
-        $name = sanitizeString($_REQUEST['name']);
-        $surname = sanitizeString($_REQUEST['surname']);
-        $add = sanitizeString($_REQUEST['address']);
-        $civ = sanitizeString($_REQUEST['civ']);
-        $city = sanitizeString($_REQUEST['city']);
-        $reg = sanitizeString($_REQUEST['region']);
-        $cap = sanitizeString($_REQUEST['cap']);
-        $country = sanitizeString($_REQUEST['country']);
+        $name = sanitizeString($_POST['name']);
+        $surname = sanitizeString($_POST['surname']);
+        $add = sanitizeString($_POST['address']);
+        $civ = sanitizeString($_POST['civ']);
+        $city = sanitizeString($_POST['city']);
+        $reg = sanitizeString($_POST['region']);
+        $cap = sanitizeString($_POST['cap']);
+        $country = sanitizeString($_POST['country']);
 
         queryMysql("INSERT INTO indirizzi (alias, cliente, nome, cognome, indirizzo, civico, citta, provincia, cap, stato) VALUES ('$alias', '$userid', '$name', '$surname', '$add', '$civ', '$city', '$reg' , '$cap', '$country');");
         redirect('addresses.php');

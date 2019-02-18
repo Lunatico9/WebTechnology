@@ -5,7 +5,6 @@ require_once 'function.php';
 require_once 'header.php';
 
 //Session management procedure
-//Session management procedure
 session_start();
 
 if(!isset($_SESSION['userid'])) {
@@ -29,7 +28,7 @@ $username = $values[1];
 $smarty->assign("items", "$items");
 $smarty->assign("user", "$username");
 
-$orderid = $_REQUEST['detail'];
+$orderid = $_POST['detail'];
 $smarty->assign("order", $orderid);
 
 //Retrieve order's address

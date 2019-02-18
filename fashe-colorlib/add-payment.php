@@ -40,12 +40,12 @@ else {
 }
 
 //Retrieve form data
-if(isset($_REQUEST['name']) && isset($_REQUEST['surname']) && isset($_REQUEST['type']) && isset($_REQUEST['number'])) {
+if(isset($_POST['name']) && isset($_POST['surname']) && isset($_POST['type']) && isset($_POST['number'])) {
     $userid = $_SESSION['userid'];
-    $name = sanitizeString($_REQUEST['name']);
-    $surname = sanitizeString($_REQUEST['surname']);
-    $type = sanitizeString($_REQUEST['type']);
-    $num = sanitizeString($_REQUEST['number']);
+    $name = sanitizeString($_POST['name']);
+    $surname = sanitizeString($_POST['surname']);
+    $type = sanitizeString($_POST['type']);
+    $num = sanitizeString($_POST['number']);
 
     if(checkNumber($num)) {
         queryMysql("INSERT INTO metodipagamento (cliente, nome, cognome, tipo_carta, num_carta) VALUES ('$userid', '$name', '$surname', '$type', '$num');");

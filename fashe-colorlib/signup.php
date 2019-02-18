@@ -46,11 +46,11 @@ else {
 //TODO aggiungere controllo sui valori inseriti (js), per ora c'è solo il required. bisogna anche controllare che password e confirm siano uguali
 
 //Retrieve form data
-if (isset($_REQUEST['username']) && isset($_REQUEST['password']) && isset($_REQUEST['confirm_password']) && isset($_REQUEST['email'])) {
-    $user = sanitizeString($_REQUEST['username']);
-    $password = sanitizeString($_REQUEST['password']);
-    $cpassword = sanitizeString($_REQUEST['confirm_password']);
-    $email = sanitizeString($_REQUEST['email']);
+if (isset($_POST['username']) && isset($_POST['password']) && isset($_POST['confirm_password']) && isset($_POST['email'])) {
+    $user = sanitizeString($_POST['username']);
+    $password = sanitizeString($_POST['password']);
+    $cpassword = sanitizeString($_POST['confirm_password']);
+    $email = sanitizeString($_POST['email']);
     $data = date("Y/m/d");
     $ruolo = 'u';
 
