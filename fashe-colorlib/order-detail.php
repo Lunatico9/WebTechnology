@@ -33,12 +33,14 @@ $orderid = $_REQUEST['detail'];
 $smarty->assign("order", $orderid);
 
 //Retrieve order's address
-$query = "SELECT indirizzi.nome, indirizzi.cognome, indirizzi.indirizzo, indirizzi.civico FROM ordine, indirizzi WHERE ordine.id = '$orderid' AND ordine.indirizzo = indirizzi.alias";
+$query = "SELECT indirizzi.nome, indirizzi.cognome, indirizzi.indirizzo, indirizzi.civico, spedizione.corriere, spedizione.stato FROM ordine, indirizzi, spedizione WHERE ordine.id = '$orderid' AND ordine.indirizzo = indirizzi.alias AND spedizione.ordine = ordine.id";
 $result = queryMysql($query);
 $u = $result->fetch_row();
 
 $smarty->assign("addname", $u[0]. " ". $u[1]);
 $smarty->assign("address", $u[2]. ", ". $u[3]);
+$smarty->assign("courier", $u[4]);
+$smarty->assign("shipStatus", $u[5]);
 
 //Retrieve order's payment
 $query = "SELECT metodipagamento.nome, metodipagamento.cognome, metodipagamento.tipo_carta, metodipagamento.num_carta, pagamento.stato FROM ordine, pagamento, metodipagamento WHERE ordine.id = '$orderid' AND ordine.id = pagamento.ordine AND metodipagamento.id = pagamento.metodo;";
