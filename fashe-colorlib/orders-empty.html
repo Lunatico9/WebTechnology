@@ -54,23 +54,9 @@
 				</div>
 			</div>
 			<div class="col-sm-6 col-md-8 col-lg-9 p-b-50">
-				{foreach item=order from=$orders}
-				<div class="card w-100">
-					<div class="card-header text-center">
-						Order #{$order[0]}
-					</div>
-					<div class="card-body">
-						<h6 class="card-text">Total payed: € {$order[4]}</h6>
-						<h6 class="card-text">Order placed on: {$order[1]}</h6>
-						<h6 class="card-text">Dispatched to: {$order[3]}</h6>
-						<h6 class="card-text">Status: {$order[2]}</h6>
-						<div class="text-center">
-							<button href="" onclick="openDetails({$order[0]})" class="btn s-text1 bg1 hov1 bo-rad-23 m-r-0">Details</button>
-						</div>
-					</div>
-				</div>
-				<br>
-				{/foreach}
+                <div class="m-text5 t-center">
+                    <h2>You've no order yet</h2>
+                </div>
 			</div>
 		</div>
 	</div>
@@ -157,22 +143,3 @@
 </script>
 <!--===============================================================================================-->
 <script src="js/main.js"></script>
-<!--===============================================================================================-->
-<!-- Order selection procedure -->
-<script type="text/javascript">
-    function openDetails(order){
-        //create and submit form with new element
-        var form = $('<form></form>');
-        form.attr("method", "post");
-        form.attr("action", "order-detail.php");
-        var field = $('<input></input>');
-        field.attr("type", "hidden");
-        field.attr("name", "detail");
-        field.attr("value", order);
-        form.append(field);
-        $(document.body).append(form);
-        form.submit();
-    };
-</script>
-</body>
-</html>
