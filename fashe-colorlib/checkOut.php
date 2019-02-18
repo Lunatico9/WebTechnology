@@ -29,6 +29,10 @@ $smarty->assign("user", "$username");
 
 $userid = $_SESSION['userid'];
 
+//recuper total tramite jquery
+$total = $_POST['total'];
+$smarty->assign("total", $total);
+
 //Popola address options
 $query = "SELECT alias, nome, cognome, indirizzo, civico, citta, cap, provincia FROM indirizzi WHERE cliente = '$userid';";
 $result = queryMysql($query);
@@ -67,8 +71,8 @@ for ($j = 0; $j < $result->num_rows; ++$j) {
 $smarty->assign("deloptions", $courier);
 
 //Intercettiamo la conferma dell'ordine
-//mi servirà che js mi passi il totale
 if(isset($_POST['address']) && isset($_POST['payment']) && isset($_POST['courier'])) {
+    $total = $_POST['total']
     $address = $_POST['address'];
     $payment = $_POST['payment'];
     $courier = $_POST['courier'];
@@ -77,7 +81,7 @@ if(isset($_POST['address']) && isset($_POST['payment']) && isset($_POST['courier
     $date = date('Y m d');
 
     //inseriamo l'ordine nel db
-    queryMysql("INSERT INTO ordine (cliente, stato, indirizzo, totale) VALUES ('$userid', '$status', '$address', '0');");
+    queryMysql("INSERT INTO ordine (cliente, stato, indirizzo, totale) VALUES ('$userid', '$status', '$address', '$total');");
 
     //recuperiamo l'id appena creato
     $query = "SELECT LAST_INSERT_ID();";
