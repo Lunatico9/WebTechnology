@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Creato il: Feb 17, 2019 alle 19:35
+-- Creato il: Feb 18, 2019 alle 10:39
 -- Versione del server: 5.7.23
 -- Versione PHP: 7.2.10
 
@@ -54,9 +54,17 @@ CREATE TABLE IF NOT EXISTS `carrello` (
   `quantita` int(11) NOT NULL,
   `colore` varchar(20) NOT NULL,
   `taglia` varchar(10) NOT NULL,
-  PRIMARY KEY (`cliente`,`prodotto`),
+  PRIMARY KEY (`cliente`,`prodotto`,`colore`,`taglia`),
   KEY `prodotto` (`prodotto`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dump dei dati per la tabella `carrello`
+--
+
+INSERT INTO `carrello` (`cliente`, `prodotto`, `quantita`, `colore`, `taglia`) VALUES
+(1, 3, 2, 'One Color', 'One Size'),
+(1, 4, 2, 'One Color', 'OneSize');
 
 -- --------------------------------------------------------
 
@@ -197,8 +205,8 @@ CREATE TABLE IF NOT EXISTS `evidenzia` (
   `prodotto` int(11) NOT NULL,
   `img` varchar(50) NOT NULL,
   PRIMARY KEY (`vetrina`,`prodotto`),
-  KEY `img` (`img`),
-  KEY `prodotto` (`prodotto`)
+  KEY `prodotto` (`prodotto`),
+  KEY `evidenzia_ibfk_1` (`img`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -206,9 +214,9 @@ CREATE TABLE IF NOT EXISTS `evidenzia` (
 --
 
 INSERT INTO `evidenzia` (`vetrina`, `prodotto`, `img`) VALUES
-(1, 5, 'images/large_buckler'),
-(1, 3, 'images/large_malleus'),
-(1, 1, 'images/large_redDragon'),
+(1, 5, 'images/large_buckler.jpg'),
+(1, 3, 'images/large_malleus.jpg'),
+(1, 1, 'images/large_redDragon.jpg'),
 (1, 2, 'images/large_spes_AP.jpg');
 
 -- --------------------------------------------------------
@@ -232,11 +240,20 @@ CREATE TABLE IF NOT EXISTS `immagine` (
 --
 
 INSERT INTO `immagine` (`path`, `prodotto`, `dimensioni`, `principale`) VALUES
-('images/large_buckler', 5, '', 1),
-('images/large_malleus', 3, '', 1),
-('images/large_redDragon', 1, '', 1),
+('images/large_buckler.jpg', 5, '', 1),
+('images/large_malleus.jpg', 3, '', 1),
+('images/large_redDragon.jpg', 1, '', 1),
 ('images/large_spes_AP.jpg', 2, '', 1),
-('images/square_BF', 4, '', 1);
+('images/square_BF.jpg', 4, '', 1),
+('item-01.jpg', 10, '', 1),
+('item-02.jpg', 11, '', 1),
+('item-03.jpg', 6, '', 1),
+('item-04.jpg', 8, '', 1),
+('item-05.jpg', 7, '', 1),
+('item-06.jpg', 13, '', 1),
+('item-07.jpg', 14, '', 1),
+('square_gambeson.jpg', 12, '', 1),
+('square_manuscript.jpg', 9, '', 1);
 
 -- --------------------------------------------------------
 
@@ -307,7 +324,7 @@ CREATE TABLE IF NOT EXISTS `metodipagamento` (
   `nome` varchar(50) NOT NULL,
   `cognome` varchar(50) NOT NULL,
   `tipo_carta` varchar(50) NOT NULL,
-  `num_carta` int(15) NOT NULL,
+  `num_carta` int(30) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `cliente` (`cliente`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
@@ -368,9 +385,10 @@ CREATE TABLE IF NOT EXISTS `prodotto` (
   `categoria` int(11) NOT NULL,
   `catalogo` int(11) NOT NULL,
   PRIMARY KEY (`id`),
+  UNIQUE KEY `nome` (`nome`),
   KEY `categoria` (`categoria`),
   KEY `catalogo` (`catalogo`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
 
 --
 -- Dump dei dati per la tabella `prodotto`
@@ -381,7 +399,16 @@ INSERT INTO `prodotto` (`id`, `nome`, `desc_breve`, `desc_dett`, `prezzo`, `cate
 (2, 'Gambeson Pro 350N', 'The new model of \"FG\" Gambeson PRO 350N is based on previous, well known and valued Gambeson.', 'The new model is equipped with fasteners for mounting an additional protection detachable, specially shaped, plastic pads. It lets you use the jacket as a full protection without necessity of wearing additional protectors to save the arm from hits. It also shortens the preparation time before training letting you enjoy the fight longer.', 219.95, 5, 3),
 (3, 'Malleus Martialis Steel Sword', '', '', 279.99, 2, 1),
 (4, 'BF Synthetic Sword v5', '', '', 78.95, 3, 1),
-(5, 'Brocchiere Malleus Martialis Pro', 'Appositamente studiato per permettere una resa adeguata agli impatti con l’acciaio ', 'Il Brocchiere Pro è creato con uno speciale acciaio, appositamente studiato per permettere una resa adeguata agli impatti contro  l’acciaio coniugando un peso non eccessivo. Con i suoi 1200 gr. si accoppia perfettamente ai simulacri d’armi bianche con cui viene utilizzato.', 85.99, 4, 4);
+(5, 'Brocchiere Malleus Martialis Pro', 'Appositamente studiato per permettere una resa adeguata agli impatti con l’acciaio ', 'Il Brocchiere Pro è creato con uno speciale acciaio, appositamente studiato per permettere una resa adeguata agli impatti contro  l’acciaio coniugando un peso non eccessivo. Con i suoi 1200 gr. si accoppia perfettamente ai simulacri d’armi bianche con cui viene utilizzato.', 85.99, 4, 4),
+(6, 'boh', 'boh', 'boh', 15.98, 4, 3),
+(7, 'ciao', 'ciao', 'mondo', 1.99, 1, 2),
+(8, 'Test', '', '', 35.99, 4, 2),
+(9, 'A', 'B', 'C', 1.9, 2, 1),
+(10, 'asd', '', '', 3.99, 3, 1),
+(11, 'bes', 'ba', 'bb', 67.99, 1, 3),
+(12, 'add', 'obj', 'addobj', 130, 3, 4),
+(13, 'gas', 'saf', 'vbf', 35.99, 4, 4),
+(14, 'sad', 'ads', 'sadsa', 1.99, 2, 1);
 
 -- --------------------------------------------------------
 
@@ -521,7 +548,7 @@ ALTER TABLE `colore`
 -- Limiti per la tabella `evidenzia`
 --
 ALTER TABLE `evidenzia`
-  ADD CONSTRAINT `evidenzia_ibfk_1` FOREIGN KEY (`img`) REFERENCES `immagine` (`path`),
+  ADD CONSTRAINT `evidenzia_ibfk_1` FOREIGN KEY (`img`) REFERENCES `immagine` (`path`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `evidenzia_ibfk_2` FOREIGN KEY (`vetrina`) REFERENCES `vetrina` (`id`),
   ADD CONSTRAINT `evidenzia_ibfk_3` FOREIGN KEY (`prodotto`) REFERENCES `prodotto` (`id`);
 
