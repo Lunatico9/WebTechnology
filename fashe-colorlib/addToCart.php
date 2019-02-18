@@ -22,7 +22,7 @@ $color = $_POST['color'];
 $size = $_POST['size'];
 $product = $_POST['product'];
 
-$query = "SELECT id FROM prodotto WHERE nome = '$product';"
+$query = "SELECT id FROM prodotto WHERE nome = '$product';";
 $result = queryMysql($query);
 $row = $result->fetch_row();
 $pid = $row[0];
