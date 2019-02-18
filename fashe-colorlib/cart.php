@@ -29,13 +29,6 @@ $username = $values[1];
 $smarty->assign("items", "$items");
 $smarty->assign("user", "$username");
 
-/*Intercept delete
-if (isset($_REQUEST['delete'])) {
-    $del = $_REQUEST['delete'];
-    $query =  "DELETE FROM carrello WHERE carrello.cliente = '$userid' AND carrello.prodotto = (SELECT id FROM prodotto WHERE prodotto.nome = '$del');";
-    queryMysql($query);
-}*/
-
 //Retrieve cart
 $date = date('Y m d');
 
