@@ -62,18 +62,18 @@
 				</div>
 				<br>
 				{foreach item=address from=$addresses}
-				<div class="card w-100">
-					<div class="card-body">
-						<h5 class="card-title">{$address[0]}:</h5>
-						<h6 class="card-text">{$address[1]} {$address[2]}</h6>
-						<p class="card-text">{$address[3]}, {$address[4]}</p>
-						<p class="card-text">{$address[5]}, {$address[6]} {$address[7]}</p>
-						<p class="card-text">{$address[8]}</p>
-						<div class="text-center">
-							<a href="" onclick="delet()" class="btn s-text1 bg1 hov1 bo-rad-23 m-r-0">Delete</a>
+					<div class="card w-100">
+						<div class="card-body">
+							<h5 class="card-title">{$address[0]}:</h5>
+							<h6 class="card-text">{$address[1]} {$address[2]}</h6>
+							<p class="card-text">{$address[3]}, {$address[4]}</p>
+							<p class="card-text">{$address[5]}, {$address[6]} {$address[7]}</p>
+							<p class="card-text">{$address[8]}</p>
+							<div class="text-center">
+								<a href="" onclick="delet()" class="btn s-text1 bg1 hov1 bo-rad-23 m-r-0">Delete</a>
+							</div>
 						</div>
 					</div>
-				</div>
 				{/foreach}
 			</div>
 		</div>

@@ -74,23 +74,23 @@
 								</tr>
 
 								{foreach item=product from=$products}
-								<tr class="table-row">
-									<td class="column-1">
-										<div class="cart-img-product b-rad-4 o-f-hidden">
-											<img src="{$product[1]}" alt="IMG-PRODUCT">
-										</div>
-									</td>
+									<tr class="table-row">
+										<td class="column-1">
+											<div class="cart-img-product b-rad-4 o-f-hidden">
+												<img src="{$product[1]}" alt="IMG-PRODUCT">
+											</div>
+										</td>
 							
-									<td class="column-2">
-										<a href="product-detail.php?product={$product[0]}">{$product[2]}x {$product[0]}<br></a>
-										<p><span class="s-text8">{$product[3]}</span></p>
-										<p><span class="s-text8">{$product[4]}</span></p>
-									</td>
+										<td class="column-2">
+											<a href="product-detail.php?product={$product[0]}">{$product[2]}x {$product[0]}<br></a>
+											<p><span class="s-text8">{$product[3]}</span></p>
+											<p><span class="s-text8">{$product[4]}</span></p>
+										</td>
 							
-									<td class="column-3">
-										€ {$product[5]}
-									</td>
-								</tr>
+										<td class="column-3">
+											€ {$product[5]}
+										</td>
+									</tr>
 								{/foreach}
 							</table>
 						</div>

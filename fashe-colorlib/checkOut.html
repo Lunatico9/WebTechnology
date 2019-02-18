@@ -21,7 +21,7 @@
 								<div class="rs2-select2 rs3-select2 bo4 of-hidden w-size16">
 									<select class="selection-2" name="address">
 										{foreach item=address from=$addresses}
-										<option value="{$address[0]}" id="addr"> {$address[1]} {$address[2]} | {$address[3]} {$address[4]}, {$address[5]}</option>
+											<option value="{$address[0]}" id="addr"> {$address[1]} {$address[2]} | {$address[3]} {$address[4]}, {$address[5]}</option>
 										{/foreach}
 									</select>
 								</div>
@@ -39,7 +39,7 @@
 								<div class="rs2-select2 rs3-select2 bo4 of-hidden w-size16">
 									<select class="selection-2" name="payment">
 										{foreach item=payment from=$payments}
-										<option value="{$payment[0]}" id="card">{$payment[1]} {$payment[2]} | {$payment[3]} {$payment[4]}</option>
+											<option value="{$payment[0]}" id="card">{$payment[1]} {$payment[2]} | {$payment[3]} {$payment[4]}</option>
 										{/foreach}
 									</select>
 								</div>
@@ -56,7 +56,7 @@
 								<div class="rs2-select2 rs3-select2 bo4 of-hidden w-size16">
 									<select class="selection-2" name="courier">
 										{foreach item=option from=$deloptions}
-										<option value="{$option[0]}" id="mail">{$option[0]} €{$option[1]}</option>
+											<option value="{$option[0]}" id="mail">{$option[0]} €{$option[1]}</option>
 										{/foreach}
 									</select>
 								</div>

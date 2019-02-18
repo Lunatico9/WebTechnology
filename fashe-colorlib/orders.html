@@ -55,21 +55,21 @@
 			</div>
 			<div class="col-sm-6 col-md-8 col-lg-9 p-b-50">
 				{foreach item=order from=$orders}
-				<div class="card w-100">
-					<div class="card-header text-center">
-						Order #{$order[0]}
-					</div>
-					<div class="card-body">
-						<h6 class="card-text">Total payed: € {$order[4]}</h6>
-						<h6 class="card-text">Order placed on: {$order[1]}</h6>
-						<h6 class="card-text">Dispatched to: {$order[3]}</h6>
-						<h6 class="card-text">Status: {$order[2]}</h6>
-						<div class="text-center">
-							<button href="" onclick="openDetails({$order[0]})" class="btn s-text1 bg1 hov1 bo-rad-23 m-r-0">Details</button>
+					<div class="card w-100">
+						<div class="card-header text-center">
+							Order #{$order[0]}
+						</div>
+						<div class="card-body">
+							<h6 class="card-text">Total payed: € {$order[4]}</h6>
+							<h6 class="card-text">Order placed on: {$order[1]}</h6>
+							<h6 class="card-text">Dispatched to: {$order[3]}</h6>
+							<h6 class="card-text">Status: {$order[2]}</h6>
+							<div class="text-center">
+								<button href="" onclick="openDetails({$order[0]})" class="btn s-text1 bg1 hov1 bo-rad-23 m-r-0">Details</button>
+							</div>
 						</div>
 					</div>
-				</div>
-				<br>
+					<br>
 				{/foreach}
 			</div>
 		</div>

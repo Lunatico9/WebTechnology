@@ -113,43 +113,43 @@
 				<!-- Product -->
 				<div class="row">
 					{foreach item=product from=$products}
-					{if $product@iteration > 12}
-					<div hidden class="col-sm-12 col-md-6 col-lg-4 p-b-50">
-					{else}
-					<div class="col-sm-12 col-md-6 col-lg-4 p-b-50">
-					{/if}
+						{if $product@iteration > 12}
+							<div hidden class="col-sm-12 col-md-6 col-lg-4 p-b-50">
+						{else}
+							<div class="col-sm-12 col-md-6 col-lg-4 p-b-50">
+						{/if}
 						<!-- Block2 -->
 						<div class="block2">
 							{if isset($product[3])}
-							<div class="block2-img wrap-pic-w of-hidden pos-relative block2-labelsale">
-								<img src="{$product[2]}" alt="IMG-PRODUCT">
+								<div class="block2-img wrap-pic-w of-hidden pos-relative block2-labelsale">
+									<img src="{$product[2]}" alt="IMG-PRODUCT">
 
-								<div class="block2-overlay trans-0-4">
-									<div class="block2-btn-addcart w-size1 trans-0-4">
-										<!-- Button -->
-                                        <a href="product-detail.php?product={$product[0]}">
-										  <button name="{$product[0]}" class="flex-c-m size1 bg4 bo-rad-23 hov1 s-text1 trans-0-4">
-											 Add to Cart
-										  </button>
-                                        </a>
+									<div class="block2-overlay trans-0-4">
+										<div class="block2-btn-addcart w-size1 trans-0-4">
+											<!-- Button -->
+            	                            <a href="product-detail.php?product={$product[0]}">
+												<button name="{$product[0]}" class="flex-c-m size1 bg4 bo-rad-23 hov1 s-text1 trans-0-4">
+													Add to Cart
+												</button>
+                                        	</a>
+										</div>
 									</div>
 								</div>
-							</div>
 							{else}
-							<div class="block2-img wrap-pic-w of-hidden pos-relative">
-								<img src="{$product[2]}" alt="IMG-PRODUCT">
+								<div class="block2-img wrap-pic-w of-hidden pos-relative">
+									<img src="{$product[2]}" alt="IMG-PRODUCT">
 
-								<div class="block2-overlay trans-0-4">
-									<div class="block2-btn-addcart w-size1 trans-0-4">
-										<!-- Button -->
-                                        <a href="product-detail.php?product={$product[0]}">
-										  <button name="{$product[0]}" class="flex-c-m size1 bg4 bo-rad-23 hov1 s-text1 trans-0-4">
-											 Add to Cart
-										  </button>
-                                        </a>
+									<div class="block2-overlay trans-0-4">
+										<div class="block2-btn-addcart w-size1 trans-0-4">
+											<!-- Button -->
+                        	                <a href="product-detail.php?product={$product[0]}">
+												<button name="{$product[0]}" class="flex-c-m size1 bg4 bo-rad-23 hov1 s-text1 trans-0-4">
+													Add to Cart
+												</button>
+                                        	</a>
+										</div>
 									</div>
 								</div>
-							</div>
 							{/if}
 							<div class="block2-txt p-t-20">
 								<a href="product-detail.php?product={$product[0]}" class="block2-name dis-block s-text3 p-b-5">
@@ -157,38 +157,38 @@
 								</a>
 
 								{if isset($product[3])}
-								<span class="block2-oldprice m-text7 p-r-5">
-									{$product[1]}
-								</span>
-								<span class="block2-newprice m-text8 p-r-5">
-								    {$product[3]}
-								</span>
+									<span class="block2-oldprice m-text7 p-r-5">
+										{$product[1]}
+									</span>
+									<span class="block2-newprice m-text8 p-r-5">
+									    {$product[3]}
+									</span>
 								{else}
-								<span class="block2-price m-text6 p-r-5">
-									€ {$product[1]}
-								</span>
+									<span class="block2-price m-text6 p-r-5">
+										€ {$product[1]}
+									</span>
 								{/if}
 							</div>
 						</div>
-					</div>
+							</div>
 					{/foreach}
 				</div>
 				{if $last > 1}
-				<nav aria-label="Page navigation example">
-					<ul class="pagination">
-						<li class="page-item"><a class="page-link" href="shop.php?page=1">First</a></li>
-						{if $page > 1}
-						{for $i=$page to $last max=5}
-						<li class="page-item"><a class="page-link" href="shop.php?page={$i-1}">{$i-1}</a></li>
-						{/for}
-						{else}
-						{for $i=$page to $last max=5}
-						<li class="page-item"><a class="page-link" href="shop.php?page={$i}">{$i}</a></li>
-						{/for}
-						{/if}
-						<li class="page-item"><a class="page-link" href="shop.php?page={$last}">Last</a></li>
-					</ul>
-				</nav>
+					<nav aria-label="Page navigation example">
+						<ul class="pagination">
+							<li class="page-item"><a class="page-link" href="shop.php?page=1">First</a></li>
+							{if $page > 1}
+								{for $i=$page to $last max=5}
+									<li class="page-item"><a class="page-link" href="shop.php?page={$i-1}">{$i-1}</a></li>
+								{/for}
+							{else}
+								{for $i=$page to $last max=5}
+									<li class="page-item"><a class="page-link" href="shop.php?page={$i}">{$i}</a></li>
+								{/for}
+							{/if}
+							<li class="page-item"><a class="page-link" href="shop.php?page={$last}">Last</a></li>
+						</ul>
+					</nav>
 				{/if}
 			</div>
 		</div>

@@ -30,13 +30,13 @@
 					<div class="wrap-slick3-dots"></div>
 
 					{foreach item=img from=$images name=loop}
-					<div class="slick3">
-						<div class="item-slick3" data-thumb="{$img[0]}">
-							<div class="wrap-pic-w">
-								<img src="{$img[0]}" alt="IMG-PRODUCT">
+						<div class="slick3">
+							<div class="item-slick3" data-thumb="{$img[0]}">
+								<div class="wrap-pic-w">
+									<img src="{$img[0]}" alt="IMG-PRODUCT">
+								</div>
 							</div>
 						</div>
-					</div>
 						{if $smarty.foreach.loop.index == 4}
 							{break}
 						{/if}
@@ -50,17 +50,17 @@
 				</h4>
 				
 				{if isset($prezzos)}
-				<span class="block2-oldprice m-text7 p-r-5">
-					€ {$prezzo}
-				</span>
+					<span class="block2-oldprice m-text7 p-r-5">
+						€ {$prezzo}
+					</span>
 
-				<span class="block2-newprice m-text8 p-r-5">
-					€ {$prezzos}
-				</span>
+					<span class="block2-newprice m-text8 p-r-5">
+						€ {$prezzos}
+					</span>
 				{else}
-				<span class="block2-price m-text6 p-r-5">
-					€ {$prezzo}
-				</span>
+					<span class="block2-price m-text6 p-r-5">
+						€ {$prezzo}
+					</span>
 				{/if}
 				
 				<!-- Size -->
@@ -73,7 +73,7 @@
 						<div class="rs2-select2 rs3-select2 bo4 of-hidden w-size16">
 							<select class="selection-2" name="size" id="size">
 								{foreach item=size from=$sizes}
-								<option>{$size[0]}</option>
+									<option>{$size[0]}</option>
 								{/foreach}
 							</select>
 						</div>
@@ -88,7 +88,7 @@
 						<div class="rs2-select2 rs3-select2 bo4 of-hidden w-size16">
 							<select class="selection-2" name="color" id="color">
 								{foreach item=color from=$colors}
-								<option>{$color[0]}</option>
+									<option>{$color[0]}</option>
 								{/foreach}
 							</select>
 						</div>

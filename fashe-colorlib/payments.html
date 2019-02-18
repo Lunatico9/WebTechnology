@@ -61,17 +61,17 @@
 					</div>
 				</div>
 				{foreach item=payment from=$payments}
-				<br>
-				<div class="card w-100">
-					<div class="card-body">
-						<h6 class="card-text">{$payment[1]} {$payment[2]}</h6>
-						<p class="card-text">{$payment[3]}</p>
-						<p class="card-text">{$payment[4]}</p>
-						<div class="text-center">
-							<a href="" onclick="delet()" class="btn s-text1 bg1 hov1 bo-rad-23 m-r-0">Delete</a>
+					<br>
+					<div class="card w-100">
+						<div class="card-body">
+							<h6 class="card-text">{$payment[1]} {$payment[2]}</h6>
+							<p class="card-text">{$payment[3]}</p>
+							<p class="card-text">{$payment[4]}</p>
+							<div class="text-center">
+								<a href="" onclick="delet()" class="btn s-text1 bg1 hov1 bo-rad-23 m-r-0">Delete</a>
+							</div>
 						</div>
 					</div>
-				</div>
 				{/foreach}
 			</div>
 		</div>
