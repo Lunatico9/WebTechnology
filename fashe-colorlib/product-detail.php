@@ -75,7 +75,6 @@ for ($j = 0; $j < $result->num_rows; ++$j) {
 $smarty->assign("sizes", $sizes);
 
 //Populate color options
-
 $query = "SELECT colore.colore FROM prodotto, colore WHERE prodotto.nome = '$nome' AND prodotto.id = colore.prodotto;";
 $result = queryMysql($query);
 $colors = array();
@@ -88,7 +87,7 @@ for ($j = 0; $j < $result->num_rows; ++$j) {
 $smarty->assign("colors", $colors);
 
 //Poulate product's images
-$query = "SELECT immagine.path FROM immagine, prodotto WHERE prodotto.nome = '$nome' AND prodotto.id = immagine.prodotto AND immagine.dimensioni = '320x427';";
+$query = "SELECT immagine.path FROM immagine, prodotto WHERE prodotto.nome = '$nome' AND prodotto.id = immagine.prodotto";
 $result = queryMysql($query);
 $images = array();
 
@@ -127,3 +126,32 @@ else {
 }
 
 $smarty->display('product-detail.html');
+
+
+//image resize function
+function resize_image($file, $w, $h, $crop=FALSE) {
+    list($width, $height) = getimagesize($file);
+    $r = $width / $height;
+    if ($crop) {
+        if ($width > $height) {
+            $width = ceil($width-($width*abs($r-$w/$h)));
+        } else {
+            $height = ceil($height-($height*abs($r-$w/$h)));
+        }
+        $newwidth = $w;
+        $newheight = $h;
+    } else {
+        if ($w/$h > $r) {
+            $newwidth = $h*$r;
+            $newheight = $h;
+        } else {
+            $newheight = $w/$r;
+            $newwidth = $w;
+        }
+    }
+    $src = imagecreatefromjpeg($file);
+    $dst = imagecreatetruecolor($newwidth, $newheight);
+    imagecopyresampled($dst, $src, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
+
+    return $dst;
+}
