@@ -21,7 +21,7 @@ $smarty->assign("user", "$username");
 //Retrieve shop
 $date = date('Y m d');
 
-//intercetta 
+//intercetta l'ordinamento dello shop da jquery
 if(isset($_REQUEST['sorting'])){
     if($_REQUEST['sorting'] == "lth") {
         $sorting = "prodotto.prezzo ASC";
@@ -34,7 +34,7 @@ else {
     $sorting = "prodotto.id DESC";
 }
 
-//intercetta
+//intercetta limite min e max al prezzo da jquery
 if(isset($_REQUEST['price_min']) && isset($_REQUEST['price_max'])){
     $min = $_REQUEST['price_min'];
     $max = $_REQUEST['price_max'];
@@ -52,7 +52,7 @@ if (isset($_REQUEST['search-product'])) {
 //mostra prodotti nel catalogo scelto
 elseif(isset($_REQUEST['catalogue'])){
     $catalogue = $_REQUEST['catalogue'];
-    $query = "SELECT prodotto.nome, prodotto.prezzo, immagine.path, prodottoscontato.prezzo FROM immagine, prodotto LEFT OUTER JOIN prodottoscontato ON prodotto.id = prodottoscontato.prodotto AND prodottoscontato.data_inizio > '$date' WHERE prodotto.id = immagine.prodotto AND immagine.principale = 1 AND prodotto.prezzo >= '$min' AND prodotto.prezzo <= '$max' AND prodotto.catalogo = (SELECT id FROM catalogo WHERE catalogo.nome = '$catalogue' ORDER BY $sorting;";
+    $query = "SELECT prodotto.nome, prodotto.prezzo, immagine.path, prodottoscontato.prezzo FROM immagine, prodotto LEFT OUTER JOIN prodottoscontato ON prodotto.id = prodottoscontato.prodotto AND prodottoscontato.data_inizio > '$date' WHERE prodotto.id = immagine.prodotto AND immagine.principale = 1 AND prodotto.prezzo >= '$min' AND prodotto.prezzo <= '$max' AND prodotto.catalogo = (SELECT id FROM catalogo WHERE catalogo.nome = '$catalogue' ORDER BY $sorting);";
 }
 //mosta prodotti in sconto
 elseif(isset($_REQUEST['onsale'])){
@@ -61,11 +61,11 @@ elseif(isset($_REQUEST['onsale'])){
 //mostra prodotti nella categoria scelta
 elseif(isset($_REQUEST['category'])){
     $category = $_REQUEST['category'];
-    $query = "SELECT prodotto.nome, prodotto.prezzo, immagine.path, prodottoscontato.prezzo FROM immagine, prodotto LEFT OUTER JOIN prodottoscontato ON prodotto.id = prodottoscontato.prodotto AND prodottoscontato.data_inizio > '$date' WHERE prodotto.id = immagine.prodotto AND immagine.principale = 1 AND prodotto.prezzo >= '$min' AND prodotto.prezzo <= '$max' AND prodotto.categoria = (SELECT categoria.id FROM categoria WHERE categoria.nome = '$category' ORDER BY $sorting;";
+    $query = "SELECT prodotto.nome, prodotto.prezzo, immagine.path, prodottoscontato.prezzo FROM immagine, prodotto LEFT OUTER JOIN prodottoscontato ON prodotto.id = prodottoscontato.prodotto AND prodottoscontato.data_inizio > '$date' WHERE prodotto.id = immagine.prodotto AND immagine.principale = 1 AND prodotto.categoria = (SELECT categoria.id FROM categoria WHERE categoria.nome = '$category' ORDER BY $sorting);";
 }
 //mostra tutti i prodotti
 else {
-    $query = "SELECT prodotto.nome, prodotto.prezzo, immagine.path, prodottoscontato.prezzo FROM immagine, prodotto LEFT OUTER JOIN prodottoscontato ON prodotto.id = prodottoscontato.prodotto AND prodottoscontato.data_inizio > '$date' WHERE prodotto.id = immagine.prodotto AND immagine.principale = 1 ORDER BY $sorting;";
+    $query = "SELECT prodotto.nome, prodotto.prezzo, immagine.path, prodottoscontato.prezzo FROM immagine, prodotto LEFT OUTER JOIN prodottoscontato ON prodotto.id = prodottoscontato.prodotto AND prodottoscontato.data_inizio > '$date' WHERE prodotto.id = immagine.prodotto AND immagine.principale = 1 AND prodotto.prezzo >= '$min' AND prodotto.prezzo <= '$max' ORDER BY $sorting;";
 }
 
 //Retrieve products from db
@@ -86,7 +86,7 @@ $last = (int)($product_num/12)+1; //ci restituisce il massimo numero di pagine
 $smarty->assign("last", "$last");
 
 
-//Build products view
+//Mostra il numero di prodotti mostrati e il totale trovati
 $loopiteration = 0;
 $firstUnseenProd = ($page-1)*12;
 if ($product_num > 0) {
@@ -96,15 +96,15 @@ if ($product_num > 0) {
         $loopiteration++;
     }
 
-    //number of viewing items information manager
-    $smarty->assign("init", $firstUnseenProd+1);
-    $smarty->assign("total_prd", $product_num);
+
+    $smarty->assign("init", $firstUnseenProd+1); //primo prodotto mostrato
+    $smarty->assign("total_prd", $product_num); //totale prodotti
 
     if($loopiteration > 12) {
-        $smarty->assign("prd", ($page)*12);
+        $smarty->assign("prd", ($page)*12); //ultimo prodotto mostrato se ci sono più di altri 12 prodotti
     }
     else {
-        $smarty->assign("prd", (($page-1)*12)+(count($product)));
+        $smarty->assign("prd", ($firstUnseenProd*12)+(count($product))); //ultimo prodotto mostrato se ci sono meno di altri 12 prodotti
     }
 
     $smarty->assign("products", $product);
