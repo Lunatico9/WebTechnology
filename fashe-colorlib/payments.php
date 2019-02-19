@@ -18,6 +18,14 @@ $username = $values[1];
 $smarty->assign("items", "$items");
 $smarty->assign("user", "$username");
 
+//intercept delete
+if (isset($_POST['paymentid'])) {
+    $userid = $_SESSION['userid'];
+    $del = $_POST['paymentid'];
+    $query =  "DELETE FROM metodipagamento WHERE cliente = '$userid' AND id = '$del';";
+    queryMysql($query);
+}
+
 //recuperiamo i metodi di pagamento dell'utente dal database
 $userid = $_SESSION['userid'];
 $query = "SELECT id, nome, cognome, tipo_carta, num_carta FROM metodipagamento WHERE cliente = '$userid';";
@@ -36,14 +44,6 @@ if ($result->num_rows > 0) {
 }
 else {
     $smarty->display('payments-empty.html');
-}
-
-//anche questa va fatta con js
-if (isset($_POST['paymentid'])) {
-    $userid = $_SESSION['userid'];
-    $del = $_POST['paymentid'];
-    $query =  "DELETE FROM metodipagamento WHERE cliente = '$userid' AND id = '$del';";
-    queryMysql($query);
 }
 
 
