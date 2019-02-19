@@ -19,9 +19,9 @@
 							<div class="card-body">
 								<p>Select your address</p>
 								<div class="rs2-select2 rs3-select2 bo4 of-hidden w-size16">
-									<select class="selection-2" name="address">
+									<select class="selection-2" id="addr" name="address">
 										{foreach item=address from=$addresses}
-											<option value="{$address[0]}" id="addr"> {$address[1]} {$address[2]} | {$address[3]} {$address[4]}, {$address[5]}</option>
+											<option value="{$address[0]}"> {$address[1]} {$address[2]} | {$address[3]} {$address[4]}, {$address[5]}</option>
 										{/foreach}
 									</select>
 								</div>
@@ -37,9 +37,9 @@
 							<div class="card-body">
 								<p>Select your payment method</p>
 								<div class="rs2-select2 rs3-select2 bo4 of-hidden w-size16">
-									<select class="selection-2" name="payment">
+									<select class="selection-2" id="card" name="payment">
 										{foreach item=payment from=$payments}
-											<option value="{$payment[0]}" id="card">{$payment[1]} {$payment[2]} | {$payment[3]} {$payment[4]}</option>
+											<option value="{$payment[0]}">{$payment[1]} {$payment[2]} | {$payment[3]} {$payment[4]}</option>
 										{/foreach}
 									</select>
 								</div>
@@ -54,9 +54,9 @@
 							</div>
 							<div class="card-body">
 								<div class="rs2-select2 rs3-select2 bo4 of-hidden w-size16">
-									<select class="selection-2" name="courier">
+									<select class="selection-2" id="mail" name="courier" onchange="updateDeliveryCost()" onload="updateDeliveryCost()">
 										{foreach item=option from=$deloptions}
-											<option value="{$option[0]}" id="mail">{$option[0]} €{$option[1]}</option>
+											<option value="{$option[0]}">{$option[0]} €{$option[1]}</option>
 										{/foreach}
 									</select>
 								</div>
@@ -97,26 +97,6 @@
 	<div id="dropDownSelect2"></div>
 
 
-<!--===============================================================================================-->
-<!-- Order placement procedure -->
-<script type="text/javascript">
-    function order() {
-        var total = $("#total-price").text().slice(2);
-        var address = $("#addr").val();
-        var card = $("#card").val();
-        var mail = $("#mail").val();
-        $.post("checkOut.php",{
-            total: total,
-            courier: mail,
-            payment: card,
-            address: address
-        }, function(){
-           swal("Order Complete!","", "success").then(function(){
-                window.location.href = "index.php";
-           });
-        })
-    }
-</script>
 
 <!--===============================================================================================-->
     <script type="text/javascript" src="vendor/sweetalert/sweetalert.min.js"></script>
@@ -142,6 +122,70 @@
 	</script>
 <!--===============================================================================================-->
 	<script src="js/main.js"></script>
+<!--===============================================================================================-->
+<!-- Reduce floating point precision to i numbers after floating point, if present -->
+<script type="text/javascript">
+    function floatSlice(number, i){
+        number = number.toString();
+        //slice if number is floating point
+        if (number.includes(".")){
+            number = number.slice(0, number.indexOf(".")+i+1);
+        }
+        number = parseFloat(number);
+        return number;
+    }
+</script>
+"Are you sure you want to order?", "The total of € "+total+" will be deducted from your account", "warning"
+<!--===============================================================================================-->
+<!-- Order placement procedure -->
+<script type="text/javascript">
+    function order() {
+        //acquire order data
+        var total = parseFloat($("#total-price").text().slice(2));
+        var address = $("select#addr").contents("option:selected").val();
+        var card = $("select#card").contents("option:selected").val();
+        var mail = $("select#mail").contents("option:selected").val();
+        swal({
+            title: "Are you sure you want to order?",
+            text: "The total of € "+total+" will be deducted from your card",
+            icon: "warning",
+            buttons: true
+        })
+        .then((value) => {
+            if (value == true){    
+                $.post("checkOut.php",{
+                    total: total,
+                    courier: mail,
+                    payment: card,
+                    address: address
+                }, function(){
+                    swal("Order Complete!","", "success").then(function(){
+                        window.location.href = "index.php";
+                    })
+                })
+            } else {}
+        })
+    }
+</script>
+<!--===============================================================================================-->
+<!-- update order price -->
+<script type="text/javascript">
+    function updateDeliveryCost(){
+        //get delivery cost and order total
+        var ordertotal = {$total};
+        var deliverycost = $("select#mail").contents("option:selected").text();
+        deliverycost = parseFloat(deliverycost.slice(deliverycost.indexOf("€")+1));        
+        var total = floatSlice(ordertotal + deliverycost, 2);
+        $("#total-price").text("€ "+total);
+    }
+</script>
+<!--===============================================================================================-->
+<!-- update order price on page load -->
+<script type="text/javascript">
+    $( document ).ready(function() {
+        updateDeliveryCost();
+    });
+</script>
 
 </body>
 </html>
