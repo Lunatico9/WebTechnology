@@ -20,37 +20,43 @@ $pid = $row[0];
 //controlliamo che la quantità di prodotto non ecceda la disponibilità
 $quantity = checkAvailability($pid, $quantity, $color, $size);
 
-//Controlla se l'utente ha effettuato il login se non lo ha effettuato
-//aggiungiamo i prodotti ad un campo della variabile di sessione
-if(!isset($_SESSION['userid'])) {
-    //controlliamo se il prodoto non sia già presente nella variabile
-    if(!checkProductNotLogged($pid, $quantity, $color, $size)) {
-        $product = array($pid, $quantity, $color, $size);
-        $_SESSION['cart'][] = $product;
-        echo 0; //ajax aggiorna l'indice nell'headerr
-    }
-    else {
-        echo 1; //ajax non aggiorna l'indice nell'header
-    }
+//se la quantità è 0
+if ($quantity == 0) {
+    echo 1;
 }
 else {
-    $userid = $_SESSION['userid'];
-    //controlliamo che il prodotto non sia già presente nel carrello
-    $newquantity = checkProduct($userid, $pid, $color, $size);
-
-    if(!$newquantity) {
-        //inseriamo nel carrello il prodotto
-        queryMysql("INSERT INTO carrello (cliente, prodotto, quantita, colore, taglia) VALUES ('$userid', '$pid', '$quantity', '$color', '$size');");
-        echo 0;
+//Controlla se l'utente ha effettuato il login se non lo ha effettuato
+//aggiungiamo i prodotti ad un campo della variabile di sessione
+    if(!isset($_SESSION['userid'])) {
+        //controlliamo se il prodoto non sia già presente nella variabile
+        if(!checkProductNotLogged($pid, $quantity, $color, $size)) {
+            $product = array($pid, $quantity, $color, $size);
+            $_SESSION['cart'][] = $product;
+            echo 0; //ajax aggiorna l'indice nell'header
+        }
+        else {
+            echo 1; //ajax non aggiorna l'indice nell'header
+        }
     }
     else {
-        //aumentiamo solamente la quantità del prodotto nel carrello
-        $quantity += $newquantity;
-        queryMysql("UPDATE carrello SET quantita = '$quantity' WHERE cliente = '$userid' AND prodotto = '$pid' AND colore = '$color' AND taglia = '$size';");
-        echo 1;
+        $userid = $_SESSION['userid'];
+        //controlliamo che il prodotto non sia già presente nel carrello
+        $newquantity = checkProduct($userid, $pid, $color, $size);
+    
+        if(!$newquantity) {
+            //inseriamo nel carrello il prodotto
+            queryMysql("INSERT INTO carrello (cliente, prodotto, quantita, colore, taglia) VALUES ('$userid', '$pid', '$quantity', '$color', '$size');");
+            echo 0;
+        }
+        else {
+            //aumentiamo solamente la quantità del prodotto nel carrello
+            $quantity += $newquantity;
+            queryMysql("UPDATE carrello SET quantita = '$quantity' WHERE cliente = '$userid' AND prodotto = '$pid' AND colore = '$color' AND taglia = '$size';");
+            echo 1;
+        }
     }
 }
-
+    
 //controlla se abbiamo abbastanza disponibilità di prodotto per soddisfare la richiesta
 function checkAvailability($pid, $quantity, $color, $size) {
     $query = "SELECT disponibilita FROM magazzino WHERE prodotto = '$pid' AND colore = '$color' AND taglia = '$size';";
@@ -58,12 +64,9 @@ function checkAvailability($pid, $quantity, $color, $size) {
     $availability = $result->fetch_row();
 
     if($quantity > $availability[0]) {
-        echo "over"; //
-        return $availability[0];
+        return 0;
     }
-    else {
-        echo "    ";
-    }
+    
     return $quantity;
 }
 
