@@ -247,13 +247,20 @@
             color: color,
             size: size
         }, function (data){
-            //Update icon number if needed
-            if(data == 0){
-                var number = parseInt($("#item-number").text())+1;
-                $(".header-icons-noti").text(number);
+            var olditem = data.slice(data.search(["0"|"1"]));
+            var over = data.slice(0,4);
+            //error message if requested number over stock number
+            if (over == "over"){
+                swal("We don't have that many in stock!", "Try a lower amount please", "error");
+            } else {
+                //if adding an item not previously in cart increase icon number by 1
+                if(olditem == 0){
+                    var number = parseInt($("#item-number").text())+1;
+                    $(".header-icons-noti").text(number);
+                }
+                //confirmation message
+                swal(name, "is added to cart !", "success");
             }
-            //confirmation message
-            swal(name, "is added to cart !", "success");
         })
     }
 
