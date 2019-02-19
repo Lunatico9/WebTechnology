@@ -22,6 +22,9 @@ $smarty->assign("user", "$username");
 if($_SESSION['userrole'] == 'a') {
     $smarty->assign("admin", '1');
 }
+else {
+    $smarty->assign("admin", '0');
+}
 
 //Controlla se è presente messaggio d'errore da mostrare
 if (isset($_SESSION['error'])) {

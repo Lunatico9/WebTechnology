@@ -22,6 +22,9 @@ $smarty->assign("user", "$username");
 if($_SESSION['userrole'] == 'a') {
     $smarty->assign("admin", '1');
 }
+else {
+    $smarty->assign("admin", '0');
+}
 
 //recuperiamo la mail dell'utente dal database
 $query = "SELECT email FROM cliente WHERE username = '$username';";

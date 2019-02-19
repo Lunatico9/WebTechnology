@@ -22,6 +22,9 @@ $smarty->assign("user", "$username");
 if($_SESSION['userrole'] == 'a') {
     $smarty->assign("admin", '1');
 }
+else {
+    $smarty->assign("admin", '0');
+}
 
 //intercept delete
 if (isset($_POST['paymentid'])) {
