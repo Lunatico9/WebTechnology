@@ -18,6 +18,11 @@ $username = $values[1];
 $smarty->assign("items", "$items");
 $smarty->assign("user", "$username");
 
+//costruiamo la vista per l'admin
+if($_SESSION['userrole'] == 'a') {
+    $smarty->assign("admin", '1');
+}
+
 //recuperiamo la mail dell'utente dal database
 $query = "SELECT email FROM cliente WHERE username = '$username';";
 $result = queryMysql($query);
