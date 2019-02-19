@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Creato il: Feb 18, 2019 alle 11:50
+-- Creato il: Feb 19, 2019 alle 11:31
 -- Versione del server: 5.7.23
 -- Versione PHP: 7.2.10
 
@@ -48,7 +48,14 @@ CREATE TABLE IF NOT EXISTS `acquisto` (
 INSERT INTO `acquisto` (`ordine`, `prodotto`, `quantita`, `colore`, `taglia`, `prezzo`) VALUES
 (42, 3, 2, 'One Color', 'One Size', 279.99),
 (42, 4, 2, 'One Color', 'OneSize', 78.95),
-(43, 1, 2, 'One Color', 'One Size', 39.99);
+(43, 1, 2, 'One Color', 'One Size', 39.99),
+(44, 3, 1, 'One Color', 'One Size', 279.99),
+(45, 1, 2, 'One Color', 'One Size', 39.99),
+(45, 2, 4, 'One Color', 'L', 219.95),
+(45, 3, 4, 'One Color', 'One Size', 279.99),
+(45, 4, 1, 'One Color', 'One Size', 78.95),
+(45, 5, 4, 'One Color', 'One Size', 85.99),
+(46, 3, 7, 'One Color', 'One Size', 279.99);
 
 -- --------------------------------------------------------
 
@@ -66,6 +73,14 @@ CREATE TABLE IF NOT EXISTS `carrello` (
   PRIMARY KEY (`cliente`,`prodotto`,`colore`,`taglia`),
   KEY `prodotto` (`prodotto`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dump dei dati per la tabella `carrello`
+--
+
+INSERT INTO `carrello` (`cliente`, `prodotto`, `quantita`, `colore`, `taglia`) VALUES
+(2, 3, 8, 'One Color', 'One Size'),
+(2, 5, 5, 'One Color', 'One Size');
 
 -- --------------------------------------------------------
 
@@ -134,7 +149,7 @@ CREATE TABLE IF NOT EXISTS `cliente` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 --
 -- Dump dei dati per la tabella `cliente`
@@ -143,7 +158,8 @@ CREATE TABLE IF NOT EXISTS `cliente` (
 INSERT INTO `cliente` (`id`, `username`, `password`, `email`, `data_pass`, `data_reg`, `ruolo`) VALUES
 (1, 'testuser', 'testpass', 'federico.palmitesta@gmail.com', '2018-10-29', '2018-10-29', 'a'),
 (2, 'test2', 'test2', 'test2@test.test', '2018-10-16', '2018-10-01', 'u'),
-(3, 'test3', 'test3', 'test3@test.it', '2018-10-01', '2018-10-01', 'p');
+(3, 'test3', 'test3', 'test3@test.it', '2018-10-01', '2018-10-01', 'p'),
+(4, 'ciao', '1234', 'caterina.degalitiis@gmail.com', '2019-02-18', '2019-02-18', 'u');
 
 -- --------------------------------------------------------
 
@@ -205,8 +221,7 @@ CREATE TABLE IF NOT EXISTS `evidenzia` (
   `prodotto` int(11) NOT NULL,
   `img` varchar(50) NOT NULL,
   PRIMARY KEY (`vetrina`,`prodotto`),
-  KEY `prodotto` (`prodotto`),
-  KEY `evidenzia_ibfk_1` (`img`)
+  KEY `prodotto` (`prodotto`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -214,10 +229,11 @@ CREATE TABLE IF NOT EXISTS `evidenzia` (
 --
 
 INSERT INTO `evidenzia` (`vetrina`, `prodotto`, `img`) VALUES
-(1, 5, 'images/large_buckler.jpg'),
-(1, 3, 'images/large_malleus.jpg'),
 (1, 1, 'images/large_redDragon.jpg'),
-(1, 2, 'images/large_spes_AP.jpg');
+(1, 2, 'images/large_spes_AP.jpg'),
+(1, 3, 'images/large_malleus.jpg'),
+(1, 4, 'images/square_BF.jpg'),
+(1, 5, 'images/large_buckler.jpg');
 
 -- --------------------------------------------------------
 
@@ -229,7 +245,6 @@ DROP TABLE IF EXISTS `immagine`;
 CREATE TABLE IF NOT EXISTS `immagine` (
   `path` varchar(50) NOT NULL,
   `prodotto` int(11) NOT NULL,
-  `dimensioni` varchar(32) NOT NULL,
   `principale` tinyint(1) NOT NULL,
   PRIMARY KEY (`path`),
   KEY `prodotto` (`prodotto`)
@@ -239,21 +254,21 @@ CREATE TABLE IF NOT EXISTS `immagine` (
 -- Dump dei dati per la tabella `immagine`
 --
 
-INSERT INTO `immagine` (`path`, `prodotto`, `dimensioni`, `principale`) VALUES
-('images/large_buckler.jpg', 5, '', 1),
-('images/large_malleus.jpg', 3, '', 1),
-('images/large_redDragon.jpg', 1, '', 1),
-('images/large_spes_AP.jpg', 2, '', 1),
-('images/square_BF.jpg', 4, '', 1),
-('item-01.jpg', 10, '', 1),
-('item-02.jpg', 11, '', 1),
-('item-03.jpg', 6, '', 1),
-('item-04.jpg', 8, '', 1),
-('item-05.jpg', 7, '', 1),
-('item-06.jpg', 13, '', 1),
-('item-07.jpg', 14, '', 1),
-('square_gambeson.jpg', 12, '', 1),
-('square_manuscript.jpg', 9, '', 1);
+INSERT INTO `immagine` (`path`, `prodotto`, `principale`) VALUES
+('images/large_buckler.jpg', 5, 1),
+('images/large_malleus.jpg', 3, 1),
+('images/large_redDragon.jpg', 1, 1),
+('images/large_spes_AP.jpg', 2, 1),
+('images/square_BF.jpg', 4, 1),
+('item-01.jpg', 10, 1),
+('item-02.jpg', 11, 1),
+('item-03.jpg', 6, 1),
+('item-04.jpg', 8, 1),
+('item-05.jpg', 7, 1),
+('item-06.jpg', 13, 1),
+('item-07.jpg', 14, 1),
+('square_gambeson.jpg', 12, 1),
+('square_manuscript.jpg', 9, 1);
 
 -- --------------------------------------------------------
 
@@ -282,7 +297,36 @@ CREATE TABLE IF NOT EXISTS `indirizzi` (
 --
 
 INSERT INTO `indirizzi` (`alias`, `cliente`, `nome`, `cognome`, `indirizzo`, `civico`, `citta`, `provincia`, `cap`, `stato`) VALUES
+('casa', 1, 'test', 'user', 'via Pescare', 3, 'Aquila', 'AQ', 67100, 'Italia'),
 ('home', 1, 'test', 'user', 'via test', 1, 'Tester', 'Tes', 43, 'Teste');
+
+-- --------------------------------------------------------
+
+--
+-- Struttura della tabella `magazzino`
+--
+
+DROP TABLE IF EXISTS `magazzino`;
+CREATE TABLE IF NOT EXISTS `magazzino` (
+  `prodotto` int(11) NOT NULL,
+  `colore` varchar(50) NOT NULL,
+  `taglia` varchar(50) NOT NULL,
+  `disponibilita` int(11) NOT NULL,
+  PRIMARY KEY (`prodotto`,`colore`,`taglia`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dump dei dati per la tabella `magazzino`
+--
+
+INSERT INTO `magazzino` (`prodotto`, `colore`, `taglia`, `disponibilita`) VALUES
+(1, 'One Color', 'One Size', 10),
+(2, 'One Color', 'L', 10),
+(2, 'One Color', 'M', 3),
+(2, 'One Color', 'S', 5),
+(3, 'One Color', 'One Size', 0),
+(4, 'One Color', 'One Size', 16),
+(5, 'One Color', 'One Size', 20);
 
 -- --------------------------------------------------------
 
@@ -327,15 +371,14 @@ CREATE TABLE IF NOT EXISTS `metodipagamento` (
   `num_carta` bigint(20) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `cliente` (`cliente`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
 
 --
 -- Dump dei dati per la tabella `metodipagamento`
 --
 
 INSERT INTO `metodipagamento` (`id`, `cliente`, `nome`, `cognome`, `tipo_carta`, `num_carta`) VALUES
-(3, 1, 'ciao', 'user', 'visa', 1234123412341234),
-(4, 1, 'Cuai', 'user', 'visa', 9999999999999999);
+(3, 1, 'ciao', 'user', 'visa', 1234123412341234);
 
 -- --------------------------------------------------------
 
@@ -353,7 +396,7 @@ CREATE TABLE IF NOT EXISTS `ordine` (
   `totale` float NOT NULL,
   PRIMARY KEY (`id`),
   KEY `cliente` (`cliente`)
-) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=latin1;
 
 --
 -- Dump dei dati per la tabella `ordine`
@@ -361,7 +404,10 @@ CREATE TABLE IF NOT EXISTS `ordine` (
 
 INSERT INTO `ordine` (`id`, `cliente`, `eseguito`, `stato`, `indirizzo`, `totale`) VALUES
 (42, 1, '2019-02-18 11:21:31', 'Received', 'home', 0),
-(43, 1, '2019-02-18 11:40:13', 'Received', 'home', 0);
+(43, 1, '2019-02-18 11:40:13', 'Received', 'home', 0),
+(44, 1, '2019-02-18 14:01:01', 'Received', 'home', 0),
+(45, 1, '2019-02-18 20:55:10', 'Received', 'home', 2502.65),
+(46, 1, '2019-02-19 09:19:00', 'Received', 'home', 1959.93);
 
 -- --------------------------------------------------------
 
@@ -384,7 +430,10 @@ CREATE TABLE IF NOT EXISTS `pagamento` (
 
 INSERT INTO `pagamento` (`ordine`, `metodo`, `stato`) VALUES
 (42, 3, 'Received'),
-(43, 3, 'Received');
+(43, 3, 'Received'),
+(44, 3, 'Received'),
+(45, 3, 'Received'),
+(46, 3, 'Received');
 
 -- --------------------------------------------------------
 
@@ -470,6 +519,9 @@ CREATE TABLE IF NOT EXISTS `spedizione` (
 
 INSERT INTO `spedizione` (`corriere`, `ordine`, `stato`) VALUES
 ('Bartolini', 42, 'Received'),
+('Bartolini', 44, 'Received'),
+('Bartolini', 45, 'Received'),
+('Bartolini', 46, 'Received'),
 ('TNT', 43, 'Received');
 
 -- --------------------------------------------------------
@@ -573,7 +625,6 @@ ALTER TABLE `colore`
 -- Limiti per la tabella `evidenzia`
 --
 ALTER TABLE `evidenzia`
-  ADD CONSTRAINT `evidenzia_ibfk_1` FOREIGN KEY (`img`) REFERENCES `immagine` (`path`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `evidenzia_ibfk_2` FOREIGN KEY (`vetrina`) REFERENCES `vetrina` (`id`),
   ADD CONSTRAINT `evidenzia_ibfk_3` FOREIGN KEY (`prodotto`) REFERENCES `prodotto` (`id`);
 
@@ -588,6 +639,12 @@ ALTER TABLE `immagine`
 --
 ALTER TABLE `indirizzi`
   ADD CONSTRAINT `indirizzi_ibfk_1` FOREIGN KEY (`cliente`) REFERENCES `cliente` (`id`);
+
+--
+-- Limiti per la tabella `magazzino`
+--
+ALTER TABLE `magazzino`
+  ADD CONSTRAINT `magazzino_ibfk_1` FOREIGN KEY (`prodotto`) REFERENCES `prodotto` (`id`);
 
 --
 -- Limiti per la tabella `metodipagamento`
