@@ -95,7 +95,8 @@ if(isset($_POST['address']) && isset($_POST['payment']) && isset($_POST['courier
         $quantity = $product[$j][1];
         $color = $product[$j][2];
         $size = $product[$j][3];
-
+        
+        echo $result->num_rows;
         //se il prodotto è scontato inseriamo il prezzo scontato, altrimenti il prezzo normale
         if(isset($product[$j][5])) {
             $price = $product[$J][5];
@@ -108,8 +109,8 @@ if(isset($_POST['address']) && isset($_POST['payment']) && isset($_POST['courier
 
         //togliamo dalla disponibilità del prodotto la quantità acquistata
         $query = "SELECT disponibilita FROM magazzino WHERE prodotto = '$id' AND colore = '$color' AND taglia = '$size';";
-        $result = queryMysql($query);
-        $availability = $result->fetch_row();
+        $result1 = queryMysql($query);
+        $availability = $result1->fetch_row();
 
         $newAvailability = $availability[0] - $quantity;
 
@@ -117,10 +118,6 @@ if(isset($_POST['address']) && isset($_POST['payment']) && isset($_POST['courier
     }
     //eliminiamo tutti i prodotti dal carrello
     queryMysql("DELETE FROM carrello WHERE carrello.cliente = '$userid';");
-
-    //messaggio di conferma 
-
-    //redirect("index.php");
 }
 
 $smarty->display('checkout.html');
