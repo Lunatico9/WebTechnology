@@ -70,7 +70,7 @@
 							<p class="card-text">{$address[5]}, {$address[6]} {$address[7]}</p>
 							<p class="card-text">{$address[8]}</p>
 							<div class="text-center">
-								<a href="" onclick="delet()" class="btn s-text1 bg1 hov1 bo-rad-23 m-r-0">Delete</a>
+								<button onclick="delet('{$address[0]}')" class="btn s-text1 bg1 hov1 bo-rad-23 m-r-0">Delete</button>
 							</div>
 						</div>
 					</div>
@@ -162,13 +162,42 @@
 <!--===============================================================================================-->
 <script src="js/main.js"></script>
 <!--===============================================================================================-->
-<!-- Address Delete function -->
+<!--===============================================================================================-->
+<!-- SweetAlert Delete Warning -->
 <script type="text/javascript">
-    function delet(){
-        $.get("addresses.php?delete={$address[0]}", function() {
-            location.reload();
+    function delet(addressid){
+    //show warning message with buttons
+    swal({
+        icon: "warning",
+        title: "Are you sure?",
+        buttons: ["cancel", "confirm"]
+    })
+        //if user clicks on confirm, delete the payment method
+        .then((value) => {
+            if (value != null){
+                request(addressid);
+            }
         });
     }
+</script>
+
+
+<!--===============================================================================================-->
+<!-- Address Delete function -->
+<script type="text/javascript">
+    function request(address){
+        //create and submit form with new element
+        var form = $('<form></form>');
+        form.attr("method", "post");
+        form.attr("action", "addresses.php");
+        var field = $('<input></input>');
+        field.attr("type", "hidden");
+        field.attr("name", "delete");
+        field.attr("value", address);
+        form.append(field);
+        $(document.body).append(form);
+        form.submit();
+    };
 </script>
 
 </body>
