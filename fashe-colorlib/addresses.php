@@ -4,7 +4,6 @@ require_once 'libs/Smarty.class.php';
 require_once 'function.php';
 require_once 'header.php';
 
-
 //Session management procedure
 sessionManagerRestricted();
 

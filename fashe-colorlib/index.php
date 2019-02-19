@@ -7,7 +7,6 @@ require_once 'header.php';
 //Session management procedure
 sessionManager();
 
-
 $smarty = new Smarty;
 
 //Header values
