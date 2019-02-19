@@ -1,0 +1,242 @@
+{include file="header.html" title="Header"}
+
+<!-- Title Page -->
+<section class="bg-title-page p-t-50 p-b-40 flex-col-c-m" style="background-image: url(images/heading-pages-02.jpg);">
+	<h2 class="l-text2 t-center">
+		Women
+	</h2>
+	<p class="m-text13 t-center">
+		New Arrivals Women Collection 2018
+	</p>
+</section>
+
+
+<!-- Content page -->
+<section class="bgwhite p-t-55 p-b-65">
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-6 col-md-4 col-lg-3 p-b-50">
+				<div class="leftbar p-r-20 p-r-0-sm">
+					<h4 class="m-text14 p-b-7">
+						Menu
+					</h4>
+
+					<ul class="p-b-54">
+						<li class="p-t-4">
+							<a href="user-panel.php" class="s-text13 active1">
+								Profile
+							</a>
+						</li>
+
+						<li class="p-t-4">
+							<a href="addresses.php" class="s-text13">
+								Adresses
+							</a>
+						</li>
+
+						<li class="p-t-4">
+							<a href="payments.php" class="s-text13">
+								Payment methods
+							</a>
+						</li>
+
+						<li class="p-t-4">
+							<a href="orders.php" class="s-text13">
+								Orders
+							</a>
+						</li>
+
+						<li class="p-t-4">
+							<a href="logout.php" class="s-text13">
+								Logout
+							</a>
+						</li>
+					</ul>
+					{if $admin == 1}
+						<h4 class="m-text14 p-b-7">
+							Admin
+						</h4>
+						<ul>
+							<li class="p-t-4">
+								<a href="add-product.php" class="s-text13">
+									Add product
+								</a>
+							</li>
+
+							<li class="p-t-4">
+								<a href="edit-window.php" class="s-text13">
+									Manage window products
+								</a>
+							</li>
+						</ul>
+					{/if}
+				</div>
+			</div>
+			<div class="col-6">
+				<form method="POST" action="add-product.php" enctype="multipart/form-data">
+					<h4 class="m-text26 p-b-36 p-t-15 text-center">
+						Add new product
+					</h4>
+		
+					{if $error == 1}
+						<div class="alert alert-danger">
+							<strong>Error!</strong> {$message}.
+						</div>
+					{/if}
+					
+					<div class="bo4 of-hidden size15 m-b-20">
+						<input class="sizefull s-text7 p-l-22 p-r-22" type="text" name="name" placeholder="Product's Name" required>
+					</div>
+
+					<div class="bo4 of-hidden size15 m-b-20">
+						<input class="sizefull s-text7 p-l-22 p-r-22" type="text" name="color" placeholder="Color" required>
+					</div>
+					
+					<div class="bo4 of-hidden size15 m-b-20">
+						<input class="sizefull s-text7 p-l-22 p-r-22" type="text" name="size" placeholder="Size" required>
+					</div>
+
+					<div class="bo4 of-hidden size15 m-b-20">
+						<input class="sizefull s-text7 p-l-22 p-r-22" type="number" name="availability" min="1" placeholder="Availability" required>
+					</div>
+
+					<div class="bo4 of-hidden size15 m-b-20">
+						<input class="sizefull s-text7 p-l-22 p-r-22" type="number" name="price" placeholder="Price" step="0.01" required>
+					</div>
+
+					<div class="bo4 of-hidden size15 m-b-20">
+						<input class="sizefull s-text7 p-l-22 p-r-22" type="text" name="description" placeholder="Description" required>
+					</div>
+					
+					<div class="bo4 of-hidden size15 m-b-20">
+						<textarea class="s-text7 size15 p-l-22 p-r-22" name="detailed-description" placeholder="Detailed description" required></textarea>
+					</div>
+
+					<div class="rs2-select2 rs3-select2 bo4 of-hidden w-size16">
+						<select class="selection-2" name="category">
+							{foreach item=category from=$categories}
+								<option value="{$category[0]}">{$category[1]}</option>
+							{/foreach}
+						</select>
+					</div>
+
+					<br>
+
+					<div class="rs2-select2 rs3-select2 bo4 of-hidden w-size16">
+						<select class="selection-2" name="catalogue">
+							{foreach item=catalogue from=$catalogues}
+								<option value="{$catalogue[0]}">{$catalogue[1]}</option>
+							{/foreach}
+						</select>
+					</div>
+
+					<br>
+
+					<p>Select product image</p>
+					<input type="file" name="userfile[]" id="imgToUpload" required>
+					<br>
+
+					<input type="file" name="userfile[]" id="imgToUpload">
+					<br>
+  
+					<input type="file" name="userfile[]" id="imgToUpload">
+					<br>
+
+					<br>
+
+					<div class="w-size25">
+						<!-- Button -->
+						<button class="flex-c-m size2 bg1 bo-rad-23 hov1 m-text3 trans-0-4">
+							Submit
+						</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</section>
+
+
+{include file="footer.html" title="Footer"}
+
+
+<!-- Back to top -->
+<div class="btn-back-to-top bg0-hov" id="myBtn">
+		<span class="symbol-btn-back-to-top">
+			<i class="fa fa-angle-double-up" aria-hidden="true"></i>
+		</span>
+</div>
+
+<!-- Container Selection -->
+<div id="dropDownSelect1"></div>
+<div id="dropDownSelect2"></div>
+
+
+
+<!--===============================================================================================-->
+<script type="text/javascript" src="vendor/jquery/jquery-3.2.1.min.js"></script>
+<!--===============================================================================================-->
+<script type="text/javascript" src="vendor/animsition/js/animsition.min.js"></script>
+<!--===============================================================================================-->
+<script type="text/javascript" src="vendor/bootstrap/js/popper.js"></script>
+<script type="text/javascript" src="vendor/bootstrap/js/bootstrap.min.js"></script>
+<!--===============================================================================================-->
+<script type="text/javascript" src="vendor/select2/select2.min.js"></script>
+<script type="text/javascript">
+    $(".selection-1").select2({
+        minimumResultsForSearch: 20,
+        dropdownParent: $('#dropDownSelect1')
+    });
+
+    $(".selection-2").select2({
+        minimumResultsForSearch: 20,
+        dropdownParent: $('#dropDownSelect2')
+    });
+</script>
+<!--===============================================================================================-->
+<script type="text/javascript" src="vendor/daterangepicker/moment.min.js"></script>
+<script type="text/javascript" src="vendor/daterangepicker/daterangepicker.js"></script>
+<!--===============================================================================================-->
+<script type="text/javascript" src="vendor/slick/slick.min.js"></script>
+<script type="text/javascript" src="js/slick-custom.js"></script>
+<!--===============================================================================================-->
+<script type="text/javascript" src="vendor/sweetalert/sweetalert.min.js"></script>
+<script type="text/javascript">
+    $('.block2-btn-addcart').each(function(){
+        var nameProduct = $(this).parent().parent().parent().find('.block2-name').html();
+        $(this).on('click', function(){
+            swal(nameProduct, "is added to cart !", "success");
+        });
+    });
+</script>
+
+<!--===============================================================================================-->
+<script type="text/javascript" src="vendor/noui/nouislider.min.js"></script>
+<script type="text/javascript">
+    /*[ No ui ]
+    ===========================================================*/
+    var filterBar = document.getElementById('filter-bar');
+
+    noUiSlider.create(filterBar, {
+        start: [ 50, 200 ],
+        connect: true,
+        range: {
+            'min': 50,
+            'max': 200
+        }
+    });
+
+    var skipValues = [
+        document.getElementById('value-lower'),
+        document.getElementById('value-upper')
+    ];
+
+    filterBar.noUiSlider.on('update', function( values, handle ) {
+        skipValues[handle].innerHTML = Math.round(values[handle]) ;
+    });
+</script>
+<!--===============================================================================================-->
+<script src="js/main.js"></script>
+
+</body>
+</html>
