@@ -58,8 +58,11 @@ function checkAvailability($pid, $quantity, $color, $size) {
     $availability = $result->fetch_row();
 
     if($quantity > $availability[0]) {
-        echo "Over-order";
+        echo "over"; //
         return $availability[0];
+    }
+    else {
+        echo "    ";
     }
     return $quantity;
 }
