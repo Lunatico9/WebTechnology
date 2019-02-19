@@ -18,6 +18,11 @@ $username = $values[1];
 $smarty->assign("items", "$items");
 $smarty->assign("user", "$username");
 
+//costruiamo la vista per l'admin
+if($_SESSION['userrole'] == 'a') {
+    $smarty->assign("admin", '1');
+}
+
 ////Controlla se è presente messaggio d'errore da mostrare
 if (isset($_SESSION['error'])) {
     $error = $_SESSION['error'];

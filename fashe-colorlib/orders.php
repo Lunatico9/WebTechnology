@@ -17,6 +17,11 @@ $username = $values[1];
 $smarty->assign("items", "$items");
 $smarty->assign("user", "$username");
 
+//costruiamo la vista per l'admin
+if($_SESSION['userrole'] == 'a') {
+    $smarty->assign("admin", '1');
+}
+
 $userid = $_SESSION['userid'];
 //Retrieve orders
 $query = "SELECT ordine.id, ordine.eseguito, ordine.stato, ordine.indirizzo, ordine.totale FROM ordine WHERE ordine.cliente = '$userid' ORDER BY ordine.eseguito DESC;";

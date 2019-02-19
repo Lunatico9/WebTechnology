@@ -17,6 +17,12 @@ $username = $values[1];
 $smarty->assign("items", "$items");
 $smarty->assign("user", "$username");
 
+//costruiamo la vista per l'admin
+if($_SESSION['userrole'] == 'a') {
+    $smarty->assign("admin", '1');
+}
+
+//recuper il valore da jquery
 $orderid = $_POST['detail'];
 $smarty->assign("order", $orderid);
 
