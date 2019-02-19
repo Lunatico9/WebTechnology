@@ -103,6 +103,7 @@ if (isset($_POST['update'])) {
                     deleteProduct($userid, $product[0]);
                 }
                 else {
+                    checkAvailability($product[0], $quantities[$j], $product[2], $product[3]);
                     updateProduct($userid, $product[0], $quantities[$j], $product[2], $product[3]);
                 }
             }
@@ -116,4 +117,17 @@ function deleteProduct($userid, $pid) {
 
 function updateProduct($userid, $pid, $quantity, $color, $size) {
     queryMysql("UPDATE carrello SET quantita = '$quantity' WHERE cliente = '$userid' AND prodotto = '$pid' AND colore = '$color' AND taglia = '$size';");
+}
+
+function checkAvailability($pid, $quantity, $color, $size) {
+    $query = "SELECT disponibilita FROM magazzino WHERE prodotto = '$pid' AND colore = '$color' AND taglia = '$size';";
+    $result = queryMysql($query);
+    $availability = $result->fetch_row();
+
+    if($quantity > $availability[0]) {
+        echo "over";
+        return 0;
+    }
+    
+    return $quantity;
 }
