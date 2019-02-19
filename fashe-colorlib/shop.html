@@ -81,27 +81,22 @@
 				<div class="flex-sb-m flex-w p-b-35">
 					<div class="flex-w">
 						<div class="rs2-select2 bo4 of-hidden w-size12 m-t-5 m-b-5 m-r-10">
-							<form method="POST" action="shop.php">
-								<select class="selection-2" id="sorting" name="sorting">
-									<option>Default Sorting</option>
+								<select class="selection-2" id="sorting" name="sorting" onchange="change()">
 									<option value="popularity">Popularity</option>
 									<option value="lth">Price: low to high</option>
 									<option value="htl">Price: high to low</option>
 								</select>
-							</form>
 						</div>
 
 
 						<div class="rs2-select2 bo4 of-hidden w-size12 m-t-5 m-b-5 m-r-10">
-							<form method="POST" action="shop.php">
-								<select class="selection-2" name="price">
-									<option>Price</option>
-									<option>€0.00 - €50.00</option>
-									<option>€50.00 - €100.00</option>
-									<option>€100.00 - €200.00</option>
-									<option>€200.00+</option>
+								<select class="selection-2" name="price" id="price-range" onchange="change()">
+									<option value = "">Any Price</option>
+									<option value = "0,50">€0.00 - €50.00</option>
+									<option value = "50,100">€50.00 - €100.00</option>
+									<option value = "100,200">€100.00 - €200.00</option>
+									<option value = "200,200000">€200.00+</option>
 								</select>
-							</form>
 						</div>
 					</div>
 
@@ -277,6 +272,47 @@
 </script>
 <!--===============================================================================================-->
 <script src="js/main.js"></script>
+<!--===============================================================================================-->
+<!-- sorting update request -->
+<script type="text/javascript">
+    function request(sort,min,max){
+        //create and submit form with new element
+        var form = $('<form></form>');
+        form.attr("method", "post");
+        form.attr("action", "shop.php");
+        var field1 = $('<input></input>');
+        field1.attr("type", "hidden");
+        field1.attr("name", "price_min");
+        field1.attr("value", min);
+        form.append(field1);
+        var field2 = $('<input></input>');
+        field2.attr("type", "hidden");
+        field2.attr("name", "price_max");
+        field2.attr("value", max);
+        form.append(field2);
+        var field3 = $('<input></input>');
+        field3.attr("type", "hidden");
+        field3.attr("name", "sorting");
+        field3.attr("value", sort);
+        form.append(field3);
+        $(document.body).append(form);
+        form.submit();
+    };
+</script>
+<!-- Sorting update procedure -->
+<script type="text/javascript">
+    function change(){
+        var sorting = $("select#sorting").contents("option:selected").val();
+        var pricerange = $("select#price-range").contents("option:selected").val();
+        if (pricerange != null){
+            var min = pricerange.slice(0 , pricerange.indexOf(","));
+            var max = pricerange.slice(pricerange.indexOf(",")+1);
+            request(sorting,min,max);
+        } else {
+            request(sorting);
+        }
+    }
+</script>
 
 </body>
 </html>
