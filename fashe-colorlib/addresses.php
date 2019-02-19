@@ -42,7 +42,6 @@ if (isset($_POST['delete'])) {
     $del = $_POST['delete'];
     $query =  "DELETE FROM indirizzi WHERE cliente = '$userid' AND alias = '$del';";
     queryMysql($query);
-    redirect("user-panel.php");
 }
 
 

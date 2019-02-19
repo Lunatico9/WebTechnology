@@ -44,7 +44,6 @@ if (isset($_POST['delete'])) {
     $del = $_POST['delete'];
     $query =  "DELETE FROM metodipagamento WHERE cliente = '$userid' AND id = '$del';";
     queryMysql($query);
-    redirect("user-panel.php");
 }
 
 
