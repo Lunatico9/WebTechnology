@@ -34,6 +34,8 @@ if(isset($_POST['address-name']) && isset($_POST['name']) && isset($_POST['surna
     $userid = $_SESSION['userid'];
     
     $alias = sanitizeString($_POST['address-name']);
+    $alias = str_replace("'", " ", $alias);
+
     //controlliamo che il cliente non abbia già un indirizzo salvato sotto il nuovo alias
     if(checkAlias($alias)) {
         $name = sanitizeString($_POST['name']);
@@ -45,7 +47,7 @@ if(isset($_POST['address-name']) && isset($_POST['name']) && isset($_POST['surna
         $cap = sanitizeString($_POST['cap']);
         $country = sanitizeString($_POST['country']);
 
-        queryMysql("INSERT INTO indirizzi (alias, cliente, nome, cognome, indirizzo, civico, citta, provincia, cap, stato) VALUES ('$alias', '$userid', '$name', '$surname', '$add', '$civ', '$city', '$reg' , '$cap', '$country');");
+        queryMysql("INSERT INTO indirizzi (alias, cliente, nome, cognome, indirizzo, civico, citta, provincia, cap, stato) VALUES ('$alias', '$userid', '$name', '$surname', '$add', '$civ', '$city', '$reg', '$cap', '$country');");
         redirect('addresses.php');
     }
 }
@@ -53,6 +55,7 @@ if(isset($_POST['address-name']) && isset($_POST['name']) && isset($_POST['surna
 $smarty->display('add-address.html');
 unset($_SESSION['error']);
 
+//controlla che l'alias fornito non sia già presente nel database per l'utente corrente
 function checkAlias($newalias) {
     $userid = $_SESSION['userid'];
     $query = "SELECT alias FROM indirizzi WHERE alias = '$newalias' AND cliente = '$userid';";
