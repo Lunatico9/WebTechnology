@@ -8,20 +8,19 @@ $name = 'tdw';
 $connection = new mysqli($host, $user, $pass, $name);
 if ($connection->connect_error) die($connection->connect_error);
 
-function queryMysql($query)
-{
+function queryMysql($query) {
     global $connection;
     $result = $connection->query($query);
     if (!$result) die($connection->error);
     return $result;
 }
 
-function sanitizeString($var)
-{
+function sanitizeString($var) {
     global $connection;
     $var = strip_tags($var);
     $var = htmlentities($var);
     $var = stripslashes($var);
+    $var = str_replace("'", "\\'", $var);
     return $var;
 }
 
@@ -35,8 +34,8 @@ function redirect($url) {
 function sessionManager() {
     session_start();
 
-    if(!isset($_SESSION['userid'])){
-        if(isset($_COOKIE['userid'])){
+    if(!isset($_SESSION['userid'])) {
+        if(isset($_COOKIE['userid'])) {
             $_SESSION['userid'] = $_COOKIE['userid'];
             $_SESSION['username'] = $_COOKIE['username'];
             $_SESSION['userrole'] = $_COOKIE['userrole'];
