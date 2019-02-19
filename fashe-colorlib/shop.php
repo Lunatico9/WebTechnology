@@ -23,7 +23,7 @@ $date = date('Y m d');
 
 //intercetta 
 if(isset($_REQUEST['sorting'])){
-    if($_REQUEST['sorting'] == "low to high") {
+    if($_REQUEST['sorting'] == "lth") {
         $sorting = "prodotto.prezzo ASC";
     }
     else {
