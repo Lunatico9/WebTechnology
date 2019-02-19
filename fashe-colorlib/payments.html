@@ -51,6 +51,9 @@
 								Logout
 							</a>
 						</li>
+                        <li class="p-t-4">
+							<button onclick="sweet()">PRESS HERE</button>
+						</li>
 					</ul>
 				</div>
 			</div>
@@ -68,7 +71,7 @@
 							<p class="card-text">{$payment[3]}</p>
 							<p class="card-text">{$payment[4]}</p>
 							<div class="text-center">
-								<a href="" onclick="delet()" class="btn s-text1 bg1 hov1 bo-rad-23 m-r-0">Delete</a>
+								<button href="" onclick="delet({$payment[0]})" class="btn s-text1 bg1 hov1 bo-rad-23 m-r-0">Delete</button>
 							</div>
 						</div>
 					</div>
@@ -160,13 +163,41 @@
 <!--===============================================================================================-->
 <script src="js/main.js"></script>
 <!--===============================================================================================-->
+<!-- SweetAlert Delete Warning -->
+<script type="text/javascript">
+    function delet(paymentid){
+    //show warning message with buttons
+    swal({
+        icon: "warning",
+        title: "Are you sure?",
+        buttons: ["cancel", "confirm"]
+    })
+        //if user clicks on confirm, delete the payment method
+        .then((value) => {
+            if (value != null){
+                request(paymentid);
+            }
+        });
+    }
+</script>
+
+
+<!--===============================================================================================-->
 <!-- Payment Delete function -->
 <script type="text/javascript">
-    function delet(){
-        $.get("payments.php?delete={$payment[0]}", function() {
-                location.reload();
-            });     
-    }
+    function request(payment){
+        //create and submit form with new element
+        var form = $('<form></form>');
+        form.attr("method", "post");
+        form.attr("action", "payments.php");
+        var field = $('<input></input>');
+        field.attr("type", "hidden");
+        field.attr("name", "paymentid");
+        field.attr("value", payment);
+        form.append(field);
+        $(document.body).append(form);
+        form.submit();
+    };
 </script>
 
 </body>
