@@ -111,7 +111,7 @@
 							<div class="btn-addcart-product-detail size9 trans-0-4 m-t-10 m-b-10">
 								<!-- Button --> 
 								<!-- AJAX here --> 
-								<button onclick="addProduct()"class="flex-c-m sizefull bg1 bo-rad-23 hov1 s-text1 trans-0-4">
+								<button onclick="addProduct()" class="flex-c-m sizefull bg1 bo-rad-23 hov1 s-text1 trans-0-4">
 									Add to Cart
 								</button>
 							</div>
@@ -153,6 +153,38 @@
 					</div>
 				</div>
 
+				<br>
+
+				{if $admin == 1}
+					<form method="POST" action="product-detail.php?product={$prodotto}">
+						<h5 class="m-text26 p-b-36 p-t-15">
+							Add discount price
+						</h5>
+
+						<p>Discounted price</p>
+						<div class="bo4 of-hidden size15 m-b-20">
+							<input class="sizefull s-text7 p-l-22 p-r-22" type="number" step="0.01" min="0" name="discount" placeholder="{$prezzo}" required>
+						</div>
+
+						<p>Start date</p>
+						<div class="bo4 of-hidden size15 m-b-20">
+							<input class="sizefull s-text7 p-l-22 p-r-22" type="date" name="start" required>
+						</div>
+
+						<p>End date</p>
+						<div class="bo4 of-hidden size15 m-b-20">
+							<input class="sizefull s-text7 p-l-22 p-r-22" type="date" name="end" required>
+						</div>
+		
+						<div class="w-size25">
+							<!-- Button -->
+							<button class="flex-c-m size2 bg1 bo-rad-23 hov1 m-text3 trans-0-4">
+								Submit
+							</button>
+						</div>
+					</form>
+					<br>
+				{/if}
 			</div>
 		</div>
 	</div>
@@ -172,48 +204,47 @@
 				<div class="slick2">
 					
 					{foreach item=product from=$relprod}
-					<div class="item-slick2 p-l-15 p-r-15">
-						<!-- Block2 -->
-						<div class="block2">
-							<div class="block2-img wrap-pic-w of-hidden pos-relative">
-								<img src="{$product[2]}" alt="IMG-PRODUCT">
+						<div class="item-slick2 p-l-15 p-r-15">
+							<!-- Block2 -->
+							<div class="block2">
+								<div class="block2-img wrap-pic-w of-hidden pos-relative">
+									<img src="{$product[2]}" alt="IMG-PRODUCT">
 
-								<div class="block2-overlay trans-0-4">
-									<div class="block2-btn-addcart w-size1 trans-0-4">
-										<!-- Button -->
-                                        <a href="product-detail.php?product={$product[0]}">
-										  <button class="flex-c-m size1 bg4 bo-rad-23 hov1 s-text1 trans-0-4">
-											 Add to Cart
-										  </button>
-                                        </a>
+									<div class="block2-overlay trans-0-4">
+										<div class="block2-btn-addcart w-size1 trans-0-4">
+											<!-- Button -->
+                                	        <a href="product-detail.php?product={$product[0]}">
+											  	<button class="flex-c-m size1 bg4 bo-rad-23 hov1 s-text1 trans-0-4">
+													Add to Cart
+										  	</button>
+                                        	</a>
+										</div>
 									</div>
 								</div>
-							</div>
 
-							<div class="block2-txt p-t-20">
-								<a href="product-detail.php?product={$product[0]}" class="block2-name dis-block s-text3 p-b-5">
-									{$product[0]}
-								</a>
+								<div class="block2-txt p-t-20">
+									<a href="product-detail.php?product={$product[0]}" class="block2-name dis-block s-text3 p-b-5">
+										{$product[0]}
+									</a>
 
-								{if isset($product[3])}
-								<span class="block2-oldprice m-text7 p-r-5">
-									€ {$product[1]}
-								</span>
-								<span class="block2-newprice m-text8 p-r-5">
-									€ {$product[3]}
-								</span>
-								{else}
-								<span class="block2-price m-text6 p-r-5">
-									€ {$product[1]}
-								</span>
-								{/if}
+									{if isset($product[3])}
+										<span class="block2-oldprice m-text7 p-r-5">
+											€ {$product[1]}
+										</span>
+										<span class="block2-newprice m-text8 p-r-5">
+											€ {$product[3]}
+										</span>
+									{else}
+										<span class="block2-price m-text6 p-r-5">
+											€ {$product[1]}
+										</span>
+									{/if}
+								</div>
 							</div>
 						</div>
-					</div>
 					{/foreach}
 				</div>
 			</div>
-
 		</div>
 	</section>
 

@@ -28,6 +28,14 @@ else {
     redirect("shop.php");
 }
 
+//costruiamo la vista per l'admin
+if($_SESSION['userrole'] == 'a') {
+    $smarty->assign("admin", '1');
+}
+else {
+    $smarty->assign("admin", '0');
+}
+
 //Populate menu
 $query = "SELECT catalogo.nome, categoria.nome, prodotto.nome FROM prodotto, categoria, catalogo WHERE catalogo.id = (SELECT prodotto.catalogo FROM prodotto WHERE prodotto.nome = '$nome') AND categoria.id = (SELECT prodotto.categoria FROM prodotto WHERE prodotto.nome = '$nome') AND prodotto.nome = '$nome';";
 $result = queryMysql($query);
@@ -38,7 +46,7 @@ $smarty->assign("catalogo", $menu[0]);
 $smarty->assign("categoria", $menu[1]);
 $smarty->assign("nome", $menu[2]);
 
-//Populate product details
+//Populate product's details
 $query = "SELECT prodotto.nome, prodotto.desc_breve, prodotto.desc_dett, prodotto.prezzo, prodottoscontato.prezzo FROM prodotto LEFT OUTER JOIN prodottoscontato ON prodotto.id = prodottoscontato.prodotto AND prodottoscontato.data_inizio > '$date' WHERE prodotto.nome = '$nome';";
 $result = queryMysql($query);
 $result->data_seek(0);
@@ -111,6 +119,21 @@ else {
         $relprod2[] = $result->fetch_row();
     }
     $smarty->assign("relprod", $relprod2);
+}
+
+//effettua l'aggiunta sconto ad un prodotto
+if (isset($_POST['discount']) && isset($_POST['start']) && isset($_POST['end'])) {
+    $price = $_POST['discount'];
+    $start = str_replace('-','', $_POST['start']);
+    $end = str_replace('-','', $_POST['end']);
+
+    $query = "SELECT id FROM prodotto WHERE prodotto.nome = '$nome';";
+    $result = queryMysql($query);
+    $product = $result->fetch_row();
+    $pid = $product[0];
+
+    queryMysql("INSERT INTO prodottoscontato (prodotto, data_inizio, data_fine, prezzo) VALUES ($pid, $start, $end, $price);");
+    redirect("shop.php");
 }
 
 $smarty->display('product-detail.html');
