@@ -6,7 +6,7 @@ require_once 'function.php';
 //Session management procedure
 sessionManager();
 
-
+//riceve dati da jquery
 $quantity = $_POST['quantity'];
 $color = $_POST['color'];
 $size = $_POST['size'];
@@ -16,6 +16,9 @@ $query = "SELECT id FROM prodotto WHERE nome = '$product';";
 $result = queryMysql($query);
 $row = $result->fetch_row();
 $pid = $row[0];
+
+//controlliamo che la quantità di prodotto non ecceda la disponibilità
+$quantity = checkAvailability($pid, $quantity, $color, $size);
 
 //Controlla se l'utente ha effettuato il login se non lo ha effettuato
 //aggiungiamo i prodotti ad un campo della variabile di sessione
@@ -41,13 +44,27 @@ else {
         echo 0;
     }
     else {
-        //aumentiamo solamente la quantoità del prodotto nel carrello
+        //aumentiamo solamente la quantità del prodotto nel carrello
         $quantity += $newquantity;
         queryMysql("UPDATE carrello SET quantita = '$quantity' WHERE cliente = '$userid' AND prodotto = '$pid' AND colore = '$color' AND taglia = '$size';");
         echo 1;
     }
 }
 
+//controlla se abbiamo abbastanza disponibilità di prodotto per soddisfare la richiesta
+function checkAvailability($pid, $quantity, $color, $size) {
+    $query = "SELECT disponibilita FROM magazzino WHERE prodotto = '$pid' AND colore = '$color' AND taglia = '$size';";
+    $result = queryMysql($query);
+    $availability = $result->fetch_row();
+
+    if($quantity > $availability[0]) {
+        echo "Over-order";
+        return $availability[0];
+    }
+    return $quantity;
+}
+
+//controlla se il prodotto è già presente nel carrello nel database
 function checkProduct($userid, $pid, $color, $size) {
     $query = "SELECT quantita, colore, taglia FROM carrello WHERE cliente = '$userid' AND prodotto = $pid;";
     $result = queryMysql($query);
@@ -65,6 +82,7 @@ function checkProduct($userid, $pid, $color, $size) {
     return 0;
 }
 
+//controlla se il prodotto è già presente nella variabile di sessione
 function checkProductNotLogged($pid, $quantity, $color, $size) {
     if(isset($_SESSION['cart'])) {
         foreach($_SESSION['cart'] as $prd) {

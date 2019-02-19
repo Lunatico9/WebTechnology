@@ -96,6 +96,7 @@ if(isset($_POST['address']) && isset($_POST['payment']) && isset($_POST['courier
         $color = $product[$j][2];
         $size = $product[$j][3];
 
+        //se il prodotto è scontato inseriamo il prezzo scontato, altrimenti il prezzo normale
         if(isset($product[$j][5])) {
             $price = $product[$J][5];
             queryMysql("INSERT INTO acquisto (ordine, prodotto, quantita, colore, taglia, prezzo) VALUES ('$orderid', '$id', '$quantity', '$color', '$size', '$price');");
@@ -104,6 +105,15 @@ if(isset($_POST['address']) && isset($_POST['payment']) && isset($_POST['courier
             $price = $product[$j][4];
             queryMysql("INSERT INTO acquisto (ordine, prodotto, quantita, colore, taglia, prezzo) VALUES ('$orderid', '$id', '$quantity', '$color', '$size', '$price');");
         }
+
+        //togliamo dalla disponibilità del prodotto la quantità acquistata
+        $query = "SELECT disponibilita FROM magazzino WHERE prodotto = '$id' AND colore = '$color' AND taglia = '$size';";
+        $result = queryMysql($query);
+        $availability = $result->fetch_row();
+
+        $newAvailability = $availability[0] - $quantity;
+
+        queryMysql("UPDATE magazzino SET disponibilita = '$newAvailability' WHERE prodotto = '$id' AND colore = '$color' AND taglia = '$size';");
     }
     //eliminiamo tutti i prodotti dal carrello
     queryMysql("DELETE FROM carrello WHERE carrello.cliente = '$userid';");
