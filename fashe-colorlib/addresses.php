@@ -17,6 +17,14 @@ $username = $values[1];
 $smarty->assign("items", "$items");
 $smarty->assign("user", "$username");
 
+//intercept delete
+if (isset($_POST['delete'])) {
+    $userid = $_SESSION['userid'];
+    $del = $_POST['delete'];
+    $query =  "DELETE FROM indirizzi WHERE cliente = '$userid' AND alias = '$del';";
+    queryMysql($query);
+}
+
 //recuperiamo gli indirizzi dell'utente dal database
 $userid = $_SESSION['userid'];
 $query = "SELECT alias, nome, cognome, indirizzo, civico, citta, provincia, cap, stato FROM indirizzi WHERE cliente = '$userid';";
@@ -35,13 +43,3 @@ if ($result->num_rows > 0) {
 else {
     $smarty->display('addresses-empty.html');
 }
-
-//anche questa va fatta con js
-if (isset($_POST['delete'])) {
-    $userid = $_SESSION['userid'];
-    $del = $_POST['delete'];
-    $query =  "DELETE FROM indirizzi WHERE cliente = '$userid' AND alias = '$del';";
-    queryMysql($query);
-}
-
-
