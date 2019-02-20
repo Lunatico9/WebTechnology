@@ -82,7 +82,31 @@ for ($j = 0; $j < $result->num_rows; ++$j) {
 
 $smarty->assign("colors", $colors);
 
-//Poulate product's images
+//Implement availability string
+$pid = getProductId($nome);
+
+$query = "SELECT disponibilita FROM magazzino WHERE prodotto = '$pid';";
+$result = queryMysql($query);
+$row = $result->fetch_row();
+$av = $row[0];
+
+if($av > 10) {
+    $availability = "In Stock";
+    $stock = "text-success";
+}
+elseif ($av > 0) {
+    $availability = "Only ". $av. " left in stock - order soon.";
+    $stock = "text-warning";
+}
+else {
+    $availability = "Currently unavailable";
+    $stock = "text-danger";
+}
+
+$smarty->assign("availability", $availability);
+$smarty->assign("stock", $stock);
+
+//Populate product's images
 $query = "SELECT immagine.path FROM immagine, prodotto WHERE prodotto.nome = '$nome' AND prodotto.id = immagine.prodotto";
 $result = queryMysql($query);
 $images = array();
@@ -127,13 +151,18 @@ if (isset($_POST['discount']) && isset($_POST['start']) && isset($_POST['end']))
     $start = str_replace('-','', $_POST['start']);
     $end = str_replace('-','', $_POST['end']);
 
-    $query = "SELECT id FROM prodotto WHERE prodotto.nome = '$nome';";
-    $result = queryMysql($query);
-    $product = $result->fetch_row();
-    $pid = $product[0];
+    $pid = getProductId($nome);
 
     queryMysql("INSERT INTO prodottoscontato (prodotto, data_inizio, data_fine, prezzo) VALUES ($pid, $start, $end, $price);");
     redirect("shop.php");
 }
 
 $smarty->display('html/product-detail.html');
+
+
+function getProductId($name) {
+    $query = "SELECT id FROM prodotto WHERE prodotto.nome = '$name';";
+    $result = queryMysql($query);
+    $product = $result->fetch_row();
+    return $product[0];
+}
