@@ -23,12 +23,12 @@ $pid = $row[0];
 if(!isset($_SESSION['userid'])) {
 
     //controlliamo se il prodoto non sia già presente nella variabile e che la sua quantità non superi la disponibilità
-    if(checkProductNotLogged($pid, $quantity, $color, $size);) {
+    if(checkProductNotLogged($pid, $quantity, $color, $size)) {
         $product = array($pid, $quantity, $color, $size);
         $_SESSION['cart'][] = $product;
         echo 0; //ajax aggiorna l'indice nell'header
     }
-    else() {
+    else {
         echo 1; //ajax non aggiorna l'indice nell'header
     }
 }
