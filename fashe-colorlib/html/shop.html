@@ -81,7 +81,7 @@
 				<div class="flex-sb-m flex-w p-b-35">
 					<div class="flex-w">
 						<div class="rs2-select2 bo4 of-hidden w-size12 m-t-5 m-b-5 m-r-10">
-								<select class="selection-2" id="sorting" name="sorting" onchange="change()">
+								<select class="selection-2" id="sorting" name="sorting">
 									<option value="popularity">Popularity</option>
 									<option value="lth">Price: low to high</option>
 									<option value="htl">Price: high to low</option>
@@ -90,13 +90,16 @@
 
 
 						<div class="rs2-select2 bo4 of-hidden w-size12 m-t-5 m-b-5 m-r-10">
-								<select class="selection-2" name="price" id="price-range" onchange="change()">
+								<select class="selection-2" name="price" id="price-range">
 									<option value = "">Any Price</option>
 									<option value = "0,50">€0.00 - €50.00</option>
 									<option value = "50,100">€50.00 - €100.00</option>
 									<option value = "100,200">€100.00 - €200.00</option>
 									<option value = "200,200000">€200.00+</option>
 								</select>
+						</div>
+                        <div class="rs2-select2 of-hidden w-size12 m-t-5 m-b-5 m-r-10">
+                            <button class="flex-c-m size2 bg4 bo-rad-23 hov1 m-text3 trans-0-4" onclick="change()">Update Sorting</button>
 						</div>
 					</div>
 
