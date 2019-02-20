@@ -85,7 +85,13 @@ if (isset($_POST['update'])) {
                 unset($_SESSION['cart'][$i]);
             }
             else {
-                $item[1] = $quantities[$i];
+                if(checkAvailability($item[0], $quantities[$j], $item[2], $item[3])) {
+                    $item[1] = $quantities[$i];
+                    echo 1;
+                }
+                else {
+                    echo 0;
+                }
             }
             $i++;
         }
@@ -110,6 +116,10 @@ if (isset($_POST['update'])) {
                 else {
                     if(checkAvailability($product[0], $quantities[$j], $product[2], $product[3])) {
                         updateProduct($userid, $product[0], $quantities[$j], $product[2], $product[3]);
+                        echo 1;
+                    }
+                    else {
+                        echo 0;
                     }
                 }
             }
@@ -134,7 +144,6 @@ function checkAvailability($pid, $quantity, $color, $size) {
     $availability = $result->fetch_row();
 
     if($quantity > $availability[0]) {
-        echo "over";
         return 0;
     }
     
