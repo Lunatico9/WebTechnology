@@ -30,13 +30,12 @@ else {
 if (isset($_POST['paymentid'])) {
     $userid = $_SESSION['userid'];
     $del = $_POST['paymentid'];
-    $query =  "DELETE FROM metodipagamento WHERE cliente = '$userid' AND id = '$del';";
-    queryMysql($query);
+    queryMysql("UPDATE metodipagamento SET eliminato = '1' WHERE id = '$del';");
 }
 
 //recuperiamo i metodi di pagamento dell'utente dal database
 $userid = $_SESSION['userid'];
-$query = "SELECT id, nome, cognome, tipo_carta, num_carta FROM metodipagamento WHERE cliente = '$userid';";
+$query = "SELECT id, nome, cognome, tipo_carta, num_carta FROM metodipagamento WHERE cliente = '$userid' AND eliminato = '0';";
 $result = queryMysql($query);
 $payment = array();
     

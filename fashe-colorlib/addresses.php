@@ -29,13 +29,12 @@ else {
 if (isset($_POST['delete'])) {
     $userid = $_SESSION['userid'];
     $del = $_POST['delete'];
-    $query =  "DELETE FROM indirizzi WHERE cliente = '$userid' AND alias = '$del';";
-    queryMysql($query);
+    queryMysql("UPDATE indirizzi SET eliminato = '1' WHERE alias = '$del' AND cliente = '$userid';");
 }
 
 //recuperiamo gli indirizzi dell'utente dal database
 $userid = $_SESSION['userid'];
-$query = "SELECT alias, nome, cognome, indirizzo, civico, citta, provincia, cap, stato FROM indirizzi WHERE cliente = '$userid';";
+$query = "SELECT alias, nome, cognome, indirizzo, civico, citta, provincia, cap, stato FROM indirizzi WHERE cliente = '$userid' AND eliminato = '0';";
 $result = queryMysql($query);
 $address = array();
     

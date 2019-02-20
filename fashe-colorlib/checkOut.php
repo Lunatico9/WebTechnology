@@ -24,7 +24,7 @@ $total = $_POST['total'];
 $smarty->assign("total", $total);
 
 //Popola address options
-$query = "SELECT alias, nome, cognome, indirizzo, civico, citta, cap, provincia FROM indirizzi WHERE cliente = '$userid';";
+$query = "SELECT alias, nome, cognome, indirizzo, civico, citta, cap, provincia FROM indirizzi WHERE cliente = '$userid' AND eliminato = '0';";
 $result = queryMysql($query);
 $address = array();
 
@@ -36,7 +36,7 @@ for ($j = 0; $j < $result->num_rows; ++$j) {
 $smarty->assign("addresses", $address);
 
 //Populate payment options
-$query = "SELECT id, nome, cognome, tipo_carta, num_carta FROM metodipagamento WHERE cliente = '$userid';";
+$query = "SELECT id, nome, cognome, tipo_carta, num_carta FROM metodipagamento WHERE cliente = '$userid' AND eliminato = '0';";
 $result = queryMysql($query);
 $payment = array();
 
