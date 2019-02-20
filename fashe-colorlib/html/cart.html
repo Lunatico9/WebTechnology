@@ -147,14 +147,20 @@
         for (i = 0; i < count; i++){
             quantityArr[i] = parseInt($(".table-row#"+i).find(".num-product").val());
         }
-        //submit post form with the resulting array and the update flag set
-        $.post("cart.php",{
+        //AJAX request with the resulting array and the update flag set
+        $.post("cart",{
             quantities: quantityArr,
             update: "true"
-        }, function(){
-            swal("Cart Updated!", "", "success").then(function(){
+        }, function(data, data2, data3, data4) {
+            var over = data.slice(0,4);
+            if (over == "over"){
+                swal("We don't have that many in stock!", "Try a lower amount please", "error");
                 location.reload();
-            });
+            } else {
+                swal("Cart Updated!","", "success").then(function(){
+                    location.reload();
+                });
+            }
         });
     }
 
