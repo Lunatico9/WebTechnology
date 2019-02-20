@@ -19,7 +19,7 @@ $smarty->assign("items", "$items");
 $smarty->assign("user", "$username");
 
 //Retrieve product detail
-$date = date('Y m d');
+$date = str_replace(" ", "", date('Y m d'));
 
 if (isset($_REQUEST['product'])){
     $nome = $_REQUEST['product'];
@@ -47,7 +47,7 @@ $smarty->assign("categoria", $menu[1]);
 $smarty->assign("nome", $menu[2]);
 
 //Populate product's details
-$query = "SELECT prodotto.nome, prodotto.desc_breve, prodotto.desc_dett, prodotto.prezzo, prodottoscontato.prezzo FROM prodotto LEFT OUTER JOIN prodottoscontato ON prodotto.id = prodottoscontato.prodotto AND prodottoscontato.data_inizio > '$date' WHERE prodotto.nome = '$nome';";
+$query = "SELECT prodotto.nome, prodotto.desc_breve, prodotto.desc_dett, prodotto.prezzo, prodottoscontato.prezzo FROM prodotto LEFT OUTER JOIN prodottoscontato ON prodotto.id = prodottoscontato.prodotto AND prodottoscontato.data_inizio < '$date' AND prodottoscontato.data_fine > '$date' WHERE prodotto.nome = '$nome';";
 $result = queryMysql($query);
 $result->data_seek(0);
 $details = $result->fetch_row();

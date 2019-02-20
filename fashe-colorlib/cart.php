@@ -18,7 +18,7 @@ $smarty->assign("items", "$items");
 $smarty->assign("user", "$username");
 
 //Retrieve cart
-$date = date('Y m d');
+$date = str_replace(" ", "", date('Y m d'));
 
 //Controlla se l'utente ha effettuato il login, se non lo ha effettuato costruiamo la view del carrello 
 //con i dati presenti nella variabile di sessione
@@ -34,7 +34,7 @@ if(!isset($_SESSION['userid'])) {
             $color = $item[2];
             $size = $item[3];
             //recuperiamo gli altri dati che ci servono per popolare il carrello
-            $query = "SELECT prodotto.nome, prodotto.prezzo, immagine.path, prodottoscontato.prezzo FROM immagine, prodotto LEFT OUTER JOIN prodottoscontato ON prodotto.id = prodottoscontato.prodotto AND prodottoscontato.data_inizio > '$date' WHERE prodotto.id = '$pid' AND immagine.prodotto = prodotto.id AND immagine.principale = 1;";
+            $query = "SELECT prodotto.nome, prodotto.prezzo, immagine.path, prodottoscontato.prezzo FROM immagine, prodotto LEFT OUTER JOIN prodottoscontato ON prodotto.id = prodottoscontato.prodotto AND prodottoscontato.data_inizio < '$date' AND prodottoscontato.data_fine > '$date' WHERE prodotto.id = '$pid' AND immagine.prodotto = prodotto.id AND immagine.principale = 1;";
             $result = queryMysql($query);
             $u = $result->fetch_row();
     
@@ -54,7 +54,7 @@ if(!isset($_SESSION['userid'])) {
 //nel caso in cui il cliente è loggato estraiamo dal database i dati sui prodotti presenti nel carrello
 else {
     $userid = $_SESSION['userid'];
-    $query = "SELECT prodotto.nome, prodotto.prezzo, immagine.path, carrello.quantita, prodottoscontato.prezzo, carrello.colore, carrello.taglia FROM carrello, immagine, prodotto LEFT OUTER JOIN prodottoscontato ON prodotto.id = prodottoscontato.prodotto AND prodottoscontato.data_inizio > '$date' WHERE carrello.cliente = '$userid' AND prodotto.id = carrello.prodotto AND immagine.prodotto = carrello.prodotto AND immagine.principale = 1 ORDER BY prodotto.id;";
+    $query = "SELECT prodotto.nome, prodotto.prezzo, immagine.path, carrello.quantita, prodottoscontato.prezzo, carrello.colore, carrello.taglia FROM carrello, immagine, prodotto LEFT OUTER JOIN prodottoscontato ON prodotto.id = prodottoscontato.prodotto AND prodottoscontato.data_inizio < '$date' AND prodottoscontato.data_fine > '$date' WHERE carrello.cliente = '$userid' AND prodotto.id = carrello.prodotto AND immagine.prodotto = carrello.prodotto AND immagine.principale = 1 ORDER BY prodotto.id;";
     $result = queryMysql($query);
     $product = array();
 
