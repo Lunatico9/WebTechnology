@@ -154,9 +154,12 @@
         }, function(data) {
             var over = data.slice(0,4);
             if (over == "over"){
-                swal("We don't have that many in stock!", "Try a lower amount please", "error");
+                swal("We don't have that many in stock!", "Try a lower amount please", "error").then( function(){
+                    location.reload();
+                });
             } else {
                 swal("Cart Updated!","", "success").then(function(){
+                    location.reload();
                 });
             }
         });
