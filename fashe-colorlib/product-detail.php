@@ -116,7 +116,24 @@ for ($j = 0; $j < $result->num_rows; ++$j) {
     $images[] = $result->fetch_row();
 }
 
-$smarty->assign("images", $images);
+$smarty->assign("img1", $images[0][0]);
+
+
+if (isset($images[1][0])) {
+    $smarty->assign("isset2", 1);
+    $smarty->assign("img2", $images[1][0]);
+}
+else {
+    $smarty->assign("isset2", 0);
+}
+
+if (isset($images[2][0])) {
+    $smarty->assign("isset3", 1);
+    $smarty->assign("img3", $images[2][0]);
+}
+else {
+    $smarty->assign("isset3", 0);
+}
 
 //Poulate related products
 $query = "SELECT prodotto.nome, prodotto.prezzo, immagine.path, prodottoscontato.prezzo FROM categoria, immagine, prodotto LEFT OUTER JOIN prodottoscontato ON prodotto.id = prodottoscontato.prodotto AND prodottoscontato.data_inizio > '$date' WHERE categoria.nome = '$menu[1]' AND prodotto.nome != '$nome' AND immagine.prodotto = prodotto.id AND immagine.principale = 1;";
@@ -160,6 +177,9 @@ if (isset($_POST['discount']) && isset($_POST['start']) && isset($_POST['end']))
 $smarty->display('html/product-detail.html');
 
 
+
+
+//recupera l'id del prodotto dal nome
 function getProductId($name) {
     $query = "SELECT id FROM prodotto WHERE prodotto.nome = '$name';";
     $result = queryMysql($query);
