@@ -81,7 +81,13 @@ if (isset($_POST['update'])) {
     if(!isset($_SESSION['userid'])) {
         $i = 0;
         foreach ($_SESSION['cart'] AS &$item) {
-            $item[1] = $quantities[$i++];
+            if ($quantities[$i] == 0) {
+                unset($_SESSION['cart'][$i]);
+            }
+            else {
+                $item[1] = $quantities[$i];
+            }
+            $i++;
         }
     }
     else {
