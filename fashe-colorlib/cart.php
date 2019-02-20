@@ -17,6 +17,61 @@ $username = $values[1];
 $smarty->assign("items", "$items");
 $smarty->assign("user", "$username");
 
+
+//intercept update
+if (isset($_POST['update'])) {
+    $quantities = $_POST['quantities'];
+
+    if(!isset($_SESSION['userid'])) {
+        $i = 0;
+        foreach ($_SESSION['cart'] AS &$item) {
+            if ($quantities[$i] == 0) {
+                unset($_SESSION['cart'][$i]);
+            }
+            else {
+                if(checkAvailability($item[0], $quantities[$j], $item[2], $item[3])) {
+                    $item[1] = $quantities[$i];
+                    echo 1;
+                }
+                else {
+                    echo 0;
+                }
+            }
+            $i++;
+        }
+    }
+    else {
+        //recuperiamo gli oggetti dal carrello dell'utente
+        $userid = $_SESSION['userid'];
+        $query = "SELECT prodotto, quantita, colore, taglia FROM carrello WHERE cliente = '$userid';";
+        $result = queryMysql($query);
+        if ($result->num_rows > 0) {
+            for ($j = 0; $j < $result->num_rows; $j++) {
+                $result->data_seek($j);
+                $product = $result->fetch_row();
+
+                //controlliamo se la quantità è cambiata
+                if($product[1] == $quantities[$j]) {
+                    continue;
+                }
+                elseif($quantities[$j] == 0) {
+                    deleteProduct($userid, $product[0]);
+                }
+                else {
+                    if(checkAvailability($product[0], $quantities[$j], $product[2], $product[3])) {
+                        updateProduct($userid, $product[0], $quantities[$j], $product[2], $product[3]);
+                        echo 1;
+                    }
+                    else {
+                        echo 0;
+                    }
+                }
+            }
+        }
+    }
+}
+
+
 //Retrieve cart
 $date = str_replace(" ", "", date('Y m d'));
 
@@ -74,58 +129,6 @@ else {
     }
 }
 
-//intercept update
-if (isset($_POST['update'])) {
-    $quantities = $_POST['quantities'];
-
-    if(!isset($_SESSION['userid'])) {
-        $i = 0;
-        foreach ($_SESSION['cart'] AS &$item) {
-            if ($quantities[$i] == 0) {
-                unset($_SESSION['cart'][$i]);
-            }
-            else {
-                if(checkAvailability($item[0], $quantities[$j], $item[2], $item[3])) {
-                    $item[1] = $quantities[$i];
-                    echo 1;
-                }
-                else {
-                    echo 0;
-                }
-            }
-            $i++;
-        }
-    }
-    else {
-        //recuperiamo gli oggetti dal carrello dell'utente
-        $userid = $_SESSION['userid'];
-        $query = "SELECT prodotto, quantita, colore, taglia FROM carrello WHERE cliente = '$userid';";
-        $result = queryMysql($query);
-        if ($result->num_rows > 0) {
-            for ($j = 0; $j < $result->num_rows; $j++) {
-                $result->data_seek($j);
-                $product = $result->fetch_row();
-
-                //controlliamo se la quantità è cambiata
-                if($product[1] == $quantities[$j]) {
-                    continue;
-                }
-                elseif($quantities[$j] == 0) {
-                    deleteProduct($userid, $product[0]);
-                }
-                else {
-                    if(checkAvailability($product[0], $quantities[$j], $product[2], $product[3])) {
-                        updateProduct($userid, $product[0], $quantities[$j], $product[2], $product[3]);
-                        echo 1;
-                    }
-                    else {
-                        echo 0;
-                    }
-                }
-            }
-        }
-    }
-}
 
 //elimina il prodotto dal carrello
 function deleteProduct($userid, $pid) {
@@ -144,6 +147,7 @@ function checkAvailability($pid, $quantity, $color, $size) {
     $availability = $result->fetch_row();
 
     if($quantity > $availability[0]) {
+        echo "over";
         return 0;
     }
     

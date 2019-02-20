@@ -151,14 +151,12 @@
         $.post("cart",{
             quantities: quantityArr,
             update: "true"
-        }, function(data, data2, data3, data4) {
+        }, function(data) {
             var over = data.slice(0,4);
             if (over == "over"){
                 swal("We don't have that many in stock!", "Try a lower amount please", "error");
-                location.reload();
             } else {
                 swal("Cart Updated!","", "success").then(function(){
-                    location.reload();
                 });
             }
         });
