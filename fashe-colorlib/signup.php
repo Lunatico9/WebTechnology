@@ -43,7 +43,7 @@ if (isset($_POST['username']) && isset($_POST['password']) && isset($_POST['conf
     $ruolo = 'u';
 
     if (checkUsername($user) && checkEmail($email) && checkPassword($password, $cpassword)) {
-        queryMysql("INSERT INTO cliente (username, password, email, data_pass, data_reg, ruolo) VALUES ('$user', '$password', '$email', '$data', '$data', '$ruolo');");
+        queryMysql("INSERT INTO cliente (username, password, email, data_reg, ruolo) VALUES ('$user', '$password', '$email', '$data', '$ruolo');");
         
         //retrieve id and initialize session values
         $query = "SELECT id, username, ruolo FROM cliente WHERE username = '$user' AND password = '$password';";
