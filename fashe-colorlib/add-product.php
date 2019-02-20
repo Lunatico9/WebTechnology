@@ -26,6 +26,20 @@ else {
     $smarty->assign("admin", '0');
 }
 
+//Controlla se è presente messaggio d'errore da mostrare
+if (isset($_SESSION['error'])) {
+    $error = $_SESSION['error'];
+    $message = $_SESSION['message'];
+    $smarty->assign("error", "$error");
+    $smarty->assign("message", "$message");
+}
+else {
+    $error = 0;
+    $message = "";
+    $smarty->assign("error", "$error");
+    $smarty->assign("message", "$message");
+}
+
 //Popola category options
 $query = "SELECT id, nome FROM categoria;";
 $result = queryMysql($query);
@@ -49,20 +63,6 @@ for ($j = 0; $j < $result->num_rows; ++$j) {
 }
 
 $smarty->assign("catalogues", $catalogue);
-
-//Controlla se è presente messaggio d'errore da mostrare
-if (isset($_SESSION['error'])) {
-    $error = $_SESSION['error'];
-    $message = $_SESSION['message'];
-    $smarty->assign("error", "$error");
-    $smarty->assign("message", "$message");
-}
-else {
-    $error = 0;
-    $message = "";
-    $smarty->assign("error", "$error");
-    $smarty->assign("message", "$message");
-}
 
 //Retrieve form data
 if(isset($_POST['name']) && isset($_POST['color']) && isset($_POST['size']) && isset($_POST['price']) && isset($_POST['availability']) && isset($_POST['description']) && isset($_POST['detailed-description']) && isset($_POST['category']) && isset($_POST['catalogue']) && isset($_FILES['userfile'])) {
