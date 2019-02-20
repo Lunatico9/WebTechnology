@@ -44,6 +44,7 @@ else {
 
 //Retrieve shop
 $date = str_replace(" ", "", date('Y m d'));
+$option = "";
 
 //effettua la ricerca
 if (isset($_REQUEST['search-product'])) {
@@ -54,13 +55,15 @@ if (isset($_REQUEST['search-product'])) {
 elseif(isset($_REQUEST['catalogue'])){
     $catalogue = $_REQUEST['catalogue'];
     $query = "SELECT prodotto.nome, prodotto.prezzo, immagine.path, prodottoscontato.prezzo FROM immagine, prodotto LEFT OUTER JOIN prodottoscontato ON prodotto.id = prodottoscontato.prodotto AND prodottoscontato.data_inizio < '$date' AND prodottoscontato.data_fine > '$date' WHERE prodotto.id = immagine.prodotto AND immagine.principale = 1 AND prodotto.prezzo >= '$min' AND prodotto.prezzo <= '$max' AND prodotto.catalogo = (SELECT id FROM catalogo WHERE catalogo.nome = '$catalogue' ORDER BY $sorting);";
+    $option = $_REQUEST['catalogue'];
 }
 //mosta prodotti in sconto
 elseif(isset($_REQUEST['onsale'])){
     $query = "SELECT prodotto.nome, prodotto.prezzo, immagine.path, prodottoscontato.prezzo FROM immagine, prodotto, prodottoscontato WHERE prodotto.id = prodottoscontato.prodotto AND prodottoscontato.data_inizio < '$date' AND prodottoscontato.data_fine > '$date' AND prodotto.id = immagine.prodotto AND prodottoscontato.prezzo >= '$min' AND prodottoscontato.prezzo <= '$max' AND immagine.principale = 1;";
+    $option = "onsale";
 }
 //mostra prodotti nella categoria scelta
-elseif(isset($_REQUEST['category'])){
+elseif(isset($_REQUEST['category'])) {
     $category = $_REQUEST['category'];
     $query = "SELECT prodotto.nome, prodotto.prezzo, immagine.path, prodottoscontato.prezzo FROM immagine, prodotto LEFT OUTER JOIN prodottoscontato ON prodotto.id = prodottoscontato.prodotto AND prodottoscontato.data_inizio < '$date' AND prodottoscontato.data_fine > '$date' WHERE prodotto.id = immagine.prodotto AND immagine.principale = 1 AND prodotto.categoria = (SELECT categoria.id FROM categoria WHERE categoria.nome = '$category' ORDER BY $sorting);";
 }
@@ -68,6 +71,8 @@ elseif(isset($_REQUEST['category'])){
 else {
     $query = "SELECT prodotto.nome, prodotto.prezzo, immagine.path, prodottoscontato.prezzo FROM immagine, prodotto LEFT OUTER JOIN prodottoscontato ON prodotto.id = prodottoscontato.prodotto AND prodottoscontato.data_inizio < '$date' AND prodottoscontato.data_fine > '$date' WHERE prodotto.id = immagine.prodotto AND immagine.principale = 1 AND prodotto.prezzo >= '$min' AND prodotto.prezzo <= '$max' ORDER BY $sorting;";
 }
+
+$smarty->assign("option", "$option");
 
 //Retrieve products from db
 $result = queryMysql($query);
@@ -110,7 +115,9 @@ if ($product_num > 0) {
 
     $smarty->assign("products", $product);
     $smarty->display('html/shop.html');
+    unset($option);
 }
 else {
     $smarty->display('html/shop-empty.html');
+    unset($option);
 }

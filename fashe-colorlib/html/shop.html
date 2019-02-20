@@ -24,47 +24,90 @@
 
 					<ul class="p-b-54">
 						<li class="p-t-4">
-							<a href="shop.php" class="s-text13 active1">
-								All
-							</a>
+							{if $option == ""}
+								<a href="shop.php" class="s-text13 active1">
+									All
+								</a>
+							{else}
+								<a href="shop.php" class="s-text13">
+									All
+								</a>
+							{/if}
 						</li>
 
 						<li class="p-t-4">
-							<a href="shop.php?onsale=onsale" class="s-text13 active1">
-								On Sale
-							</a>
+							{if $option == "onsale"}
+								<a href="shop.php?onsale=onsale" class="s-text13 active1">
+									On Sale
+								</a>
+							{else}
+								<a href="shop.php?onsale=onsale" class="s-text13">
+									On Sale
+								</a>
+							{/if}
 						</li>
 
 						<li class="p-t-4">
-							<a href="shop.php?catalogue=swords" class="s-text13">
-								Swords
-							</a>
+							{if $option == "swords"}
+								<a href="shop.php?catalogue=swords" class="s-text13 active1">
+									Swords
+								</a>
+							{else}
+								<a href="shop.php?catalogue=swords" class="s-text13">
+									Swords
+								</a>
+							{/if}
 						</li>
 
 						<li class="p-t-4">
-							<a href="shop.php?catalogue=shields" class="s-text13">
-								Shields
-							</a>
+							{if $option == "shields"}
+								<a href="shop.php?catalogue=shields" class="s-text13 active1">
+									Shields
+								</a>
+							{else}
+								<a href="shop.php?catalogue=shields" class="s-text13">
+									Shields
+								</a>
+							{/if}
 						</li>
 
 						<li class="p-t-4">
-							<a href="shop.php?catalogue=protective gears" class="s-text13">
-								Protective gears
-							</a>
+							{if $option == "protective gears"}
+								<a href="shop.php?catalogue=protective gears" class="s-text13 active1">
+									Protective gears
+								</a>
+							{else}
+								<a href="shop.php?catalogue=protective gears" class="s-text13">
+									Protective gears
+								</a>
+							{/if}
 						</li>
 
 						<li class="p-t-4">
-							<a href="shop.php?catalogue=manuscripts" class="s-text13">
-								Manuscripts
-							</a>
+							{if $option == "manuscripts"}
+								<a href="shop.php?catalogue=manuscripts" class="s-text13 active1">
+									Manuscripts
+								</a>
+							{else}
+								<a href="shop.php?catalogue=manuscripts" class="s-text13">
+									Manuscripts
+								</a>
+							{/if}
 						</li>
 
 						<li class="p-t-4">
-							<a href="shop.php?catalogue=accessories" class="s-text13">
-								Accesories
-							</a>
+							{if $option == "accessories"}
+								<a href="shop.php?catalogue=accessories" class="s-text13 active1">
+									Accesories
+								</a>
+							{else}
+								<a href="shop.php?catalogue=accessories" class="s-text13">
+									Accesories
+								</a>
+							{/if}
 						</li>
 					</ul>
+					
 					<div class="search-product pos-relative bo4 of-hidden">
 						<form method="POST" action="shop.php">
 							<input class="s-text7 size6 p-l-23 p-r-50" type="text" name="search-product" placeholder="Search Products...">
