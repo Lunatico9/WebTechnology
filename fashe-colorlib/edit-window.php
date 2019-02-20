@@ -98,7 +98,7 @@ function retrieveWindow($window) {
     $query = "SELECT prodotto.id, prodotto.nome FROM vetrina, evidenzia LEFT JOIN prodotto ON prodotto.id = evidenzia.prodotto WHERE evidenzia.vetrina = vetrina.id AND vetrina.nome = '$window';";
 
     $result = queryMysql($query);
-    $onSale = array();
+    $products = array();
 
     for ($j = 0; $j < $result->num_rows; ++$j) {
         $result->data_seek($j);
