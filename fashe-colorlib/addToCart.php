@@ -51,6 +51,9 @@ else {
             echo 1;
         }
     }
+    elseif($newquantity == 1) {
+        echo 1;
+    }
     else {
         //aumentiamo solamente la quantità del prodotto nel carrello
         $quantity += $newquantity;
