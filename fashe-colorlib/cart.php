@@ -91,7 +91,6 @@ if (isset($_POST['update'])) {
         }
     }
     else {
-        
         //recuperiamo gli oggetti dal carrello dell'utente
         $userid = $_SESSION['userid'];
         $query = "SELECT prodotto, quantita, colore, taglia FROM carrello WHERE cliente = '$userid';";
@@ -109,22 +108,26 @@ if (isset($_POST['update'])) {
                     deleteProduct($userid, $product[0]);
                 }
                 else {
-                    checkAvailability($product[0], $quantities[$j], $product[2], $product[3]);
-                    updateProduct($userid, $product[0], $quantities[$j], $product[2], $product[3]);
+                    if(checkAvailability($product[0], $quantities[$j], $product[2], $product[3])) {
+                        updateProduct($userid, $product[0], $quantities[$j], $product[2], $product[3]);
+                    }
                 }
             }
         }
     }
 }
 
+//elimina il prodotto dal carrello
 function deleteProduct($userid, $pid) {
     queryMysql("DELETE FROM carrello WHERE cliente = '$userid' AND prodotto = '$pid';");
 }
 
+//aggiorna la quantità del prodotto nel carrello
 function updateProduct($userid, $pid, $quantity, $color, $size) {
     queryMysql("UPDATE carrello SET quantita = '$quantity' WHERE cliente = '$userid' AND prodotto = '$pid' AND colore = '$color' AND taglia = '$size';");
 }
 
+//controlliamo che la disponibilità del prodotto sia maggiore della quantità richiesta
 function checkAvailability($pid, $quantity, $color, $size) {
     $query = "SELECT disponibilita FROM magazzino WHERE prodotto = '$pid' AND colore = '$color' AND taglia = '$size';";
     $result = queryMysql($query);
@@ -135,5 +138,5 @@ function checkAvailability($pid, $quantity, $color, $size) {
         return 0;
     }
     
-    return $quantity;
+    return 1;
 }
