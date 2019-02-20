@@ -134,7 +134,7 @@
 
 						<div class="rs2-select2 bo4 of-hidden w-size12 m-t-5 m-b-5 m-r-10">
 								<select class="selection-2" name="price" id="price-range">
-									<option value = "">Any Price</option>
+									<option value = "0,200000">Any Price</option>
 									<option value = "0,50">€0.00 - €50.00</option>
 									<option value = "50,100">€50.00 - €100.00</option>
 									<option value = "100,200">€100.00 - €200.00</option>
@@ -350,15 +350,12 @@
     function change(){
         var sorting = $("select#sorting").contents("option:selected").val();
         var pricerange = $("select#price-range").contents("option:selected").val();
-        if (pricerange != null){
-            var min = pricerange.slice(0 , pricerange.indexOf(","));
-            var max = pricerange.slice(pricerange.indexOf(",")+1);
-            request(sorting,min,max);
-        } else {
-            request(sorting);
-        }
+        var min = pricerange.slice(0 , pricerange.indexOf(","));
+        var max = pricerange.slice(pricerange.indexOf(",")+1);
+        request(sorting,min,max);
     }
 </script>
+
 
 </body>
 </html>
