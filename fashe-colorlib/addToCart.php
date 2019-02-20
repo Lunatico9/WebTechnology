@@ -23,12 +23,16 @@ $pid = $row[0];
 if(!isset($_SESSION['userid'])) {
 
     //controlliamo se il prodoto non sia già presente nella variabile e che la sua quantità non superi la disponibilità
-    if(checkProductNotLogged($pid, $quantity, $color, $size);) {
-        $product = array($pid, $quantity, $color, $size);
-        $_SESSION['cart'][] = $product;
+    if(checkProductNotLogged($pid, $quantity, $color, $size)) {
+         //rifacciamo il controllo, se la quantità supera la disponibilità non serve andare oltre
+        if (checkAvailability($pid, $quantity, $color, $size)) {
+            $product = array($pid, $quantity, $color, $size);
+            $_SESSION['cart'][] = $product;
+        }
+
         echo 0; //ajax aggiorna l'indice nell'header
     }
-    else() {
+    else {
         echo 1; //ajax non aggiorna l'indice nell'header
     }
 }
@@ -36,11 +40,16 @@ else {
     $userid = $_SESSION['userid'];
     //controlliamo che il prodotto non sia già presente nel carrello e che la sua quantità non superi la disponibilità
     $newquantity = checkProduct($userid, $pid, $quantity, $color, $size);
-    
-    if(!$newquantity) {
-        //inseriamo nel carrello il prodotto
-        queryMysql("INSERT INTO carrello (cliente, prodotto, quantita, colore, taglia) VALUES ('$userid', '$pid', '$quantity', '$color', '$size');");
-        echo 0;
+
+    if($newquantity == 0) {
+        if(checkAvailability($pid, $quantity, $color, $size)) {
+            //inseriamo nel carrello il prodotto
+            queryMysql("INSERT INTO carrello (cliente, prodotto, quantita, colore, taglia) VALUES ('$userid', '$pid', '$quantity', '$color', '$size');");
+            echo 0;
+        }
+        else {
+            echo 1;
+        }
     }
     else {
         //aumentiamo solamente la quantità del prodotto nel carrello
@@ -68,9 +77,10 @@ function checkProduct($userid, $pid, $quantity, $color, $size) {
                     return $product[$j][0];
                 }
                 else {
-                    return 0;
+                    return 1; 
                 }
             }
+            else return 0;
         }
     }
 
@@ -78,7 +88,8 @@ function checkProduct($userid, $pid, $quantity, $color, $size) {
 }
 
 
-//controlla se il prodotto è già presente nella variabile di sessione
+//controlla se il prodotto è già presente nella variabile di sessione, rstituisce 1 se il dobbiamo
+//aggiornare l'icona del carrello, 0 altrimenti
 function checkProductNotLogged($pid, $quantity, $color, $size) {
     if(isset($_SESSION['cart'])) {
         foreach($_SESSION['cart'] as &$prd) {
@@ -90,9 +101,7 @@ function checkProductNotLogged($pid, $quantity, $color, $size) {
                 else return 0; //restituisce 0 in entrambi i casi poiché in entrambi i casi dobbiamo
                                //solo comunicare ad ajax di non incrementare l'icona del carrello
             }
-            else {
-                return 1;
-            }
+            else return 1;
         }
     }
     return 1;
