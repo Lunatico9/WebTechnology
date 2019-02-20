@@ -73,7 +73,7 @@
 
 						<li class="p-t-4">
 							{if $option == "protective gears"}
-								<a href="shop.php?catalogue=protective gears" class="s-text13 active1">
+								<a id="active" href="shop.php?catalogue=protective gears" class="s-text13 active1">
 									Protective gears
 								</a>
 							{else}
@@ -97,7 +97,7 @@
 
 						<li class="p-t-4">
 							{if $option == "accessories"}
-								<a id="active"href="shop.php?catalogue=accessories" class="s-text13 active1">
+								<a id="active" href="shop.php?catalogue=accessories" class="s-text13 active1">
 									Accesories
 								</a>
 							{else}
@@ -116,7 +116,6 @@
 							</button>
 						</form>
 					</div>
-					</ul>
 				</div>
 			</div>
 			<!-- NEED AJAX OR JS FUNCTION -->
@@ -135,10 +134,10 @@
 						<div class="rs2-select2 bo4 of-hidden w-size12 m-t-5 m-b-5 m-r-10">
 								<select class="selection-2" name="price" id="price-range">
 									<option value = "0,200000">Any Price</option>
-									<option value = "0,50">€0.00 - €50.00</option>
-									<option value = "50,100">€50.00 - €100.00</option>
-									<option value = "100,200">€100.00 - €200.00</option>
-									<option value = "200,200000">€200.00+</option>
+									<option value = "0,50">€0 - €50</option>
+									<option value = "50,100">€50 - €100</option>
+									<option value = "100,200">€100 - €200</option>
+									<option value = "200,200000">€200+</option>
 								</select>
 						</div>
                         <div class="rs2-select2 of-hidden w-size12 m-t-5 m-b-5 m-r-10">
@@ -318,13 +317,49 @@
 </script>
 <!--===============================================================================================-->
 <script src="js/main.js"></script>
-<!--===============================================================================================-->
-<!-- sorting update request -->
+<!-- String Sanitize Function -->
 <script type="text/javascript">
-    function request(sort,min,max){
+    function sanitizeString(str){
+        str = str.replace(/[^a-z0-9áéíóúñü \.,_-]/gim,"");
+        return str.trim();
+    }
+</script>
+<!--===============================================================================================-->
+<script type="text/javascript">
+    function requestOnSale(sort,min,max){
         //create and submit form with new element
         var form = $('<form></form>');
-        form.attr("method", "post");
+        form.attr("method", "get");
+        form.attr("action", "shop.php");
+        var field1 = $('<input></input>');
+        field1.attr("type", "hidden");
+        field1.attr("name", "price_min");
+        field1.attr("value", min);
+        form.append(field1);
+        var field2 = $('<input></input>');
+        field2.attr("type", "hidden");
+        field2.attr("name", "price_max");
+        field2.attr("value", max);
+        form.append(field2);
+        var field3 = $('<input></input>');
+        field3.attr("type", "hidden");
+        field3.attr("name", "sorting");
+        field3.attr("value", sort);
+        form.append(field3);
+        var field4 = $('<input></input>');
+        field4.attr("type", "hidden");
+        field4.attr("name", "onsale");
+        field4.attr("value", "onsale");
+        form.append(field4);
+        $(document.body).append(form);
+        form.submit();
+    };
+</script>
+<script type="text/javascript">
+    function requestAll(sort,min,max){
+        //create and submit form with new element
+        var form = $('<form></form>');
+        form.attr("method", "get");
         form.attr("action", "shop.php");
         var field1 = $('<input></input>');
         field1.attr("type", "hidden");
@@ -345,14 +380,56 @@
         form.submit();
     };
 </script>
+<!-- sorting update request -->
+<script type="text/javascript">
+    function request(sort,min,max,category){
+        //create and submit form with new element
+        var form = $('<form></form>');
+        form.attr("method", "get");
+        form.attr("action", "shop.php");
+        var field1 = $('<input></input>');
+        field1.attr("type", "hidden");
+        field1.attr("name", "price_min");
+        field1.attr("value", min);
+        form.append(field1);
+        var field2 = $('<input></input>');
+        field2.attr("type", "hidden");
+        field2.attr("name", "price_max");
+        field2.attr("value", max);
+        form.append(field2);
+        var field3 = $('<input></input>');
+        field3.attr("type", "hidden");
+        field3.attr("name", "sorting");
+        field3.attr("value", sort);
+        form.append(field3);
+        var field4 = $('<input></input>');
+        field4.attr("type", "hidden");
+        field4.attr("name", "catalogue");
+        field4.attr("value", category);
+        form.append(field4);
+        $(document.body).append(form);
+        form.submit();
+    };
+</script>
 <!-- Sorting update procedure -->
 <script type="text/javascript">
     function change(){
+        //get requested sorting and price range values
         var sorting = $("select#sorting").contents("option:selected").val();
         var pricerange = $("select#price-range").contents("option:selected").val();
         var min = pricerange.slice(0 , pricerange.indexOf(","));
         var max = pricerange.slice(pricerange.indexOf(",")+1);
-        request(sorting,min,max);
+        //get current product category
+        var category = sanitizeString($("#active").contents().text()).toLowerCase();
+        if (category == "all"){
+            requestAll(sorting,min,max);
+        } else {
+            if (category == "on sale"){
+                requestOnSale(sorting,min,max);
+            } else  {
+                request(sorting,min,max,category);
+            }
+        }   
     }
 </script>
 
