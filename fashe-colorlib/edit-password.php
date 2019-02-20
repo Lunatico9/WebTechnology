@@ -53,7 +53,7 @@ if (isset($_POST['oldpass']) && isset($_POST['newpass']) && isset($_POST['confir
     }
 }
 
-$smarty->display('edit-password.html');
+$smarty->display('html/edit-password.html');
 unset($_SESSION['error']);
 
 function checkOldPassword($oldpass) {

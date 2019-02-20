@@ -44,7 +44,7 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
     }
 }
 
-$smarty->display('login.html');
+$smarty->display('html/login.html');
 unset($_SESSION['error']);
 
 

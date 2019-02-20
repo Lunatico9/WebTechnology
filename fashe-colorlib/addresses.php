@@ -46,8 +46,8 @@ if ($result->num_rows > 0) {
     }
 
     $smarty->assign("addresses", $address);
-    $smarty->display('addresses.html');
+    $smarty->display('html/addresses.html');
 }
 else {
-    $smarty->display('addresses-empty.html');
+    $smarty->display('html/addresses-empty.html');
 }

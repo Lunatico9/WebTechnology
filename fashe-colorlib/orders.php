@@ -39,9 +39,9 @@ if ($result->num_rows > 0) {
     }
 
     $smarty->assign("orders", $order);
-    $smarty->display('orders.html');
+    $smarty->display('html/orders.html');
 }
 else {
-    $smarty->display('orders-empty.html');
+    $smarty->display('html/orders-empty.html');
 }
 

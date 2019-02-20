@@ -30,4 +30,4 @@ if (isset($_POST['name']) && isset($_POST['phone-number']) && isset($_POST['emai
     queryMysql("INSERT INTO messaggi (nome, numero, email, messaggio) VALUES ('$name', '$phone', '$email', '$text');");
 }
 
-$smarty->display('contact.html');
+$smarty->display('html/contact.html');

@@ -41,4 +41,4 @@ else {
 $smarty->assign("username", "$username");
 $smarty->assign("mail", "$mail");
 
-$smarty->display('user-panel.html');
+$smarty->display('html/user-panel.html');

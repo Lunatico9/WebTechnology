@@ -126,7 +126,7 @@ if(isset($_POST['name']) && isset($_POST['color']) && isset($_POST['size']) && i
 }
 
 
-$smarty->display('add-product.html');
+$smarty->display('html/add-product.html');
 unset($_SESSION['error']);
 unset($_SESSION['message']);
 

@@ -45,10 +45,10 @@ if(!isset($_SESSION['userid'])) {
         }
 
         $smarty->assign("products", $products);
-        $smarty->display('cart.html');
+        $smarty->display('html/cart.html');
     }
     else {
-        $smarty->display('cart-empty.html');
+        $smarty->display('html/cart-empty.html');
     }
 }
 //nel caso in cui il cliente è loggato estraiamo dal database i dati sui prodotti presenti nel carrello
@@ -66,11 +66,11 @@ else {
         }
 
         $smarty->assign("products", $product);
-        $smarty->display('cart.html');
+        $smarty->display('html/cart.html');
     }
 
     else  {
-        $smarty->display('cart-empty.html');
+        $smarty->display('html/cart-empty.html');
     }
 }
 

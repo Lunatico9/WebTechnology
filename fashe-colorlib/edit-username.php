@@ -57,5 +57,5 @@ if(isset($_POST['username'])) {
     }
 }
 
-$smarty->display('edit-username.html');
+$smarty->display('html/edit-username.html');
 unset($_SESSION['error']);

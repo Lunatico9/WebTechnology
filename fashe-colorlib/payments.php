@@ -48,10 +48,10 @@ if ($result->num_rows > 0) {
     }
 
     $smarty->assign("payments", $payment);
-    $smarty->display('payments.html');
+    $smarty->display('html/payments.html');
 }
 else {
-    $smarty->display('payments-empty.html');
+    $smarty->display('html/payments-empty.html');
 }
 
 

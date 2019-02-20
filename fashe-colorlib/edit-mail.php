@@ -55,5 +55,5 @@ if(isset($_POST['email'])) {
     }
 }
 
-$smarty->display('edit-mail.html');
+$smarty->display('html/edit-mail.html');
 unset($_SESSION['error']);

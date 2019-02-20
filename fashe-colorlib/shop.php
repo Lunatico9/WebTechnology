@@ -108,8 +108,8 @@ if ($product_num > 0) {
     }
 
     $smarty->assign("products", $product);
-    $smarty->display('shop.html');
+    $smarty->display('html/shop.html');
 }
 else {
-    $smarty->display('shop-empty.html');
+    $smarty->display('html/shop-empty.html');
 }

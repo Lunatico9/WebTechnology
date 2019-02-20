@@ -79,7 +79,7 @@ if (isset($_POST['username']) && isset($_POST['password']) && isset($_POST['conf
     }
 }
 
-$smarty->display('signup.html');
+$smarty->display('html/signup.html');
 unset($_SESSION['error']);
 
 function checkUsername($username) {

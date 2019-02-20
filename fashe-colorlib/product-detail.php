@@ -136,4 +136,4 @@ if (isset($_POST['discount']) && isset($_POST['start']) && isset($_POST['end']))
     redirect("shop.php");
 }
 
-$smarty->display('product-detail.html');
+$smarty->display('html/product-detail.html');

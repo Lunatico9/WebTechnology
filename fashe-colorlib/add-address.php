@@ -60,7 +60,7 @@ if(isset($_POST['address-name']) && isset($_POST['name']) && isset($_POST['surna
     }
 }
 
-$smarty->display('add-address.html');
+$smarty->display('html/add-address.html');
 unset($_SESSION['error']);
 
 //controlla che l'alias fornito non sia già presente nel database per l'utente corrente

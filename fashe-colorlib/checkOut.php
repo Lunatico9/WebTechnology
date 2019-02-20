@@ -120,4 +120,4 @@ if(isset($_POST['address']) && isset($_POST['payment']) && isset($_POST['courier
     queryMysql("DELETE FROM carrello WHERE carrello.cliente = '$userid';");
 }
 
-$smarty->display('checkout.html');
+$smarty->display('html/checkout.html');

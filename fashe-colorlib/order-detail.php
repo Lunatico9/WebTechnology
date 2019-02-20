@@ -65,7 +65,7 @@ else {
     redirect("orders.php");
 }
 
-$smarty->display('order-detail.html');
+$smarty->display('html/order-detail.html');
 
 
 

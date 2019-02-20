@@ -17,4 +17,4 @@ $username = $values[1];
 $smarty->assign("items", "$items");
 $smarty->assign("user", "$username");
 
-$smarty->display('about.html');
+$smarty->display('html/about.html');

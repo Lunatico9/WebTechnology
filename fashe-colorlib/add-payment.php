@@ -50,7 +50,7 @@ if(isset($_POST['name']) && isset($_POST['surname']) && isset($_POST['type']) &&
     }
 }
 
-$smarty->display('add-payment.html');
+$smarty->display('html/add-payment.html');
 unset($_SESSION['error']);
 
 function checkNumber($num) {
