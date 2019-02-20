@@ -1,7 +1,7 @@
 <?php
 
 require_once 'libs/Smarty.class.php';
-require_once 'function.php';
+require_once 'functions.php';
 
 //Session management procedure
 sessionManager();
