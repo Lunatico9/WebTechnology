@@ -63,7 +63,8 @@ if(isset($_POST['name']) && isset($_POST['color']) && isset($_POST['size']) && i
     $category = sanitizeString($_POST['category']);
     $catalogue = sanitizeString($_POST['catalogue']);
 
-    if($_FILES['userfile']['name'][0] == "") {
+
+    if($_FILES['userfile']['name'][0] == "" || !isset($_FILES['userfile']['name'][0])) {
         $img1 = 0; //l'immagine non sarà salvata
         
         //controlliamo se esiste già un prodotto con il nome indicato, se non esiste non possiamo permettere
@@ -71,6 +72,7 @@ if(isset($_POST['name']) && isset($_POST['color']) && isset($_POST['size']) && i
         if(!checkProductName($name)) {
             $_SESSION['error'] = 1;
             $_SESSION['message'] = "This product doesn't exist yet, add an image to create it";
+            redirect('add-product.php');
             $img1 = 0;
         }
     }
@@ -130,7 +132,7 @@ if(isset($_POST['name']) && isset($_POST['color']) && isset($_POST['size']) && i
 
         if($img3) {
             $path3 = "images/". $_FILES['userfile']['name'][2];
-            addImager($path2, $pid, 0);
+            addImage($path2, $pid, 0);
         }
     }
     else {
@@ -148,7 +150,9 @@ unset($_SESSION['message']);
 
 
 
-//salva l'immagine nel server
+/**
+ * Salva l'immagine nel server
+ */
 function saveImage($j) {
     $target_dir = "/wamp64/www/images/";
     $target = $target_dir . $_FILES["userfile"]["name"][$j];
@@ -157,7 +161,9 @@ function saveImage($j) {
     return 1;
 }
 
-//controlliamo se il prodotto esista già
+/** 
+* Controlliamo se il prodotto esista già
+*/
 function checkProduct($name, $color, $size) {
     $result = checkProductDao($name, $color, $size);
     
@@ -173,15 +179,17 @@ function checkProduct($name, $color, $size) {
     return 0;
 }
 
-//controlliamo se il nome del prodotto sia già presente nel db, 
-//restituisce l'id del prodotto se presente, 0 altrimenti
+/** 
+* Controlliamo se il nome del prodotto sia già presente nel db, 
+* restituisce 1 se presente, 0 altrimenti
+*/
 function checkProductName($name) {
     $pid = getProductID($name);
     
-    if($pid != 0) {
-        return 1;
+    if($pid == null) {
+        return 0;
     }
     else {
-        return 0;
+        return 1;
     }
 }
