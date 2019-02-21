@@ -81,7 +81,7 @@
 							</div>
 
 							<div class="rs2-select2 rs3-select2 bo4 of-hidden w-size16">
-								<select class="selection-2" name="size" id="size">
+								<select class="selection-2" name="size" id="size" onchange="updateStock()">
 									{foreach item=size from=$sizes}
 										<option>{$size[0]}</option>
 									{/foreach}
@@ -96,7 +96,7 @@
 						</div>
 
 						<div class="rs2-select2 rs3-select2 bo4 of-hidden w-size16">
-							<select class="selection-2" name="color" id="color">
+							<select class="selection-2" name="color" id="color" onchange="updateStock()">
 								{foreach item=color from=$colors}
 									<option>{$color[0]}</option>
 								{/foreach}
@@ -118,7 +118,7 @@
 								</button>
 							</div>
 
-							<div class="flex-w of-hidden m-r-22 m-t-10 m-b-10 {$stock}">
+							<div class="flex-w of-hidden m-r-22 m-t-10 m-b-10 {$stock}" id="stock">
 								{$availability}
 							</div>
 
@@ -317,6 +317,45 @@
     function sanitizeString(str){
         str = str.replace(/[^a-z0-9áéíóúñü \.,_-]/gim,"");
         return str.trim();
+    }
+</script>
+<!--===============================================================================================-->
+<!-- Update Stock amount -->
+<script type="text/javascript">
+    function updateStock(){
+        var color = sanitizeString($("#color").val());
+        var size = sanitizeString($("#size").val());
+        var name = sanitizeString($(".product-detail-name").text());
+        //ajax request
+        $.post("product-detail.php", {
+            name: name,
+            color: color,
+            size: size
+        }, function(data){
+            data = sanitizeString(data);
+            data = data.slice(0, data.indexOf("D"));
+            //product in stock
+            if (data >= 10) {
+                $("#stock").text("In Stock");
+                $("#stock").removeClass("text-danger");
+                $("#stock").removeClass("text-warning");
+                $("#stock").addClass("text-success");
+            } else {
+                //product almost finished
+                if (data > 0){
+                    $("#stock").text("Only "+ data +" left in stock - order soon.");
+                    $("#stock").removeClass("text-danger");
+                    $("#stock").removeClass("text-success");
+                    $("#stock").addClass("text-warning");
+                } else {
+                    //product unavailable
+                    $("#stock").text("Currently unavailable");
+                    $("#stock").removeClass("text-warning");
+                    $("#stock").removeClass("text-success");
+                    $("#stock").addClass("text-danger");
+                }
+            }
+        });
     }
 </script>
 <!--===============================================================================================-->
