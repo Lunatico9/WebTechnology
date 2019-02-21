@@ -61,6 +61,8 @@ if(isset($_POST['color']) && isset($_POST['size'])) {
     $c = $_POST['color'];
     $s = $_POST['size'];
     $result = getAvailability($pid, $c, $s);
+    $row = $result->fetch_row();
+    echo $row[0];
 }
 else {
     $result = getAvailability($pid, $colors[0][0], $sizes[0][0]);
