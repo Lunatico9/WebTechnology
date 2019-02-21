@@ -132,7 +132,7 @@ if(isset($_POST['name']) && isset($_POST['color']) && isset($_POST['size']) && i
 
         if($img3) {
             $path3 = "images/". $_FILES['userfile']['name'][2];
-            addImage($path2, $pid, 0);
+            addImage($path3, $pid, 0);
         }
     }
     else {
