@@ -63,8 +63,20 @@ if(isset($_POST['name']) && isset($_POST['color']) && isset($_POST['size']) && i
     $category = sanitizeString($_POST['category']);
     $catalogue = sanitizeString($_POST['catalogue']);
 
-    $img1 = saveImage(0);
-
+    if($_FILES['userfile']['name'][0] == "") {
+        $img1 = 0; //l'immagine non sarà salvata
+        
+        //controlliamo se esiste già un prodotto con il nome indicato, se non esiste non possiamo permettere
+        //venga creato senza un'immagine
+        if(!checkProductName($name)) {
+            $_SESSION['error'] = 1;
+            $_SESSION['message'] = "This product doesn't exist yet, add an image to create it";
+            $img1 = 0;
+        }
+    }
+    else {
+        $img1 = saveImage(0);
+    }
     if($_FILES['userfile']['name'][1] != "") {
         $img2 = saveImage(1);
     }
@@ -81,21 +93,27 @@ if(isset($_POST['name']) && isset($_POST['color']) && isset($_POST['size']) && i
 
     //controlliamo se prodotto con stesso nome, colore e taglia esista già
     if(checkProduct($name, $color, $size)) {
+
+        $pid = 0;
         //controlliamo se il nome sia già presente, nel caso aggiungiamo solamente in colore e taglia
-        $pid = checkProductName($name);
-        if($pid == 0) {
+        if(!checkProductName($name)) {
             addProduct($name, $desc, $detdesc, $price, $category, $catalogue);
 
             //recuperiamo l'id appena creato
             $pid = getLastID();
+        }
+        else {
+            $pid = getProductID($name);
         }
 
         addColor($pid, $color);
         addSize($pid, $size);
         addAvailability($pid, $color, $size, $availability);
         
-        $path1 = "images/". $_FILES['userfile']['name'][0];
-        addImage($path1, $pid, 1);
+        if($img1) {
+            $path1 = "images/". $_FILES['userfile']['name'][0];
+            addImage($path1, $pid, 1);
+        }
     
         if($img2) {
             $path2 = "images/". $_FILES['userfile']['name'][1];
@@ -106,6 +124,12 @@ if(isset($_POST['name']) && isset($_POST['color']) && isset($_POST['size']) && i
             $path3 = "images/". $_FILES['userfile']['name'][2];
             addImager($path2, $pid, 0);
         }
+    }
+    else {
+        //lo fa già checkProduct ma per chiarezza aggiungo anche qui
+        $_SESSION['error'] = 1;
+        $_SESSION['message'] = "This product already exists";
+        redirect('add-product.php');
     }
 }
 
@@ -144,11 +168,10 @@ function checkProduct($name, $color, $size) {
 //controlliamo se il nome del prodotto sia già presente nel db, 
 //restituisce l'id del prodotto se presente, 0 altrimenti
 function checkProductName($name) {
-    $result = getProductID($name);
+    $pid = getProductID($name);
     
-    if($result->num_rows > 0) {
-        $pid = $result->fetch_row();
-        return $pid[0];
+    if($pid != 0) {
+        return 1;
     }
     else {
         return 0;

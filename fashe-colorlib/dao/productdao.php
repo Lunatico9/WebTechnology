@@ -91,7 +91,7 @@ function getProductPath($name) {
     return $result;
 }
 
-function addColor($pid, $colore) {
+function addColor($pid, $color) {
     queryMysql("INSERT INTO colore (colore, prodotto) VALUES ('$color', '$pid');");
 }
 
@@ -132,7 +132,7 @@ function updateAvailability($id, $newAvailability, $color, $size) {
 }
 
 function addImage($path, $pid, $main) {
-    queryMysql("INSERT INTO immagine (path, prodotto, principale) VALUES ('$path1', '$pid', '$main');");
+    queryMysql("INSERT INTO immagine (path, prodotto, principale) VALUES ('$path', '$pid', '$main');");
 }
 
 function getImages($name) {
