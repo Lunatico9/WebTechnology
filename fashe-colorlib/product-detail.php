@@ -19,40 +19,17 @@ $username = $values[1];
 $smarty->assign("items", "$items");
 $smarty->assign("user", "$username");
 
+$nome = "";
 //Retrieve product detail
 if (isset($_REQUEST['product'])){
     $nome = $_REQUEST['product'];
 }
+elseif (isset($_REQUEST['name'])) {
+    $nome = $_REQUEST['name'];
+}
 else {
     redirect("shop.php");
 }
-
-//costruiamo la vista per l'admin
-if($_SESSION['userrole'] == 'a') {
-    $smarty->assign("admin", '1');
-}
-else {
-    $smarty->assign("admin", '0');
-}
-
-//Populate menu
-$result = getProductPath($nome);
-$menu = $result->fetch_row();
-
-$smarty->assign("catalogo", $menu[0]);
-$smarty->assign("categoria", $menu[1]);
-$smarty->assign("nome", $menu[2]);
-
-//Populate product's details
-$result = getProduct($nome);
-$result->data_seek(0);
-$details = $result->fetch_row();
-
-$smarty->assign("prodotto", $details[0]);
-$smarty->assign("desc1", $details[1]);
-$smarty->assign("desc2", $details[2]);
-$smarty->assign("prezzo", $details[3]);
-$smarty->assign("prezzos", $details[4]);
 
 //Populate size options
 $result = getSize($nome);
@@ -64,6 +41,7 @@ for ($j = 0; $j < $result->num_rows; ++$j) {
 }
 
 $smarty->assign("sizes", $sizes);
+
 
 //Populate color options
 $result = getColor($nome);
@@ -105,6 +83,33 @@ else {
 
 $smarty->assign("availability", $availability);
 $smarty->assign("stock", $stock);
+
+//costruiamo la vista per l'admin
+if($_SESSION['userrole'] == 'a') {
+    $smarty->assign("admin", '1');
+}
+else {
+    $smarty->assign("admin", '0');
+}
+
+//Populate menu
+$result = getProductPath($nome);
+$menu = $result->fetch_row();
+
+$smarty->assign("catalogo", $menu[0]);
+$smarty->assign("categoria", $menu[1]);
+$smarty->assign("nome", $menu[2]);
+
+//Populate product's details
+$result = getProduct($nome);
+$result->data_seek(0);
+$details = $result->fetch_row();
+
+$smarty->assign("prodotto", $details[0]);
+$smarty->assign("desc1", $details[1]);
+$smarty->assign("desc2", $details[2]);
+$smarty->assign("prezzo", $details[3]);
+$smarty->assign("prezzos", $details[4]);
 
 //Populate product's images
 $result = getImages($nome);
