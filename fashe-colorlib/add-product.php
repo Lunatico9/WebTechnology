@@ -106,8 +106,16 @@ if(isset($_POST['name']) && isset($_POST['color']) && isset($_POST['size']) && i
             $pid = getProductID($name);
         }
 
-        addColor($pid, $color);
-        addSize($pid, $size);
+        //controlliamo se la coppia prodotto-colore sia già presente
+        if (checkColor($pid, $color)) {
+            addColor($pid, $color);
+        }
+
+        //controlliamo se la coppia prodotto-taglia sia già presente
+        if (checkSize($pid, $size)) {
+            addSize($pid, $size);
+        }
+        
         addAvailability($pid, $color, $size, $availability);
         
         if($img1) {
