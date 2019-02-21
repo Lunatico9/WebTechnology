@@ -2,6 +2,7 @@
 
 require_once 'libs/Smarty.class.php';
 require_once 'functions.php';
+require_once 'dao/userdao.php';
 require_once 'header.php';
 
 
@@ -55,7 +56,7 @@ if(isset($_POST['address-name']) && isset($_POST['name']) && isset($_POST['surna
         $cap = sanitizeString($_POST['cap']);
         $country = sanitizeString($_POST['country']);
 
-        queryMysql("INSERT INTO indirizzi (alias, cliente, nome, cognome, indirizzo, civico, citta, provincia, cap, stato) VALUES ('$alias', '$userid', '$name', '$surname', '$add', '$civ', '$city', '$reg', '$cap', '$country');");
+        addAddress($alias, $userid, $name, $surname, $add, $civ, $city, $reg, $cap, $country);
         redirect('addresses.php');
     }
 }
@@ -63,12 +64,13 @@ if(isset($_POST['address-name']) && isset($_POST['name']) && isset($_POST['surna
 $smarty->display('html/add-address.html');
 unset($_SESSION['error']);
 
-//controlla che l'alias fornito non sia già presente nel database per l'utente corrente
+
+/**
+ * Controlla che l'alias fornito non sia già presente nel database per l'utente corrente
+ */
 function checkAlias($newalias) {
     $userid = $_SESSION['userid'];
-    $query = "SELECT alias FROM indirizzi WHERE alias = '$newalias' AND cliente = '$userid';";
-    $result = queryMysql($query);
-    $u = $result->fetch_row();
+    $result = getAlias($userid, $newalias);
 
     if($result->num_rows > 0) {
         $_SESSION['error'] = 1;

@@ -3,6 +3,7 @@
 require_once 'libs/Smarty.class.php';
 require_once 'functions.php';
 require_once 'header.php';
+require_once 'dao/userdao.php';
 
 
 //Session management procedure
@@ -45,7 +46,7 @@ if(isset($_POST['name']) && isset($_POST['surname']) && isset($_POST['type']) &&
     $num = sanitizeString($_POST['number']);
 
     if(checkNumber($num)) {
-        queryMysql("INSERT INTO metodipagamento (cliente, nome, cognome, tipo_carta, num_carta) VALUES ('$userid', '$name', '$surname', '$type', '$num');");
+        addPaymentMethod($userid, $name, $surname, $type, $num);
         redirect('payments.php');
     }
 }
@@ -53,6 +54,9 @@ if(isset($_POST['name']) && isset($_POST['surname']) && isset($_POST['type']) &&
 $smarty->display('html/add-payment.html');
 unset($_SESSION['error']);
 
+/**
+ * Controlla che il numero rispetti il formato per le carte di pagamento
+ */
 function checkNumber($num) {
     $digits = strlen($num);
     if ($digits == 16) {

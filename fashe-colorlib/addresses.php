@@ -3,6 +3,7 @@
 require_once 'libs/Smarty.class.php';
 require_once 'functions.php';
 require_once 'header.php';
+require_once 'dao/userdao.php';
 
 //Session management procedure
 sessionManagerRestricted();
@@ -29,13 +30,12 @@ else {
 if (isset($_POST['delete'])) {
     $userid = $_SESSION['userid'];
     $del = $_POST['delete'];
-    queryMysql("UPDATE indirizzi SET eliminato = '1' WHERE alias = '$del' AND cliente = '$userid';");
+    deleteAddress($aid, $userid);
 }
 
 //recuperiamo gli indirizzi dell'utente dal database
 $userid = $_SESSION['userid'];
-$query = "SELECT alias, nome, cognome, indirizzo, civico, citta, provincia, cap, stato FROM indirizzi WHERE cliente = '$userid' AND eliminato = '0';";
-$result = queryMysql($query);
+$result = getAddresses($userid);
 $address = array();
     
 if ($result->num_rows > 0) {
