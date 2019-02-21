@@ -154,7 +154,7 @@ unset($_SESSION['message']);
  * Salva l'immagine nel server
  */
 function saveImage($j) {
-    $target_dir = "/wamp64/www/images/";
+    $target_dir = "images/";
     $target = $target_dir . $_FILES["userfile"]["name"][$j];
     
     move_uploaded_file($_FILES["userfile"]["tmp_name"][$j], $target);
