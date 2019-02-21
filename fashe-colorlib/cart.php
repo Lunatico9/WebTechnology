@@ -94,7 +94,8 @@ if(!isset($_SESSION['userid'])) {
             $result = getProductsInfo($pid, $date);
             $u = $result->fetch_row();
     
-            //costruiamo gli array contenenti i prodotti in maniera consistente con l'altro caso per non avere problemi con la visualizzazione
+            //costruiamo gli array contenenti i prodotti in maniera consistente con l'altro caso 
+            //per non avere problemi con la visualizzazione
             $product = array($u[0], $u[1], $u[2], $quantity, $u[3], $color, $size, $i);
             $i++;
             $products[] = $product;
@@ -130,15 +131,9 @@ else {
 }
 
 
-//elimina il prodotto dal carrello
-function deleteProduct($userid, $pid) {
-}
-
-//aggiorna la quantità del prodotto nel carrello
-function updateProduct($userid, $pid, $quantity, $color, $size) {
-}
-
-//controlliamo che la disponibilità del prodotto sia maggiore della quantità richiesta
+/**
+* Controlliamo che la disponibilità del prodotto sia maggiore della quantità richiesta
+*/
 function checkAvailability($pid, $quantity, $color, $size) {
     $result = getAvailability($pid, $color, $size);
     $availability = $result->fetch_row();

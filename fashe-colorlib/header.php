@@ -2,6 +2,9 @@
 
 require_once 'dao/userdao.php';
 
+/**
+* Restituisce i valori da inserire nell'header
+*/
 function headerValues() {
     $values = array(0, "Guest");
     
@@ -25,6 +28,9 @@ function headerValues() {
     return $values;
 }
 
+/**
+* Restituisce numero di oggetti nel carrello
+*/
 function cartItems($id) {
     $result = getCart($id);
     return $result->num_rows;

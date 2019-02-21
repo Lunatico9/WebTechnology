@@ -48,7 +48,10 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
 $smarty->display('html/login.html');
 unset($_SESSION['error']);
 
-
+/**
+* Effettua tutte le operazioni di login: inizializza la sessione e i cookie e riversa nel carrello
+* i prodotti inseriti mentre l'utente non era autenticato
+*/
 function checkUser($user, $pass) {
     $result = CheckLogin($user, $pass);
     $u = $result->fetch_row();

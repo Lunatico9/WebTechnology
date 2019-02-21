@@ -57,6 +57,9 @@ if (isset($_POST['oldpass']) && isset($_POST['newpass']) && isset($_POST['confir
 $smarty->display('html/edit-password.html');
 unset($_SESSION['error']);
 
+/**
+* Controlliamo che la password inserita sia corretta
+*/
 function checkOldPassword($oldpass) {
     $username = $_SESSION['username'];
     $result = checkLogin($username, $oldpass);
@@ -71,6 +74,10 @@ function checkOldPassword($oldpass) {
     return true;
 }
 
+
+/**
+* Controlliamo che le due password coincidano
+*/
 function checkNewPasswords($newpass, $confirmpass) {
     if($newpass != $confirmpass) {
         $_SESSION['error'] = 1;

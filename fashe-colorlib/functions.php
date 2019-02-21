@@ -8,6 +8,9 @@ $name = 'tdw';
 $connection = new mysqli($host, $user, $pass, $name);
 if ($connection->connect_error) die($connection->connect_error);
 
+/**
+* Connette al database ed effettua la query
+*/
 function queryMysql($query) {
     global $connection;
     $result = $connection->query($query);
@@ -15,6 +18,9 @@ function queryMysql($query) {
     return $result;
 }
 
+/**
+* Ripulisce le stringhe da elementi dannosi
+*/
 function sanitizeString($var) {
     global $connection;
     $var = strip_tags($var);
@@ -24,6 +30,9 @@ function sanitizeString($var) {
     return $var;
 }
 
+/**
+* Reindirizza alla pagina richiesta
+*/
 function redirect($url) {
     ob_start();
     header('Location: '.$url);
@@ -31,6 +40,9 @@ function redirect($url) {
     exit();
 }
 
+/**
+* Gestisce la sessione per le pagina esterna
+*/
 function sessionManager() {
     session_start();
 
@@ -47,6 +59,9 @@ function sessionManager() {
     }
 }
 
+/**
+* Gestisce la sessione per le pagine interne
+*/
 function sessionManagerRestricted() {
     session_start();
     

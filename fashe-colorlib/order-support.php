@@ -54,7 +54,10 @@ if(isset($_POST['name']) && isset($_POST['number']) && isset($_POST['email']) &&
 $smarty->display('html/order-support.html');
 unset($_SESSION['error']);
 
-//controlla che il numero inserito corrisponda con un ordine effettuatto dall'utente
+
+/**
+* Controlla che il numero inserito corrisponda con un ordine effettuatto dall'utente
+*/
 function checkOrder($uid, $num) {
     $result = getUserOrders($uid);
 
