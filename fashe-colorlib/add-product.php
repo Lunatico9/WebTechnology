@@ -3,6 +3,7 @@
 require_once 'libs/Smarty.class.php';
 require_once 'functions.php';
 require_once 'header.php';
+require_once 'dao/productdao.php';
 
 
 //Session management procedure
@@ -41,26 +42,12 @@ else {
 }
 
 //Popola category options
-$query = "SELECT id, nome FROM categoria;";
-$result = queryMysql($query);
-$category = array();
-
-for ($j = 0; $j < $result->num_rows; ++$j) {
-    $result->data_seek($j);
-    $category[] = $result->fetch_row();
-}
+$category = getCategories();
 
 $smarty->assign("categories", $category);
 
 //Popola catalogue options
-$query = "SELECT id, nome FROM catalogo;";
-$result = queryMysql($query);
-$catalogue = array();
-
-for ($j = 0; $j < $result->num_rows; ++$j) {
-    $result->data_seek($j);
-    $catalogue[] = $result->fetch_row();
-}
+$catalogue = getCatalogues();
 
 $smarty->assign("catalogues", $catalogue);
 
@@ -97,30 +84,27 @@ if(isset($_POST['name']) && isset($_POST['color']) && isset($_POST['size']) && i
         //controlliamo se il nome sia già presente, nel caso aggiungiamo solamente in colore e taglia
         $pid = checkProductName($name);
         if($pid == 0) {
-            queryMysql("INSERT INTO prodotto (nome, desc_breve, desc_dett, prezzo, categoria, catalogo) VALUES ('$name', '$desc', '$detdesc', '$price', '$category', '$catalogue');");
+            addProduct($name, $desc, $detdesc, $price, $category, $catalogue);
 
             //recuperiamo l'id appena creato
-            $query = "SELECT LAST_INSERT_ID();";
-            $result = queryMysql($query);
-            $product = $result->fetch_row();
-            $pid = $product[0];
+            $pid = getLastID();
         }
 
-        queryMysql("INSERT INTO colore (colore, prodotto) VALUES ('$color', '$pid');");
-        queryMysql("INSERT INTO taglia (taglia, prodotto) VALUES ('$size', '$pid');");
-        queryMysql("INSERT INTO magazzino (prodotto, colore, taglia, disponibilita) VALUES ('$pid', '$color', '$size', '$availability');");
+        addColor($pid, $color);
+        addSize($pid, $size);
+        addAvailability($pid, $color, $size, $availability);
         
         $path1 = "images/". $_FILES['userfile']['name'][0];
-        queryMysql("INSERT INTO immagine (path, prodotto, principale) VALUES ('$path1', '$pid', '1');");
+        addImage($path1, $pid, 1);
     
         if($img2) {
             $path2 = "images/". $_FILES['userfile']['name'][1];
-            queryMysql("INSERT INTO immagine (path, prodotto, principale) VALUES ('$path2', '$pid', '0');");
+            addImage($path2, $pid, 0);
         }
 
         if($img3) {
             $path3 = "images/". $_FILES['userfile']['name'][2];
-            queryMysql("INSERT INTO immagine (path, prodotto, principale) VALUES ('$path3', '$pid', '0');");
+            addImager($path2, $pid, 0);
         }
     }
 }
@@ -134,7 +118,7 @@ unset($_SESSION['message']);
 
 //salva l'immagine nel server
 function saveImage($j) {
-    $target_dir = "images/";
+    $target_dir = "/wamp64/www/images/";
     $target = $target_dir . $_FILES["userfile"]["name"][$j];
     
     move_uploaded_file($_FILES["userfile"]["tmp_name"][$j], $target);
@@ -143,8 +127,7 @@ function saveImage($j) {
 
 //controlliamo se il prodotto esista già
 function checkProduct($name, $color, $size) {
-    $query = "SELECT prodotto.nome, colore.colore, taglia.taglia FROM prodotto, colore, taglia WHERE prodotto.id = colore.prodotto AND prodotto.id = taglia.prodotto AND prodotto.nome = '$name' AND colore.colore = '$color' AND taglia.taglia = '$size';";
-    $result = queryMysql($query);
+    $result = getProducts($name, $color, $size);
     
     if($result->num_rows > 0) {
         $_SESSION['error'] = 1;
@@ -161,8 +144,7 @@ function checkProduct($name, $color, $size) {
 //controlliamo se il nome del prodotto sia già presente nel db, 
 //restituisce l'id del prodotto se presente, 0 altrimenti
 function checkProductName($name) {
-    $query = "SELECT id FROM prodotto WHERE prodotto.nome = '$name';";
-    $result = queryMysql($query);
+    $result = getProductID($name);
     
     if($result->num_rows > 0) {
         $pid = $result->fetch_row();

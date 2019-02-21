@@ -3,6 +3,7 @@
 require_once 'libs/Smarty.class.php';
 require_once 'functions.php';
 require_once 'header.php';
+require_once 'dao/userdao.php';
 
 
 //Session management procedure
@@ -48,7 +49,7 @@ if (isset($_POST['oldpass']) && isset($_POST['newpass']) && isset($_POST['confir
 
     if (checkOldPassword($oldpass) && checkNewPasswords($newpass, $confirmpass)) {
         $userid = $_SESSION['userid'];
-        queryMysql("UPDATE cliente SET password = '$newpass' WHERE id = '$userid';");
+        setPassword($userid, $newpass);
         redirect('user-panel.php');
     }
 }
@@ -58,8 +59,7 @@ unset($_SESSION['error']);
 
 function checkOldPassword($oldpass) {
     $username = $_SESSION['username'];
-    $query = "SELECT username FROM cliente WHERE password = '$oldpass' AND username = '$username';";
-    $result = queryMysql($query);
+    $result = checkLogin($username, $oldpass);
     $u = $result->fetch_row();
 
     if($result->num_rows == 0) {

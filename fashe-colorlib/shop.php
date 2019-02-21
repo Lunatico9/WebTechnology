@@ -3,7 +3,7 @@
 require_once 'libs/Smarty.class.php';
 require_once 'functions.php';
 require_once 'header.php';
-
+require_once 'dao/productdao.php';
 
 //Session management procedure
 sessionManager();
@@ -43,39 +43,37 @@ else {
 }
 
 //Retrieve shop
-$date = str_replace(" ", "", date('Y m d'));
 $option = "";
 
 //effettua la ricerca
 if (isset($_REQUEST['search-product'])) {
     $str = $_REQUEST['search-product'];
-    $query = "SELECT prodotto.nome, prodotto.prezzo, immagine.path, prodottoscontato.prezzo FROM immagine, prodotto LEFT OUTER JOIN prodottoscontato ON prodotto.id = prodottoscontato.prodotto AND prodottoscontato.data_inizio < '$date' AND prodottoscontato.data_fine > '$date' WHERE prodotto.id = immagine.prodotto AND immagine.principale = 1 AND prodotto.prezzo >= '$min' AND prodotto.prezzo <= '$max' AND prodotto.nome LIKE '%$str%' ORDER BY $sorting;";
+    $result = searchProductByName($str, $min, $max, $sorting);
 }
 //mostra prodotti nel catalogo scelto
 elseif(isset($_REQUEST['catalogue'])){
     $catalogue = $_REQUEST['catalogue'];
-    $query = "SELECT prodotto.nome, prodotto.prezzo, immagine.path, prodottoscontato.prezzo FROM immagine, prodotto LEFT OUTER JOIN prodottoscontato ON prodotto.id = prodottoscontato.prodotto AND prodottoscontato.data_inizio < '$date' AND prodottoscontato.data_fine > '$date' WHERE prodotto.id = immagine.prodotto AND immagine.principale = 1 AND prodotto.prezzo >= '$min' AND prodotto.prezzo <= '$max' AND prodotto.catalogo = (SELECT id FROM catalogo WHERE catalogo.nome = '$catalogue' ORDER BY $sorting);";
     $option = $_REQUEST['catalogue'];
+    $result = searchProductByCatalogue($catalogue, $min, $max, $sorting);
 }
 //mosta prodotti in sconto
 elseif(isset($_REQUEST['onsale'])){
-    $query = "SELECT prodotto.nome, prodotto.prezzo, immagine.path, prodottoscontato.prezzo FROM immagine, prodotto, prodottoscontato WHERE prodotto.id = prodottoscontato.prodotto AND prodottoscontato.data_inizio < '$date' AND prodottoscontato.data_fine > '$date' AND prodotto.id = immagine.prodotto AND prodottoscontato.prezzo >= '$min' AND prodottoscontato.prezzo <= '$max' AND immagine.principale = 1;";
     $option = "onsale";
+    $result = searchOnSale($min, $max, $sorting);
 }
 //mostra prodotti nella categoria scelta
 elseif(isset($_REQUEST['category'])) {
     $category = $_REQUEST['category'];
-    $query = "SELECT prodotto.nome, prodotto.prezzo, immagine.path, prodottoscontato.prezzo FROM immagine, prodotto LEFT OUTER JOIN prodottoscontato ON prodotto.id = prodottoscontato.prodotto AND prodottoscontato.data_inizio < '$date' AND prodottoscontato.data_fine > '$date' WHERE prodotto.id = immagine.prodotto AND immagine.principale = 1 AND prodotto.categoria = (SELECT categoria.id FROM categoria WHERE categoria.nome = '$category' ORDER BY $sorting);";
+    $result = searchProductByCategory($category, $min, $max, $sorting);
 }
 //mostra tutti i prodotti
 else {
-    $query = "SELECT prodotto.nome, prodotto.prezzo, immagine.path, prodottoscontato.prezzo FROM immagine, prodotto LEFT OUTER JOIN prodottoscontato ON prodotto.id = prodottoscontato.prodotto AND prodottoscontato.data_inizio < '$date' AND prodottoscontato.data_fine > '$date' WHERE prodotto.id = immagine.prodotto AND immagine.principale = 1 AND prodotto.prezzo >= '$min' AND prodotto.prezzo <= '$max' ORDER BY $sorting;";
+    $result = searchProduct($min, $max, $sorting);
 }
 
 $smarty->assign("option", "$option");
 
 //Retrieve products from db
-$result = queryMysql($query);
 $product = array();
 $product_num = $result->num_rows;
 

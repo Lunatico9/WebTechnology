@@ -27,8 +27,7 @@ else {
 }
 
 //recuperiamo la mail dell'utente dal database
-$query = "SELECT email FROM cliente WHERE username = '$username';";
-$result = queryMysql($query);
+$result = getMail($username);
 $u = $result->fetch_row();
     
 if($result->num_rows > 0) {

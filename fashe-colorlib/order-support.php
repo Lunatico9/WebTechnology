@@ -3,6 +3,7 @@
 require_once 'libs/Smarty.class.php';
 require_once 'functions.php';
 require_once 'header.php';
+require_once 'dao/orderdao.php';
 
 
 //Session management procedure
@@ -45,7 +46,7 @@ if(isset($_POST['name']) && isset($_POST['number']) && isset($_POST['email']) &&
     $message = sanitizeString($_POST['message']);
 
     if(checkOrder($userid, $num)) {
-        queryMysql("INSERT INTO messaggi (nome, numero, email, messaggio) VALUES ('$name', '$num', '$email', '$num');");
+        addMessage($name, $num, $email, $message);
         redirect('orders.php');
     }
 }
@@ -55,9 +56,8 @@ unset($_SESSION['error']);
 
 //controlla che il numero inserito corrisponda con un ordine effettuatto dall'utente
 function checkOrder($uid, $num) {
-    $query = "SELECT id FROM ordine WHERE cliente = '$uid';";
-    $result = queryMysql($query);
-    
+    $result = getUserOrders($uid);
+
     if ($result->num_rows > 0) {
         for ($j = 0; $j < $result->num_rows; ++$j) {
             $result->data_seek($j);

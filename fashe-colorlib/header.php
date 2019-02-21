@@ -1,5 +1,7 @@
 <?php
 
+require_once 'dao/userdao.php';
+
 function headerValues() {
     $values = array(0, "Guest");
     
@@ -24,7 +26,6 @@ function headerValues() {
 }
 
 function cartItems($id) {
-    $query2 = "SELECT carrello.prodotto FROM carrello WHERE carrello.cliente = '$id'";
-    $result = queryMysql($query2);
+    $result = getCart($id);
     return $result->num_rows;
 }

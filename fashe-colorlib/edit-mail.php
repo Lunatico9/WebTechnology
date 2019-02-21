@@ -3,6 +3,7 @@
 require_once 'libs/Smarty.class.php';
 require_once 'functions.php';
 require_once 'header.php';
+require_once 'dao/userdao.php';
 
 
 //Session management procedure
@@ -38,9 +39,8 @@ else {
 
 if(isset($_POST['email'])) {
     $newmail = sanitizeString($_POST['email']);
-    //controlliamo se lo username è già presente nel database
-    $query = "SELECT email FROM cliente WHERE email = '$newmail';";
-    $result = queryMysql($query);
+    //controlliamo se la mail è già presente nel database
+    $result = checkMail($newmail);
     $u = $result->fetch_row();
 
     if($result->num_rows > 0) {
@@ -49,8 +49,7 @@ if(isset($_POST['email'])) {
     }
     else {
         $userid = $_SESSION['userid'];
-        $query = "UPDATE cliente SET email = '$newmail' WHERE id = '$userid';";
-        $result = queryMysql($query);
+        setMail($userid, $newmail);
         redirect("user-panel.php");
     }
 }

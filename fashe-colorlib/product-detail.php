@@ -3,6 +3,7 @@
 require_once 'libs/Smarty.class.php';
 require_once 'functions.php';
 require_once 'header.php';
+require_once 'dao/productdao.php';
 
 
 //Session management procedure
@@ -19,8 +20,6 @@ $smarty->assign("items", "$items");
 $smarty->assign("user", "$username");
 
 //Retrieve product detail
-$date = str_replace(" ", "", date('Y m d'));
-
 if (isset($_REQUEST['product'])){
     $nome = $_REQUEST['product'];
 }
@@ -37,9 +36,7 @@ else {
 }
 
 //Populate menu
-$query = "SELECT catalogo.nome, categoria.nome, prodotto.nome FROM prodotto, categoria, catalogo WHERE catalogo.id = (SELECT prodotto.catalogo FROM prodotto WHERE prodotto.nome = '$nome') AND categoria.id = (SELECT prodotto.categoria FROM prodotto WHERE prodotto.nome = '$nome') AND prodotto.nome = '$nome';";
-$result = queryMysql($query);
-$result->data_seek(0);
+$result = getProductPath($nome);
 $menu = $result->fetch_row();
 
 $smarty->assign("catalogo", $menu[0]);
@@ -47,8 +44,7 @@ $smarty->assign("categoria", $menu[1]);
 $smarty->assign("nome", $menu[2]);
 
 //Populate product's details
-$query = "SELECT prodotto.nome, prodotto.desc_breve, prodotto.desc_dett, prodotto.prezzo, prodottoscontato.prezzo FROM prodotto LEFT OUTER JOIN prodottoscontato ON prodotto.id = prodottoscontato.prodotto AND prodottoscontato.data_inizio < '$date' AND prodottoscontato.data_fine > '$date' WHERE prodotto.nome = '$nome';";
-$result = queryMysql($query);
+$result = getProduct($nome);
 $result->data_seek(0);
 $details = $result->fetch_row();
 
@@ -59,8 +55,7 @@ $smarty->assign("prezzo", $details[3]);
 $smarty->assign("prezzos", $details[4]);
 
 //Populate size options
-$query = "SELECT taglia.taglia FROM prodotto, taglia WHERE prodotto.nome = '$nome' AND prodotto.id = taglia.prodotto;";
-$result = queryMysql($query);
+$result = getSize($nome);
 $sizes = array();
 
 for ($j = 0; $j < $result->num_rows; ++$j) {
@@ -71,8 +66,7 @@ for ($j = 0; $j < $result->num_rows; ++$j) {
 $smarty->assign("sizes", $sizes);
 
 //Populate color options
-$query = "SELECT colore.colore FROM prodotto, colore WHERE prodotto.nome = '$nome' AND prodotto.id = colore.prodotto;";
-$result = queryMysql($query);
+$result = getColor($nome);
 $colors = array();
 
 for ($j = 0; $j < $result->num_rows; ++$j) {
@@ -85,8 +79,7 @@ $smarty->assign("colors", $colors);
 //Implement availability string
 $pid = getProductId($nome);
 
-$query = "SELECT disponibilita FROM magazzino WHERE prodotto = '$pid';";
-$result = queryMysql($query);
+$result = getAvailabilityTemp($pid);
 $row = $result->fetch_row();
 $av = $row[0];
 
@@ -107,8 +100,7 @@ $smarty->assign("availability", $availability);
 $smarty->assign("stock", $stock);
 
 //Populate product's images
-$query = "SELECT immagine.path FROM immagine, prodotto WHERE prodotto.nome = '$nome' AND prodotto.id = immagine.prodotto";
-$result = queryMysql($query);
+$result = getImages($nome);
 $images = array();
 
 for ($j = 0; $j < $result->num_rows; ++$j) {
@@ -136,8 +128,7 @@ else {
 }
 
 //Poulate related products
-$query = "SELECT prodotto.nome, prodotto.prezzo, immagine.path, prodottoscontato.prezzo FROM categoria, immagine, prodotto LEFT OUTER JOIN prodottoscontato ON prodotto.id = prodottoscontato.prodotto AND prodottoscontato.data_inizio > '$date' WHERE categoria.nome = '$menu[1]' AND prodotto.nome != '$nome' AND immagine.prodotto = prodotto.id AND immagine.principale = 1;";
-$result = queryMysql($query);
+$result = getCategoryRelatedProducts($nome, $menu[1]);
 $relprod1 = array();
 
 for ($j = 0; $j < $result->num_rows; ++$j) {
@@ -151,8 +142,7 @@ if ($relprod1 != null) {
 }
 
 else {
-    $query = "SELECT prodotto.nome, prodotto.prezzo, immagine.path, prodottoscontato.prezzo FROM catalogo, immagine, prodotto LEFT OUTER JOIN prodottoscontato ON prodotto.id = prodottoscontato.prodotto AND prodottoscontato.data_inizio > '$date' WHERE catalogo.nome = '$menu[2]' AND prodotto.nome != '$nome' AND immagine.prodotto = prodotto.id AND immagine.principale = 1;";
-    $result = queryMysql($query);
+    $result = getCatalogueRelatedProducts($nome, $menu[2]);
     $relprod2 = array();
     
     for ($j = 0; $j < $result->num_rows; ++$j) {
@@ -168,21 +158,10 @@ if (isset($_POST['discount']) && isset($_POST['start']) && isset($_POST['end']))
     $start = str_replace('-','', $_POST['start']);
     $end = str_replace('-','', $_POST['end']);
 
-    $pid = getProductId($nome);
+    $pid = getProductID($nome);
 
-    queryMysql("INSERT INTO prodottoscontato (prodotto, data_inizio, data_fine, prezzo) VALUES ($pid, $start, $end, $price);");
+    addSale($pid, $start, $end, $price);
     redirect("shop.php");
 }
 
 $smarty->display('html/product-detail.html');
-
-
-
-
-//recupera l'id del prodotto dal nome
-function getProductId($name) {
-    $query = "SELECT id FROM prodotto WHERE prodotto.nome = '$name';";
-    $result = queryMysql($query);
-    $product = $result->fetch_row();
-    return $product[0];
-}

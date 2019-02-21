@@ -2,6 +2,8 @@
 
 require_once 'libs/Smarty.class.php';
 require_once 'functions.php';
+require_once 'dao/productdao.php';
+require_once 'dao/userdao.php';
 
 //Session management procedure
 sessionManager();
@@ -12,11 +14,7 @@ $color = $_POST['color'];
 $size = $_POST['size'];
 $product = $_POST['product'];
 
-$query = "SELECT id FROM prodotto WHERE nome = '$product';";
-$result = queryMysql($query);
-$row = $result->fetch_row();
-$pid = $row[0];
-
+$pid = getProductID($product);
 
 //Controlla se l'utente ha effettuato il login se non lo ha effettuato
 //aggiungiamo i prodotti ad un campo della variabile di sessione
@@ -44,20 +42,20 @@ else {
     if($newquantity == 0) {
         if(checkAvailability($pid, $quantity, $color, $size)) {
             //inseriamo nel carrello il prodotto
-            queryMysql("INSERT INTO carrello (cliente, prodotto, quantita, colore, taglia) VALUES ('$userid', '$pid', '$quantity', '$color', '$size');");
+            addProductToCart($userid, $pid, $quantity, $color, $size);
             echo 0;
         }
         else {
             echo 1;
         }
     }
-    elseif($newquantity == 1) {
+    elseif($newquantity == "over") {
         echo 1;
     }
     else {
         //aumentiamo solamente la quantità del prodotto nel carrello
         $quantity += $newquantity;
-        queryMysql("UPDATE carrello SET quantita = '$quantity' WHERE cliente = '$userid' AND prodotto = '$pid' AND colore = '$color' AND taglia = '$size';");
+        updateQuantity($userid, $pid, $quantity, $color, $size);
         echo 1;
     }
 }
@@ -67,9 +65,7 @@ else {
 
 //controlla se il prodotto è già presente nel carrello nel database
 function checkProduct($userid, $pid, $quantity, $color, $size) {
-    $query = "SELECT quantita, colore, taglia FROM carrello WHERE cliente = '$userid' AND prodotto = $pid;";
-    $result = queryMysql($query);
-
+    $result = getProductQuantityInCart($userid, $pid);
     if($result->num_rows > 0) {
         for ($j = 0; $j < $result->num_rows; ++$j) {
             $result->data_seek($j);
@@ -80,7 +76,7 @@ function checkProduct($userid, $pid, $quantity, $color, $size) {
                     return $product[$j][0];
                 }
                 else {
-                    return 1; 
+                    return "over"; 
                 }
             }
             else return 0;
@@ -113,8 +109,7 @@ function checkProductNotLogged($pid, $quantity, $color, $size) {
 
 //controlla se abbiamo abbastanza disponibilità di prodotto per soddisfare la richiesta
 function checkAvailability($pid, $total, $color, $size) {
-    $query = "SELECT disponibilita FROM magazzino WHERE prodotto = '$pid' AND colore = '$color' AND taglia = '$size';";
-    $result = queryMysql($query);
+    $result = getAvailability($pid, $color, $size);
     $availability = $result->fetch_row();
 
     if($total > $availability[0]) {

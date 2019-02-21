@@ -3,6 +3,7 @@
 require_once 'libs/Smarty.class.php';
 require_once 'functions.php';
 require_once 'header.php';
+require_once 'dao/userdao.php';
 
 
 //Session management procedure
@@ -39,8 +40,7 @@ else {
 if(isset($_POST['username'])) {
     $newusername = sanitizeString($_POST['username']);
     //controlliamo se lo username è già presente nel database
-    $query = "SELECT username FROM cliente WHERE username = '$newusername';";
-    $result = queryMysql($query);
+    $result = checkUsername($newusername);
     $u = $result->fetch_row();
 
     if($result->num_rows > 0) {
@@ -49,8 +49,7 @@ if(isset($_POST['username'])) {
     }
     else {
         $userid = $_SESSION['userid'];
-        $query = "UPDATE cliente SET username = '$newusername' WHERE id = '$userid';";
-        $result = queryMysql($query);
+        setUsername($userid, $newusername);
         $_SESSION['username'] = $newusername;
         setcookie("username", $newusername, strtotime("+1 year"));
         redirect("user-panel.php");

@@ -3,6 +3,7 @@
 require_once 'libs/Smarty.class.php';
 require_once 'functions.php';
 require_once 'header.php';
+require_once 'dao/orderdao.php';
 
 //Session management procedure
 sessionManagerRestricted();
@@ -27,8 +28,7 @@ else {
 
 $userid = $_SESSION['userid'];
 //Retrieve orders
-$query = "SELECT ordine.id, ordine.eseguito, ordine.stato, ordine.indirizzo, ordine.totale FROM ordine WHERE ordine.cliente = '$userid' ORDER BY ordine.eseguito DESC;";
-$result = queryMysql($query);
+$result = getOrders($userid);
 $order = array();
 
 if ($result->num_rows > 0) {

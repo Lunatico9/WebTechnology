@@ -3,6 +3,7 @@
 require_once 'libs/Smarty.class.php';
 require_once 'functions.php';
 require_once 'header.php';
+require_once 'dao/productdao.php';
 
 //Session management procedure
 sessionManager();
@@ -20,11 +21,9 @@ $smarty->assign("user", "$username");
 //Popoliamo le vetrine nella home in maniera dinamica
 
 //Best Seller values
-$query = "SELECT prodotto.nome, prodotto.prezzo, immagine.path FROM evidenzia, vetrina, prodotto, immagine WHERE immagine.prodotto = prodotto.id AND immagine.principale = '1' AND vetrina.nome = 'Best Seller' AND vetrina.id = evidenzia.vetrina AND prodotto.id = evidenzia.prodotto;";
-$result = queryMysql($query);
+$result = getWindowProducts("Best Seller");
 
-for ($j = 0 ; $j < $result->num_rows; ++$j)
-{
+for ($j = 0 ; $j < $result->num_rows; ++$j) {
     $result->data_seek($j);
     $product = $result->fetch_row();
     $smarty->assign("product"."$j", "$product[0]");
@@ -33,17 +32,15 @@ for ($j = 0 ; $j < $result->num_rows; ++$j)
 }
 
 //On Sale values
-$query = "SELECT prodotto.nome, prodotto.prezzo, prodottoscontato.prezzo, immagine.path FROM evidenzia, vetrina, prodotto, immagine, prodottoscontato WHERE immagine.prodotto = prodotto.id AND immagine.principale = '1' AND vetrina.nome = 'On Sale' AND vetrina.id = evidenzia.vetrina AND prodotto.id = evidenzia.prodotto AND prodotto.id = prodottoscontato.prodotto;";
-$result = queryMysql($query);
+$result = getWindowProducts("On Sale");
 
-for ($j = 0 ; $j < $result->num_rows; ++$j)
-{
+for ($j = 0 ; $j < $result->num_rows; ++$j) {
     $result->data_seek($j);
     $product = $result->fetch_row();
     $smarty->assign("saleproduct"."$j", "$product[0]");
     $smarty->assign("oldprice"."$j", "$product[1]");
-    $smarty->assign("newprice"."$j", "$product[2]");
-    $smarty->assign("saleimg"."$j", "$product[3]");
+    $smarty->assign("saleimg"."$j", "$product[2]");
+    $smarty->assign("newprice"."$j", "$product[3]");
 }
 
 $smarty->display('index.html');

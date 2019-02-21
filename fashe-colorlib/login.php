@@ -3,6 +3,7 @@
 require_once 'libs/Smarty.class.php';
 require_once 'functions.php';
 require_once 'header.php';
+require_once 'dao/userdao.php';
 
 //Session management procedure
 sessionManager();
@@ -33,7 +34,7 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
     $pass = sanitizeString($_POST['password']);
     //questo converrebbe farlo fare a javascript per poter mostrare gli errori nella stessa pagina
 
-    $bool = checkLogin($user, $pass);
+    $bool = checkUser($user, $pass);
     //se il login va a buon fine indirizziamo l'utente a user-panel
     if ($bool) {
         redirect("user-panel.php");
@@ -48,9 +49,8 @@ $smarty->display('html/login.html');
 unset($_SESSION['error']);
 
 
-function checkLogin($user, $pass) {
-    $query = "SELECT id, username, ruolo FROM cliente WHERE username = '$user' AND password = '$pass';";
-    $result = queryMysql($query);
+function checkUser($user, $pass) {
+    $result = CheckLogin($user, $pass);
     $u = $result->fetch_row();
     
     if($result->num_rows > 0) {
@@ -73,12 +73,11 @@ function checkLogin($user, $pass) {
                 $size = $item[3];
 
                 //controlliamo che il prodotto non sia già presente nel carrello
-                $query = "SELECT prodotto FROM carrello WHERE cliente = '$userid' AND prodotto = '$product' AND colore = '$color' AND taglia = '$size';";
-                $result = queryMysql($query);
+                $result = checkCartProduct($userid, $product, $color, $size);
                 if($result->num_rows > 0) {
                     continue;
                 }
-                queryMysql("INSERT INTO carrello (cliente, prodotto, quantita, colore, taglia) VALUES ('$userid', '$product', '$quantity', '$color', '$size');");
+                addProductToCart($userid, $product, $quantity, $color, $size);
             }
             unset($_SESSION['cart']);
         }

@@ -3,6 +3,7 @@
 require_once 'libs/Smarty.class.php';
 require_once 'functions.php';
 require_once 'header.php';
+require_once 'dao/userdao.php';
 
 //Session management procedure
 sessionManager();
@@ -42,12 +43,11 @@ if (isset($_POST['username']) && isset($_POST['password']) && isset($_POST['conf
     $data = date("Y/m/d");
     $ruolo = 'u';
 
-    if (checkUsername($user) && checkEmail($email) && checkPassword($password, $cpassword)) {
-        queryMysql("INSERT INTO cliente (username, password, email, data_reg, ruolo) VALUES ('$user', '$password', '$email', '$data', '$ruolo');");
+    if (checkUser($user) && checkEmail($email) && checkPassword($password, $cpassword)) {
+        addUser($user, $password, $email, $data, $ruolo);
         
         //retrieve id and initialize session values
-        $query = "SELECT id, username, ruolo FROM cliente WHERE username = '$user' AND password = '$password';";
-        $result = queryMysql($query);
+        $result = checkLogin($username, $password);
         $u = $result->fetch_row();
 
         if($result->num_rows > 0) {
@@ -65,12 +65,11 @@ if (isset($_POST['username']) && isset($_POST['password']) && isset($_POST['conf
                     $size = $item[3];
 
                     //controlliamo che il prodotto non sia già presente nel carrello
-                    $query = "SELECT prodotto FROM carrello WHERE cliente = '$userid' AND prodotto = '$product' AND colore = '$color' AND taglia = '$size';";
-                    $result = queryMysql($query);
+                    $result = checkCartProduct($userid, $product, $color, $size);
                     if($result->num_rows > 0) {
                         continue;
                     }
-                    queryMysql("INSERT INTO carrello (cliente, prodotto, quantita, colore, taglia) VALUES ('$userid', '$product', '$quantity', '$color', '$size');");
+                    addProductToCart($userid, $product, $quantity, $color, $size);
                 }
                 unset($_SESSION['cart']);
             }
@@ -82,9 +81,8 @@ if (isset($_POST['username']) && isset($_POST['password']) && isset($_POST['conf
 $smarty->display('html/signup.html');
 unset($_SESSION['error']);
 
-function checkUsername($username) {
-    $query = "SELECT username FROM cliente WHERE username = '$username';";
-    $result = queryMysql($query);
+function checkUser($username) {
+    $result = checkUsername($username);
     $u = $result->fetch_row();
 
     if($result->num_rows > 0) {
@@ -97,8 +95,7 @@ function checkUsername($username) {
 }
 
 function checkEmail($email) {
-    $query = "SELECT email FROM cliente WHERE email = '$email';";
-    $result = queryMysql($query);
+    $result = checkMail($email);
     $u = $result->fetch_row();
 
     if($result->num_rows > 0) {
