@@ -3,6 +3,8 @@
 require_once 'libs/Smarty.class.php';
 require_once 'functions.php';
 require_once 'header.php';
+require_once 'dao/productdao.php';
+require_once 'dao/userdao.php';
 
 //Session management procedure
 sessionManager();
@@ -43,8 +45,8 @@ if (isset($_POST['update'])) {
     else {
         //recuperiamo gli oggetti dal carrello dell'utente
         $userid = $_SESSION['userid'];
-        $query = "SELECT prodotto, quantita, colore, taglia FROM carrello WHERE cliente = '$userid';";
-        $result = queryMysql($query);
+
+        $result = getCart($userid);
         if ($result->num_rows > 0) {
             for ($j = 0; $j < $result->num_rows; $j++) {
                 $result->data_seek($j);
@@ -55,11 +57,11 @@ if (isset($_POST['update'])) {
                     continue;
                 }
                 elseif($quantities[$j] == 0) {
-                    deleteProduct($userid, $product[0]);
+                    deleteCartProduct($userid, $product[0]);
                 }
                 else {
                     if(checkAvailability($product[0], $quantities[$j], $product[2], $product[3])) {
-                        updateProduct($userid, $product[0], $quantities[$j], $product[2], $product[3]);
+                        updateQuantity($userid, $product[0], $quantities[$j], $product[2], $product[3]);
                         echo 1;
                     }
                     else {
@@ -89,8 +91,7 @@ if(!isset($_SESSION['userid'])) {
             $color = $item[2];
             $size = $item[3];
             //recuperiamo gli altri dati che ci servono per popolare il carrello
-            $query = "SELECT prodotto.nome, prodotto.prezzo, immagine.path, prodottoscontato.prezzo FROM immagine, prodotto LEFT OUTER JOIN prodottoscontato ON prodotto.id = prodottoscontato.prodotto AND prodottoscontato.data_inizio < '$date' AND prodottoscontato.data_fine > '$date' WHERE prodotto.id = '$pid' AND immagine.prodotto = prodotto.id AND immagine.principale = 1;";
-            $result = queryMysql($query);
+            $result = getProductsInfo($pid, $date);
             $u = $result->fetch_row();
     
             //costruiamo gli array contenenti i prodotti in maniera consistente con l'altro caso per non avere problemi con la visualizzazione
@@ -109,8 +110,7 @@ if(!isset($_SESSION['userid'])) {
 //nel caso in cui il cliente è loggato estraiamo dal database i dati sui prodotti presenti nel carrello
 else {
     $userid = $_SESSION['userid'];
-    $query = "SELECT prodotto.nome, prodotto.prezzo, immagine.path, carrello.quantita, prodottoscontato.prezzo, carrello.colore, carrello.taglia FROM carrello, immagine, prodotto LEFT OUTER JOIN prodottoscontato ON prodotto.id = prodottoscontato.prodotto AND prodottoscontato.data_inizio < '$date' AND prodottoscontato.data_fine > '$date' WHERE carrello.cliente = '$userid' AND prodotto.id = carrello.prodotto AND immagine.prodotto = carrello.prodotto AND immagine.principale = 1 ORDER BY prodotto.id;";
-    $result = queryMysql($query);
+    $result = getCartProducts($userid, $date);
     $product = array();
 
     if ($result->num_rows > 0) {
@@ -132,18 +132,15 @@ else {
 
 //elimina il prodotto dal carrello
 function deleteProduct($userid, $pid) {
-    queryMysql("DELETE FROM carrello WHERE cliente = '$userid' AND prodotto = '$pid';");
 }
 
 //aggiorna la quantità del prodotto nel carrello
 function updateProduct($userid, $pid, $quantity, $color, $size) {
-    queryMysql("UPDATE carrello SET quantita = '$quantity' WHERE cliente = '$userid' AND prodotto = '$pid' AND colore = '$color' AND taglia = '$size';");
 }
 
 //controlliamo che la disponibilità del prodotto sia maggiore della quantità richiesta
 function checkAvailability($pid, $quantity, $color, $size) {
-    $query = "SELECT disponibilita FROM magazzino WHERE prodotto = '$pid' AND colore = '$color' AND taglia = '$size';";
-    $result = queryMysql($query);
+    $result = getAvailability($pid, $color, $size);
     $availability = $result->fetch_row();
 
     if($quantity > $availability[0]) {

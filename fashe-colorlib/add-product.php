@@ -159,7 +159,7 @@ function saveImage($j) {
 
 //controlliamo se il prodotto esista già
 function checkProduct($name, $color, $size) {
-    $result = getProducts($name, $color, $size);
+    $result = checkProductDao($name, $color, $size);
     
     if($result->num_rows > 0) {
         $_SESSION['error'] = 1;
