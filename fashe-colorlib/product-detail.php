@@ -57,9 +57,9 @@ $smarty->assign("colors", $colors);
 //Implement availability string
 $pid = getProductId($nome);
 
-if(isset($_SESSION['color']) && isset($_SESSION['size'])) {
-    $c = $_SESSION['color'];
-    $s = $_SESSION['size'];
+if(isset($_POST['color']) && isset($_POST['size'])) {
+    $c = $_POST['color'];
+    $s = $_POST['size'];
     $result = getAvailability($pid, $c, $s);
 }
 else {
